@@ -55,7 +55,7 @@
 												
 												<label class="has-float-label mb-3">
 												
-													<input type="text" class="form-control datepicker"  id="date_of_birth" name="date_of_birth"
+													<input type="text" class="form-control"  id="date_of_birth" name="date_of_birth"
 														 value="{{old('date_of_birth')}}">
 													<span>{{trans('global.date_of_birth')}}<span style="color:red;">*</span></span>
 													
@@ -156,21 +156,19 @@
 									<input type="hidden" name="price" id="price" value="">
 									<div class="form-row">
 										<div class="col-md-12 ">
-											<label class="has-float-label form-group mb-0">
+											<div class="has-float-label form-group mb-0">
 												<input name="terms_and_condtions" id="terms_and_condtions" type="checkbox" value="1" class=""><span style="margin-left:10px;margin-top:5px;">Agrees to <a href="javascript:void(0)">Terms & Conditions</a></span>
 
 												<div class="error_margin"><span class="error terms_and_condtions_error" >  {{ $errors->first('terms_and_condtions')  }} </span></div>
-											</label> 
+											</div> 
 										</div>
 									</div>
 								
 								
 								
-									<div class="d-flex justify-content-between align-items-center">
-									   <a href="{{ route('login') }}">{{ trans('global.login') }}</a>
-									</div>
+									
 									 <div class="d-flex justify-content-between align-items-center">
-										<a href="{{ route('password.request') }}">{{ trans('global.forgot_password') }}</a>
+										  <a href="{{ route('login') }}">{{ trans('global.login') }}</a>
 										<input type="submit" class="btn btn-primary btn-lg btn-shadow uppercase_button" id="buttonCheck" value="{{ trans('global.pay_now') }}">
 									</div>
 								</div>
@@ -226,10 +224,10 @@ function getAgePriceCalculation(){
 				if(data.age >= 21 && data.age <= 65){
 					$('#age').val(data.age);
 					$('#price').val(data.price);
-					$('#buttonCheck').removeAttr('disabled');
+					
 					$('#age_and_price').html('<h3 class="success">Your age is '+data.age+' and  Price for your plan is  &#8377;'+data.price+'</h3>').show();
 				}else{
-					$('#buttonCheck').attr('disabled','disabled');
+					
 					$('#age_and_price').html('<h3 class="failure">Your age must be greater than 21 and less than 65.</h3>').show();
 				}
 			},
@@ -245,6 +243,18 @@ $('[data-type="adhaar-number"]').keyup(function() {
   value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
   $(this).val(value);
 });
+
+$('#date_of_birth').keyup(function(e) {
+  if (e.keyCode != 8){   
+		if ($(this).val().length == 2){
+			$(this).val($(this).val() + "/");
+		}else if ($(this).val().length == 5){
+			$(this).val($(this).val() + "/");
+		}
+	}
+	
+});
+
 
 $('[data-type="adhaar-number"]').on("change, blur", function() {
   var value = $(this).val();
@@ -267,7 +277,8 @@ $('[data-type="refered-adhaar-number"]').on("change, blur", function() {
   var value = $(this).val();
   var maxLength = $(this).attr("maxLength");
   var csrf_token = $('meta[name="csrf-token"]').attr('content');
-	$.ajax({
+  if(value){
+	  $.ajax({
 		type: "POST",
 		dataType: 'json',
 		url: base_url+'/user/verifiedAadhar',
@@ -284,6 +295,8 @@ $('[data-type="refered-adhaar-number"]').on("change, blur", function() {
 		},
 		error :function( data ) {}
 	});
+  }
+	
 	
 		
 	

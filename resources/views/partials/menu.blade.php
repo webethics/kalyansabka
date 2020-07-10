@@ -77,7 +77,7 @@
 			<ul class="list-unstyled">
 				@if(current_user_role_id()==$roleArray['SUPER_ADMIN'])
 				  <li class="{{$aactive}}">
-					<a href="{{url('/business-users')}}">
+					<a href="javascript:void(0)">
 						<i class="iconsminds-digital-drawing"></i>
 						<span>Customers</span>
 					</a>
@@ -106,16 +106,16 @@
 				 @endif
 				 
 				@if(current_user_role_id()==$roleArray['NORMAL_USER'])
-				  <li class="{{$site_sactive}}">
-					<a href="{{url('/site-settings')}}">
-						<i class="simple-icon-settings"></i> Config
+				  <li class="{{$accactive}}">
+					<a href="{{url('/account')}}">
+						<i class="simple-icon-user"></i> Account
 					</a>
 				 </li>
 				@endif
 				 
 				@if(current_user_role_id()==$roleArray['SUPER_ADMIN'])
 				
-				 <li class="{{$sactive}}">
+				 <!--li class="{{$sactive}}">
 					<a href="{{url('settings')}}">
 						<i class="simple-icon-settings"></i> Config
 					</a>
@@ -125,7 +125,7 @@
 					<a href="{{url('emails')}}">
 						<i class="simple-icon-envelope"></i> Email
 					</a>
-				</li>
+				</li-->
 				 @endif
 				 
 			</ul>
