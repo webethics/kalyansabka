@@ -27,25 +27,24 @@ class User extends Authenticatable
     ];
 
     protected $fillable = [
-        'owner_name',
-        'last_name',
-        'business_name',
-        'email',
-        'password',
-        'address',
-        'role_id',
-        'created_by',
-        'mobile_number',
-        'tax_number',
-        'verify_token',
-		'QR_code',
-		'text',
-		'loyality_program',
-		'additional_guests',
-		'additional_guests_exists',
-		'guest_with',
-		'business_url',
-		'status'
+		'first_name',
+		'last_name',
+		'email',
+		'password',
+		'address',
+		'role_id',
+		'mobile_number',
+		'aadhar_number',
+		'status',
+		'date_of_birth',
+		'age',
+		'price',
+		'state_id',
+		'district_id',
+		'price',
+		'remember_token',
+		'refered_by',
+		'verify_token'
 		 	 
     ];
 

@@ -44,7 +44,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/login';
+    protected $redirectTo = '/account';
 
     /**
      * Create a new controller instance.
@@ -84,17 +84,18 @@ class RegisterController extends Controller
 	
 	
 	
-	/* public function register(Request $request)
+	public function register(Request $request)
 	{
+		
 		$this->validator($request->all())->validate();
 
 		event(new Registered($user = $this->create($request->all())));
 
-		// $this->guard()->login($user);
+		$this->guard()->login($user);
 
 		return $this->registered($request, $user)
 							?: redirect($this->redirectPath());
-	 } */
+	 } 
 	 
 
     /**
@@ -103,18 +104,55 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-  /*   protected function validator(array $data)
+	protected function validator(array $data)
     {
+		$data['aadhar_number'] = str_replace('-','',$data['aadhar_number']);
+		
         return Validator::make($data, [
-            'owner_name' => ['required', 'string', 'max:255'],
-            'business_name' => ['required', 'string', 'max:255'],
-            'business_url' => ['required', 'string', 'max:255'],
-			'mobile_number'   => ['required','numeric','regex:/[0-9]{9}/',], 
-			'address'   => ['required',], 
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            //'password' => ['required', 'string', 'min:8'],
-        ]);
-    } */
+            'first_name'     => [
+                'required',
+            ],
+			'last_name'     => [
+                'required',
+            ],
+			'login_password'    => [
+				'required', 'regex:/^.*(?=.{3,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!$#%@]).*$/', 'min:6'
+			],
+			'login_password_confirmation'    => [
+                'required','same:login_password',
+            ],
+			'email*' => [
+				'required','email','unique:users'
+			],
+            'mobile_number'   => [
+               'required','numeric','regex:/[0-9]{9}/','unique:users',
+            ],
+			'aadhar_number'   => [
+               'required','unique:users'
+            ], 
+			'address'   => [
+               'required',
+            ],
+			'date_of_birth'   => [
+               'required',
+            ], 
+			'district'   => [
+               'required',
+            ],
+			'state'   => [
+               'required',
+            ] ,
+			'terms_and_condtions'   => [
+               'required',
+            ], 
+			
+			 
+			
+        ], [
+				'aadhar_number.unique' => 'The aadhar number is already registered.',
+				
+			]);
+    } 
 
     /**
      * Create a new user instance after a valid registration.
@@ -122,52 +160,32 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    //protected function create(array $data)
-    //{
-		//$token = getToken();
-		 /* $dat =  User::create([
-            'owner_name' => $data['owner_name'],
-            'business_name' => $data['business_name'],
-            'business_url' => $data['business_url'],
+    protected function create(array $data)
+    {
+		$data['aadhar_number'] = str_replace('-','',$data['aadhar_number']);
+		//	echo '<pre>';print_r($data);die;
+		$dat =  User::create([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'aadhar_number' => $data['aadhar_number'],
+            'mobile_number' => $data['mobile_number'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-			'QR_code' =>  '',
-			'role_id' => 2,
-			'created_by' => 0,
-			'verify_token' =>  $token,
-			
-        ]);
+            'password' => Hash::make($data['login_password']),
+			'date_of_birth' => $data['date_of_birth'],
+			'address' => $data['address'],
+			'age' => $data['age'],
+			'price' => $data['price'],
+			'state_id' => $data['state'],
+			'district_id' => $data['district'],
+			'refered_by' => $data['refered_by'],
+			'role_id' => 3,
+			'status' => 1,
+		]);
+		
 		if($dat){
-			//SEND EMAIL TO REGISTER USER.
-			$uname = $data['owner_name'];
-			$logo = url('/img/logo.png');
-			$link= url('verify/account/'.$token);
-			$to = $data['email'];
-			//EMAIL REGISTER EMAIL TEMPLATE 
-			$result = EmailTemplate::where('id',2)->get();
-			$subject = $result[0]->subject;
-			$message_body = $result[0]->content;
-			
-			$list = Array
-			  ( 
-				 '[NAME]' => $uname,
-				 '[USERNAME]' => $data['email'],
-				 '[PASSWORD]' => $data['password'],
-				 '[LINK]' => $link,
-				 '[LOGO]' => $logo,
-			  );
-
-			$find = array_keys($list);
-			$replace = array_values($list);
-			$message = str_ireplace($find, $replace, $message_body);
-			
-			//$mail = send_email($to, $subject, $message, $from, $fromname);
-			
-			$mail = send_email($to, $subject, $message);  
-			Session::flash('message', "Please check your email for the activation link.");
-			
+			Session::flash('message', "Welcome to Kalyan Sabka. Please logged into your account and setup your profile.");
 			return $dat;
-		} */
-		//return redirect()->route('login')->with('error','Please check your email for the activation link.'); 
-    //}
+		} 
+		return redirect()->route('account'); 
+    }
 }

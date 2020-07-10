@@ -16,7 +16,6 @@ class SubscriptionController extends Controller
 {
    protected function create(CreateUserRequest $request)
    {
-		print_r($request->all());die;
 		$dat =  User::create([
             'owner_name' => $request->owner_name,
             'business_name' => $request->refered_by,
@@ -29,7 +28,6 @@ class SubscriptionController extends Controller
 			'created_by' => 0,
 			'status' => 1
         ]);
-		print_r($dat);die;
 		$user = User::where('id',$dat->id)->first();
 		
 			//SEND EMAIL TO REGISTER USER.

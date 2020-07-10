@@ -285,6 +285,28 @@ table.dataTable thead .sorting_desc {
     padding-top: 15px;
 }
 
+#age_and_price .success{
+	color:green;
+}
+.highlight-error {
+  border-color: red;
+}
+h3.success{
+	font-size:14px;
+	color:green;
+}
+h3.failure{
+	font-size:14px;
+	color:red;
+}
+#age_and_price .failure{
+	color:red;
+}
+#age_and_price{
+	font-weight:bold;
+	font-size:16px;
+	margin:10px 0;
+}
 
 @media(min-width:768px) {
 	.termcondition {

@@ -78,9 +78,9 @@ class LoginController extends Controller
 			  
 			
 			  // DATA_ADMIN LOGIN 
-			  if($role_id['DATA_ADMIN']== current_user_role_id()){
+			  if($role_id['SUPER_ADMIN']== current_user_role_id()){
 				  
-					return redirect('users');	 
+					return redirect('account');	 
 	 
 			   }
 

@@ -14,6 +14,8 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\CdrGroup;
 use App\Models\EmailTemplate;
+
+use App\Models\CityLists;
 use League\Csv\Writer;	
 use Auth;
 use Config;
@@ -23,6 +25,7 @@ use App\Models\AuditLog;
 use QrCode;
 use App\Models\Plan;
 use DB;
+use DateTime;
 use Carbon\Carbon;
 use Stripe\Stripe;
 use Stripe\Subscription;
@@ -77,6 +80,81 @@ class UsersController extends Controller
 			$request->group_id;
 			$roles = Role::where('group_id',$request->group_id)->get();
 			return view('users.users.role_dropdown',compact('roles'));
+		}
+	
+    }
+	
+	// City DROPDOWN AJAX OPTION ON CREATE USER FORM 
+    public function cityDropdown(Request $request)
+    {
+		
+		if($request->ajax()){
+			$request->state_id;
+			$cities = CityLists::where('state_id',$request->state_id)->get();
+			return view('auth.city_dropdown',compact('cities'));
+		}
+	
+    }
+	// Refered aadhar verification 
+    public function verifiedAadhar(Request $request)
+    {
+		
+		if($request->ajax()){
+			$request->aadhar_number = str_replace('-','',$request->aadhar_number);
+			$user_data = User::where('aadhar_number',$request->aadhar_number)->orWhere('mobile_number',$request->aadhar_number)->first();
+			$data = array();
+			
+			if($user_data){
+				$data['success'] = true;
+			}else{
+				$data['success'] = false;
+			}
+			return json_encode($data);die;
+		}
+	
+    }
+	// CALCULATE AGE AJAX OPTION ON CREATE USER FORM 
+    public function calculateAge(Request $request)
+    {
+		
+		if($request->ajax()){
+			$userDob  = $request->date_of_birth;
+			$dob = new DateTime($userDob);
+ 
+			//We need to compare the user's date of birth with today's date.
+			$now = new DateTime();
+			 
+			//Calculate the time difference between the two dates.
+			$difference = $now->diff($dob);
+			 
+			//Get the difference in years, as we are looking for the user's age.
+			$age = $difference->y;
+			
+			$price = '';	
+			if($age >= 21 && $age <= 40){
+				$price = 2500;
+			}
+			if($age >= 41 && $age <= 45){
+				$price = 3000;
+			}
+			if($age >= 46 && $age <= 50){
+				$price = 3500;
+			}
+			if($age >= 51 && $age <= 55){
+				$price = 4000;
+			}
+			if($age >= 56 && $age <= 60){
+				$price = 4500;
+			}
+			if($age >= 61 && $age <= 65){
+				$price = 5000;
+			}
+			//Print it out.
+			$data = array();
+			
+			$data['age'] = $age;
+			$data['price'] = $price;
+			return json_encode($data);die;
 		}
 	
     }

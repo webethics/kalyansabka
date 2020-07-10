@@ -9,10 +9,11 @@ return [
         'CUSTOMER_USER' => 'customer_user',
     ], */
 	'role_id' => [
-        'DATA_ADMIN' => '1',
-        'DATA_ANALYST' => '2',
-        'CUSTOMER_ADMIN' => '3',
-        'CUSTOMER_USER' => '4',
+        'SUPER_ADMIN' => '1',
+        'INDIA_HEAD' => '2',
+        'NORMAL_USER' => '3',
+        'STATE_HEAD' => '4',
+        'DISTRICT_HEAD' => '5',
     ],
 	'per_page'=>10
 ];

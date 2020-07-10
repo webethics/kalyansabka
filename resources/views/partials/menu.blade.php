@@ -75,7 +75,7 @@
 		 @endif
 		 
 			<ul class="list-unstyled">
-				@if(current_user_role_id()==$roleArray['DATA_ANALYST'])
+				@if(current_user_role_id()==$roleArray['SUPER_ADMIN'])
 				  <li class="{{$aactive}}">
 					<a href="{{url('/business-users')}}">
 						<i class="iconsminds-digital-drawing"></i>
@@ -91,12 +91,12 @@
 				
 				 @else
 					 
-				<li class="{{$uactive}}">
+				<!--li class="{{$uactive}}">
 					<a href="{{url('/users')}}">
 						<i class="iconsminds-digital-drawing"></i>
 						<span>Business Listing</span>
 					</a>
-				</li>
+				</li-->
 				<!--li class="{{$cust_active}}">
 					<a href="{{url('/customers')}}">
 						<i class="iconsminds-digital-drawing"></i>
@@ -105,7 +105,7 @@
 				</li-->
 				 @endif
 				 
-				@if(current_user_role_id()==$roleArray['DATA_ANALYST'])
+				@if(current_user_role_id()==$roleArray['NORMAL_USER'])
 				  <li class="{{$site_sactive}}">
 					<a href="{{url('/site-settings')}}">
 						<i class="simple-icon-settings"></i> Config
@@ -113,7 +113,7 @@
 				 </li>
 				@endif
 				 
-				@if(current_user_role_id()==$roleArray['DATA_ADMIN'])
+				@if(current_user_role_id()==$roleArray['SUPER_ADMIN'])
 				
 				 <li class="{{$sactive}}">
 					<a href="{{url('settings')}}">

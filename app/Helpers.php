@@ -3,15 +3,14 @@
 
 //namespace App\Http\Middleware;
 use App\Models\Role;
-use App\Models\RequestCase;
 use App\Models\User;
 use App\Models\Setting;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use App\Models\Notification;
 use App\Models\EmailTemplate;
-use App\Models\EventLog;
-use App\Models\AuditLog;
+use App\Models\StateList;
+
 use App\Models\Plan;
 //use Config;
 // Return User Role ID 
@@ -56,37 +55,6 @@ function role_data_by_id($id){
 } 
 
 
-/*
-1-> NEW
-2-> PENDING
-3->COMPLETED
-4->REOPENED
-
-Return: status number
-*/
-function get_request_status_number($request_id){
-
-        $request = RequestCase::select('status')->where('id',$request_id)->get();
-		//pr($request);
-		return $request[0]->status;
-}
-
-/*
-1-> NEW
-2-> PENDING
-3->COMPLETED
-4->REOPENED
-Return :Array of class and name of status 
-*/
-function get_request_status_name($status_number){
-		$statusArray =array();
-		//pr($request);
-		if($status_number==1) { $statusArray['status'] =trans('global.new'); $statusArray['cls'] ='bg-dark';}
-		if($status_number==2) { $statusArray['status'] =trans('global.in_progress'); $statusArray['cls'] ='bg-warning';};
-		if($status_number==3) { $statusArray['status'] =trans('global.completed'); $statusArray['cls'] ='bg-success';};
-		if($status_number==4) { $statusArray['status'] =trans('global.reopened'); $statusArray['cls'] ='bg-dark';};
-		return $statusArray;
-}
 
 /* Exploade by |  */ 
 function split_to_array($sign,$data){
@@ -107,17 +75,19 @@ function redirect_route_name(){
 		  
 	   // IF DATA_ADMIN/DATA_ANALYST/CUSTOMER_USER/CUSTOMER_ADMIN 
 	   
-	   if($role_id['DATA_ADMIN']== current_user_role_id()){
-			return 'users'; 
+	   if($role_id['SUPER_ADMIN']== current_user_role_id()){
+			return 'account'; 
 	   }
-	   else if($role_id['DATA_ANALYST']== current_user_role_id()){
-			return 'business-users';					
-	   }else if($role_id['CUSTOMER_ADMIN']== current_user_role_id()){
-			return 'requests'; 
+	   else if($role_id['NORMAL_USER']== current_user_role_id()){
+			return 'account';					
+	   } else if($role_id['INDIA_HEAD']== current_user_role_id()){
+			return 'account';					
+	   }else if($role_id['DISTRICT_HEAD']== current_user_role_id()){
+			return 'account'; 
 
 	   }
-	   else if($role_id['CUSTOMER_USER']== current_user_role_id()){
-			return 'requests'; 
+	   else if($role_id['STATE_HEAD']== current_user_role_id()){
+			return 'account'; 
 	   }
 	   	  
 	   }else{
@@ -232,64 +202,6 @@ function user_current_plan($stripe_plan){
 		    return $token;
 	}
 	
-	
-function sendNotification($sender_id,$reciever_id,$requested_id,$notification_id){
-	$notification  =  new Notification();
-	$notification->sender_id = $sender_id;
-	$notification->reciever_id = $reciever_id;
-	$notification->requested_id = $requested_id;
-	$notification->notification_id = $notification_id;
-	$notification->status = 0;
-	$notification->save();
-}
-
-function sendEmailNotification($sender_id,$reciever_id,$template_name,$request_id){
-	    $login_url = route('login');
-		$email_template  = EmailTemplate::where('template_name',$template_name)->first();
-		$userDetails = User::where('id',$sender_id)->first();
-		$adminDetails  = User::where('id',$reciever_id)->first();
-		$request_case = RequestCase::where('id',$request_id)->select('case_number')->first();
-		$full_name = $userDetails->first_name.' '.$userDetails->last_name;
-		if(strpos($email_template->subject, '[SENDER_NAME]')){
-			$subject = str_replace('[SENDER_NAME]',$full_name,$email_template->subject);
-		}else{
-			$subject = $email_template->subject;
-		}
-		$message = $email_template->content;
-		$message = str_replace('[SENDER_NAME]',$full_name,$message);
-		$fromname = $userDetails->first_name.' '.$userDetails->last_name;
-		$full_name_reciever = $adminDetails->first_name.' '.$adminDetails->last_name;
-		$message = str_replace('[RECIEVER_NAME]',$full_name_reciever,$message);
-		$message = str_replace('[CASE_NUMBER]',$request_case->case_number,$message);
-		$message = str_replace('[LOGIN]',$login_url,$message);
-		send_email($adminDetails->email,$subject,$message,$from='',$fromname);
-	}
-	
-	
-// GET EVENT DATA BY ROLE 
-function eventbyRole($role_idArray){
-	
-	$data = EventLog::whereIn('role_id',$role_idArray)->where('event_name','!=','')->get();
-	
-	return $data;
-
-}
-
-// CREATE FAILED LOGIN EVENT 
-function create_failed_attemp_log($username,$attempted_password){
-	$logData = array();
-	$logData['event_name'] 			= 'failed_login';
-	$logData['username']   			= $username;
-	$logData['attempted_password']  = $attempted_password;
-	$logData['ipaddress']   		= get_client_ip();
-	$auditData= AuditLog::create($logData);
-}
-
-// GET EVENT ID FROM EventLog TABLE 
-function get_event_id($name){
-	$event_id = EventLog::where('event_name',$name)->select('id')->first();
-	return $event_id->id;
-}
 
 // GET THE IP ADDRESS 
 function get_client_ip() {
@@ -350,9 +262,17 @@ function timthumb($img,$w,$h){
 
 }
 
+function list_states(){
+	$statesData = StateList::all();
+	return $statesData;
+}
 
-
-
+function birth_years(){
+	$birth_years = collect(range(12, 5))->map(function ($item) {
+		return (string) date('Y') - $item;
+	});
+	return $birth_years;
+}
 function pr($data){
 
   echo "<pre>";

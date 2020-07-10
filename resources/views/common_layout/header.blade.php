@@ -3,10 +3,10 @@
 			@php
 				$redirect = url('/');
 				$role_id = Config::get('constant.role_id');
-				if($role_id['DATA_ADMIN']== current_user_role_id()){
+				if($role_id['SUPER_ADMIN']== current_user_role_id()){
 					$redirect =  url('/users'); 
 				}
-				else if($role_id['DATA_ANALYST']== current_user_role_id()){
+				else if($role_id['NORMAL_USER']== current_user_role_id()){
 					$redirect =  url('/business-users');					
 				}
 				@endphp
