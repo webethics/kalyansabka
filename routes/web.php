@@ -6,7 +6,7 @@ Route::get('/', 'User\UsersController@landing_page');
 Route::redirect('/login', '/login');
 
 //Route::redirect('/home', '/admin');
-Auth::routes(['register' => false]);
+Auth::routes(['register' => true]);
 
 
 Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware' => ['auth']], function () {
@@ -21,31 +21,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
     Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
     Route::resource('roles', 'RolesController');
 
- 
-    // REQUEST ROUTES
-	Route::get('reports',array('as'=>'ajax.pagination','uses'=>'ReportsController@ajaxPagination'));
-	Route::post('reports',array('as'=>'ajax.pagination','uses'=>'ReportsController@ajaxPagination'));
-    
-	
-	
-	/* Route::get('requests',array('as'=>'ajax.pagination','uses'=>'RequestsController@ajaxPagination'));
-	Route::post('requests',array('as'=>'ajax.pagination','uses'=>'RequestsController@ajaxPagination'));
-	Route::get('requests/create', 'RequestsController@create')->name('requests.create');
-	Route::post('requests/store', 'RequestsController@store')->name('requests.store');
-	Route::get('requests/show/{request_id}', 'RequestsController@show')->name('requests.show');
-	Route::post('requests/update/{request_id}', 'RequestsController@update'); //Update Request
-	Route::post('requests/edit/{request_id}', 'RequestsController@edit'); //Edit Request
-	Route::get('report/download/{report_id}', 'RequestsController@donwloadReport'); //Download Report
-	
-	//Assign request 
-	Route::post('request/assignModal', 'RequestsController@requestAssignModal'); //Edit Request
-	Route::post('request/assign', 'RequestsController@requestAssignToAnalyst'); //Edit Request
-	Route::post('request/clarificationModal', 'RequestsController@clarificationModal'); //Edit Request
-	Route::post('request/clarification', 'RequestsController@clarificationRequest'); //Edit Request */
-	
-    //Route::delete('requests/destroy', 'RequestsController@massDestroy')->name('requests.massDestroy');
-	
-	
+ 	
 	// USRS ROUTES
 	Route::get('users',array('as'=>'ajax.pagination','uses'=>'UsersController@ajaxPagination'));
 	Route::post('users',array('as'=>'ajax.pagination','uses'=>'UsersController@ajaxPagination'));
@@ -73,7 +49,6 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('user/edit/{request_id}', 'UsersController@edit'); //Edit User
 	Route::post('update-profile/{user_id}', 'UsersController@profileUpdate');//UPDATE USER
 	Route::post('user/roleDropdown', 'UsersController@roleDropdown');
-	
 	
 	Route::get('account', 'UsersController@account');
 	Route::post('openCancelSubscriptionModal', 'UsersController@openCancelSubscriptionModal');  //openCancelSubscriptionModal
@@ -149,9 +124,14 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	
 });
 
-
+Route::post('user/cityDropdown', 'User\UsersController@cityDropdown');
+Route::post('user/calculateAge', 'User\UsersController@calculateAge');
+Route::post('user/verifiedAadhar', 'User\UsersController@verifiedAadhar');
+	
+	
 //Route::get('register/{plan}', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+/* Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('register', 'Auth\RegisterController@showRegistrationForm')->name('register'); */
 Route::post('/checkemail', 'Auth\RegisterController@checkemail');
 Route::post('/subscription', 'SubscriptionController@create')->name('subscription.create');
 Route::get('cron_subscription_package_end', 'SubscriptionController@checkSubscriptionPackage');  //check-subscription-package-end
