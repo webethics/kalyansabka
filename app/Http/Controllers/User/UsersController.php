@@ -118,9 +118,19 @@ class UsersController extends Controller
     {
 		
 		if($request->ajax()){
-			$userDob  = $request->date_of_birth;
-			$dob = new DateTime($userDob);
- 
+			
+			
+			// Creating timestamp from given date
+			$timestamp = strtotime($request->date_of_birth);
+			 
+			// Creating new date format from that timestamp
+			$new_date = date("d-m-Y", $timestamp);
+			$new_date; // Outputs: 31-03-2019
+			
+			
+			$dob = new DateTime($new_date);
+			
+			
 			//We need to compare the user's date of birth with today's date.
 			$now = new DateTime();
 			 
@@ -128,7 +138,7 @@ class UsersController extends Controller
 			$difference = $now->diff($dob);
 			 
 			//Get the difference in years, as we are looking for the user's age.
-			$age = $difference->y;
+			$age = $difference->y; 
 			
 			$price = '';	
 			if($age >= 21 && $age <= 40){

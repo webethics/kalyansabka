@@ -108,7 +108,7 @@
 				@if(current_user_role_id()==$roleArray['NORMAL_USER'])
 				  <li class="{{$accactive}}">
 					<a href="{{url('/account')}}">
-						<i class="simple-icon-user"></i> Account
+						<i class="iconsminds-user"></i> Account
 					</a>
 				 </li>
 				@endif
