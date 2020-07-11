@@ -274,16 +274,20 @@ function getAgePriceCalculation(){
 			url: base_url+'/user/calculateAge',
 			data: {_token:csrf_token,date_of_birth:date_of_birth},
 			success: function(data) {
-				
-				if(data.age >= 21 && data.age <= 65){
-					$('#age').val(data.age);
-					$('#price').val(data.price);
-					
-					$('#age_and_price').html('<h3 class="success">Your age is '+data.age+' and  Price for your plan is  &#8377;'+data.price+'</h3>').show();
+				if(data.success == true){
+					if(data.age >= 21 && data.age <= 65){
+						$('#age').val(data.age);
+						$('#price').val(data.price);
+						
+						$('#age_and_price').html('<h3 class="success">Your age is '+data.age+' and  Price for your plan is  &#8377;'+data.price+'</h3>').show();
+					}else{
+						
+						$('#age_and_price').html('<h3 class="failure">Your age must be greater than 21 and less than 65.</h3>').show();
+					}
 				}else{
-					
-					$('#age_and_price').html('<h3 class="failure">Your age must be greater than 21 and less than 65.</h3>').show();
+					$('.date_of_birth_error').html("Invalid Date Entered.");
 				}
+				
 			},
 			error :function( data ) {}
 		});

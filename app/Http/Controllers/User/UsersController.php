@@ -136,31 +136,40 @@ class UsersController extends Controller
 			//Get the difference in years, as we are looking for the user's age.
 			$age = $difference->y; 
 			
-			$price = '';	
-			if($age >= 21 && $age <= 40){
-				$price = 2500;
+			if($age){
+				$price = '';	
+				if($age >= 21 && $age <= 40){
+					$price = 2500;
+				}
+				if($age >= 41 && $age <= 45){
+					$price = 3000;
+				}
+				if($age >= 46 && $age <= 50){
+					$price = 3500;
+				}
+				if($age >= 51 && $age <= 55){
+					$price = 4000;
+				}
+				if($age >= 56 && $age <= 60){
+					$price = 4500;
+				}
+				if($age >= 61 && $age <= 65){
+					$price = 5000;
+				}
+				//Print it out.
+				$data = array();
+				$data['success'] = true;
+				$data['age'] = $age;
+				$data['price'] = $price;
+				return json_encode($data);die;
+			}else{
+				$data = array();
+				
+				$data['age'] =false;
+				$data['price'] = $price;
+				return json_encode($data);die;
 			}
-			if($age >= 41 && $age <= 45){
-				$price = 3000;
-			}
-			if($age >= 46 && $age <= 50){
-				$price = 3500;
-			}
-			if($age >= 51 && $age <= 55){
-				$price = 4000;
-			}
-			if($age >= 56 && $age <= 60){
-				$price = 4500;
-			}
-			if($age >= 61 && $age <= 65){
-				$price = 5000;
-			}
-			//Print it out.
-			$data = array();
 			
-			$data['age'] = $age;
-			$data['price'] = $price;
-			return json_encode($data);die;
 		}
 	
     }
