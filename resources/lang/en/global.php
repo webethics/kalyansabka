@@ -363,7 +363,7 @@ return [
     'deselect_all'                         => 'Deselect all',
     'team-management'                      => 'Teams',
     'team-management-singular'             => 'Team',
-    'site_title'                           => 'Kalyansabka',
+    'site_title'                           => 'Kalyan Sabka',
     'userManagement'                       => [
         'title'          => 'User Management',
         'title_singular' => 'User Management',
