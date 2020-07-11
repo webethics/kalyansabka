@@ -286,6 +286,7 @@ table.dataTable thead .sorting_desc {
 }
 
 #age_and_price .success{
+	font-size:20x;
 	color:green;
 }
 .highlight-error {
@@ -300,6 +301,7 @@ h3.failure{
 	color:red;
 }
 #age_and_price .failure{
+	font-size:20x;
 	color:red;
 }
 #age_and_price{

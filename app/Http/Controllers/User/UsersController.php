@@ -32,15 +32,13 @@ class UsersController extends Controller
 	private $qr_code_path;
 	public function __construct()
     {
-	    $this->qr_code_path = public_path('/uploads/qr_code/');
+	    
         $this->per_page = Config::get('constant.per_page');
     }
 	
 	public function landing_page()
     {
-       
-		$plan_data =Plan::all();
-		return view('users.users.landing',compact('plan_data'));
+       return view('users.users.landing');
 		
 		//return view('users.account.account');
     }
@@ -59,15 +57,6 @@ class UsersController extends Controller
         }
         return view('users.users.index',compact('users','roles'));	
 	}
-	// CREATE USER FORM 
-    public function create()
-    {
-		// USER/ANALYST NOT ABLE TO ACCESS THIS 
-		access_denied_user_analyst();
-		$groups = CdrGroup::all();
-		$roleConstantArray = Config::get('constant.role_id');
-        return view('users.users.create',compact('groups','roleConstantArray'));
-    }
 	
 	// ROLE DROPDOWN AJAX OPTION ON CREATE USER FORM 
     public function roleDropdown(Request $request)
@@ -213,37 +202,7 @@ class UsersController extends Controller
 		 ), 200);
     }
 	
-	public function print_code($user_id){
-		$user = User::where('id',$user_id)->first();
-		if($user){
-			$image_path = 'qrcode'.$user_id.'.svg';
-			$url_to_scan = '<a href="'.url('customer-info').'/'.$user_id.'"></a>';
-			QrCode::size(200)->generate($url_to_scan, $this->qr_code_path.$image_path);
-			return view('users.customers.print',compact('image_path','user'));	
-		}
-	}
-	
-	public function customer_edit($user_id)
-    {
-		
-        $user = User::where('id',$user_id)->get();
-		$roles = Role::all();
-		if(count($user)>0){
-			$user =$user[0];
-			$view = view("modal.customerEdit",compact('user','roles'))->render();
-			$success = true;
-		}else{
-			$view = '';
-			$success = false;
-		}
-		
-        //abort_unless(\Gate::allows('request_edit'), 403);
-		
-		return Response::json(array(
-		  'success'=>$success,
-		  'data'=>$view
-		 ), 200);
-    }
+
 	
 /*==================================================
 	  UPDATE USER PROFILE 

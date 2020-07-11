@@ -21,6 +21,7 @@ use Session;
 use Illuminate\Auth\Events\Registered;
 use Response;
 use DB;
+use DateTime;
 use App\Models\Plan;
 use App\Http\Requests\CreateUserRequest;
 class RegisterController extends Controller
@@ -53,6 +54,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+	
         //$this->middleware('guest');
     }
 	
