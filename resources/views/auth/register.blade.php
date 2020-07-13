@@ -168,8 +168,8 @@
 											
 											<div class="input-group mb-3">
 												<label for="civilite" class="">Do you need a hard copy of Certificate ?</label>
-												<label class="radio-inline ml-3"><input type="radio" name="hard_copy" class="" value="" /> <span>Yes(Post Fee &#8377;50)</span></label>
-												<label class="radio-inline ml-3"><input type="radio" checked name="hard_copy" class="" value="" /> <span>No</span></label>
+												<label class="radio-inline ml-3"><input type="radio" name="hard_copy" class="" value="yes" /> <span>Yes(Post Fee &#8377;50)</span></label>
+												<label class="radio-inline ml-3"><input type="radio" checked name="hard_copy" class="" value="no" /> <span>No</span></label>
 												<input type="hidden" name="hard_copy_certificate" id = "hard_copy_certificate" value="no">
 											</div>
 										</div>
@@ -361,6 +361,7 @@ $('[data-type="adhaar-number"]').on("change, blur", function() {
 $("input[name='hard_copy']").change(function(){
 	var selected_val = $(this).val();
 	var price_val = $('#price').val();
+	
 	var total_value;
 	if(selected_val == 'yes'){
 		total_value = parseInt(price_val) + 50 ;
@@ -372,6 +373,7 @@ $("input[name='hard_copy']").change(function(){
 	}
 	
 	$('#buttonCheck').val('Pay Rs. '+total_value);
+	
 });
 
 $('[data-type="refered-adhaar-number"]').on("change, blur", function() {
