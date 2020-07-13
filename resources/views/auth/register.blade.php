@@ -8,7 +8,7 @@
                             
                             <span class="logo_image d-block mb-3"><a href="{{url('/')}}"><img src="{{asset('img/logo.png')}}"></a></span>
                             
-                            <h6 class="mb-2 register_title">{{ trans('global.register') }}</h6>
+                            <h6 class="mb-2 register_title">{{ trans('global.buy_policy') }}</h6>
 							@if(Session::has('message'))
 							<div class="alert alert-success">
 							{{ Session::get('message') }}

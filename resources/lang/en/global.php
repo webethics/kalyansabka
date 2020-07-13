@@ -5,6 +5,7 @@ return [
 	'add'                                  => 'Add',
 	'day'                                  => 'Day',
 	'month'                              	 => 'Month',
+	'buy_policy'                              	 => 'Buy Policy',
 	'year'                                  => 'Year',
 	'date_of_birth'                        => 'Date of Birth',
     'age'                     		   => 'Age',
