@@ -3,7 +3,7 @@
 Route::get('/', 'User\UsersController@landing_page');
 
 
-Route::redirect('/login', '/login');
+Auth::routes(['login' => true]);
 
 //Route::redirect('/home', '/admin');
 Auth::routes(['register' => true]);

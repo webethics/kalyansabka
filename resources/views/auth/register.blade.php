@@ -66,20 +66,34 @@
 											
 										</div>
 									</div>
-									
+									<div class="form-row">
+										<div class="col-md-6">
+											<label class="has-float-label form-group mb-3 ">
+												<input name="age" id="age" readonly="readonly"  type="text" value="{{ old('age')}}" class="form-control">
+												<span>{{ trans('global.age') }}<span style="color:red;">*</span></span>
+											</label>
+										</div>
+										
+										<div class="col-md-6">
+											<label class="has-float-label form-group mb-3 ">
+												<input name="price" id="price" readonly="readonly" type="text" value="{{ old('price')}}" class="form-control">
+												<span>{{ trans('global.price') }}<span style="color:red;">*</span></span>
+											</label>
+										</div>
+									</div>	
 								
 									<div class="form-row">
 										<div class="col-md-6">
 											<label class="has-float-label form-group mb-3">
 												<input name="mobile_number" id="mobile_number"  type="datepicker" value="{{ old('mobile_number')}}" class="form-control">
-												<span>Mobile Number <span style="color:red;">*</span></span>
+												<span>Mobile <span style="color:red;">*</span></span>
 												<div class="error_margin"><span class="error mobile_number_error" >  {{ $errors->first('mobile_number')  }} </span></div>
 											</label>
 										</div>
 										<div class="col-md-6">
 											<label class="has-float-label form-group mb-3">
 												<input data-type="adhaar-number" name="aadhar_number" maxLength="14" minLength="14"  id="aadhar_number" type="text" value="{{ old('aadhar_number')}}" class="form-control">
-												<span>Aadhar Number <span style="color:red;">*</span></span>
+												<span>Aadhar<span style="color:red;">*</span></span>
 												<div class="error_margin"><span class="error aadhar_number_error" >  {{ $errors->first('aadhar_number')  }} </span></div>
 											</label>
 										</div>
@@ -149,11 +163,18 @@
 										</div>	
 									</div>
 								
-									<div class="form-row" id="age_and_price" style="display:none">
-										
+									<div class="form-row">
+										<div class="col-md-12">
+											
+											<div class="input-group mb-3">
+												<label for="civilite" class="">Do you need a hard copy of Certificate ?</label>
+												<label class="radio-inline ml-3"><input type="radio" name="hard_copy" class="" value="" /> <span>Yes(Post Fee &#8377;50)</span></label>
+												<label class="radio-inline ml-3"><input type="radio" checked name="hard_copy" class="" value="" /> <span>No</span></label>
+												<input type="hidden" name="hard_copy_certificate" id = "hard_copy_certificate" value="no">
+											</div>
+										</div>
 									</div>
-									<input type="hidden" name="age"  id="age" value="">
-									<input type="hidden" name="price" id="price" value="">
+									
 									<div class="form-row">
 										<div class="col-md-12 ">
 											<div class="has-float-label form-group mb-0">
@@ -164,11 +185,9 @@
 										</div>
 									</div>
 								
-								
-								
 									
 									 <div class="d-flex justify-content-between align-items-center">
-										  <a href="{{ route('login') }}">{{ trans('global.login') }}</a>
+										<a href="{{ route('login') }}">{{ trans('global.login') }}</a>
 										<input type="submit" class="btn btn-primary btn-lg btn-shadow uppercase_button" id="buttonCheck" value="{{ trans('global.pay_now') }}">
 									</div>
 								</div>
@@ -193,7 +212,7 @@ function checkValue(str, max) {
   return str;
 };
 
-date.addEventListener('input', function(e) {
+/* date.addEventListener('input', function(e) {
   this.type = 'text';
   var input = this.value;
   if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
@@ -206,9 +225,30 @@ date.addEventListener('input', function(e) {
     return v.length == 2 && i < 2 ? v + '/' : v;
   });
   this.value = output.join('').substr(0, 14);
-});
+}); */
 
-date.addEventListener('blur', function(e) {
+date.addEventListener('input', function(e) { 
+	console.log('INPUT');
+	  this.type = 'text';
+	  var input = this.value;
+	  if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
+	  var values = input.split('-').map(function(v) {
+	  console.log(v)
+		return v.replace(/\D/g, '')
+	  });
+	  console.log(values)
+	  if (values[0]) values[0] = checkValue(values[0], 31);
+	  if (values[1]) values[1] = checkValue(values[1], 12);
+			
+	  var output = values.map(function(v, i) {
+		return v.length == 2 && i < 2 ? v + '-' : v;
+	  });
+	this.value = output.join('').substr(0, 14);
+	 console.log(this.value);
+});
+			
+
+/* date.addEventListener('blur', function(e) {
   this.type = 'text';
   var input = this.value;
   var values = input.split('/').map(function(v, i) {
@@ -231,9 +271,9 @@ date.addEventListener('blur', function(e) {
     };
   };
   this.value = output;
-});
+}); 
 	
-	
+	*/
 	
 $(document).ready(function(){
 	//$('#buttonCheck').attr('disabled','disabled');
@@ -249,48 +289,50 @@ $(document).ready(function(){
 
 function getCityDropDown(state_id){
 	 
-		var csrf_token = $('meta[name="csrf-token"]').attr('content');
-		$.ajax({
-			type: "POST",
-			//dataType: 'json',
-			url: base_url+'/user/cityDropdown',
-			data: {_token:csrf_token,state_id:state_id},
-			success: function(data) {
-				 $("#district").empty().html(data); 
-			},
-			error :function( data ) {}
-		});
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	$.ajax({
+		type: "POST",
+		//dataType: 'json',
+		url: base_url+'/user/cityDropdown',
+		data: {_token:csrf_token,state_id:state_id},
+		success: function(data) {
+			 $("#district").empty().html(data); 
+		},
+		error :function( data ) {}
+	});
 }
 $('#state').change(function(){
 	var state_id = $(this).val();
 	getCityDropDown(state_id);
 });
 function getAgePriceCalculation(){
-		var date_of_birth = $('#date_of_birth').val();
-		var csrf_token = $('meta[name="csrf-token"]').attr('content');
-		$.ajax({
-			type: "POST",
-			dataType: 'json',
-			url: base_url+'/user/calculateAge',
-			data: {_token:csrf_token,date_of_birth:date_of_birth},
-			success: function(data) {
-				if(data.success == true){
-					if(data.age >= 21 && data.age <= 65){
-						$('#age').val(data.age);
-						$('#price').val(data.price);
-						
-						$('#age_and_price').html('<h3 class="success">Your age is '+data.age+' and  Price for your plan is  &#8377;'+data.price+'</h3>').show();
-					}else{
-						
-						$('#age_and_price').html('<h3 class="failure">Your age must be greater than 21 and less than 65.</h3>').show();
-					}
+	var date_of_birth = $('#date_of_birth').val();
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	$.ajax({
+		type: "POST",
+		dataType: 'json',
+		url: base_url+'/user/calculateAge',
+		data: {_token:csrf_token,date_of_birth:date_of_birth},
+		success: function(data) {
+			if(data.success == true){
+				if(data.age >= 21 && data.age <= 65){
+					$('#age').val(data.age);
+					$('#price').val(data.price);
+					
+					//$('#age_and_price').html('<h3 class="success">Your age is '+data.age+' and  Price for your plan is  &#8377;'+data.price+'</h3>').show();
+					
+					$('#buttonCheck').val('Pay Rs. '+data.price);
 				}else{
-					$('.date_of_birth_error').html("Invalid Date Entered.");
+					
+					$('#age_and_price').html('<h3 class="failure">Your age must be greater than 21 and less than 65.</h3>').show();
 				}
-				
-			},
-			error :function( data ) {}
-		});
+			}else{
+				$('.date_of_birth_error').html("Invalid Date Entered.");
+			}
+			
+		},
+		error :function( data ) {}
+	});
 }
 $('#date_of_birth').change(function(){
 	getAgePriceCalculation();
@@ -301,17 +343,6 @@ $('[data-type="adhaar-number"]').keyup(function() {
   value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
   $(this).val(value);
 });
-
-/* $('#date_of_birth').keyup(function(e) {
-  if (e.keyCode != 8){
-		if ($(this).val().length == 2){
-			$(this).val($(this).val() + "-");
-		}else if ($(this).val().length == 5){
-			$(this).val($(this).val() + "-");
-		}
-	}
-	
-}); */
 
 
 $('[data-type="adhaar-number"]').on("change, blur", function() {
@@ -325,11 +356,23 @@ $('[data-type="adhaar-number"]').on("change, blur", function() {
   }
 });
 
-/* $('[data-type="refered-adhaar-number"]').keyup(function() {
-  var value = $(this).val();
-  value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
-  $(this).val(value);
-}); */
+
+
+$("input[name='hard_copy']").change(function(){
+	var selected_val = $(this).val();
+	var price_val = $('#price').val();
+	var total_value;
+	if(selected_val == 'yes'){
+		total_value = parseInt(price_val) + 50 ;
+		$('#hard_copy_certificate').val('yes');
+	}
+	if(selected_val == 'no'){
+		$('#hard_copy_certificate').val('no');
+		total_value = $('#price').val();
+	}
+	
+	$('#buttonCheck').val('Pay Rs. '+total_value);
+});
 
 $('[data-type="refered-adhaar-number"]').on("change, blur", function() {
   var value = $(this).val();
@@ -354,9 +397,6 @@ $('[data-type="refered-adhaar-number"]').on("change, blur", function() {
 		error :function( data ) {}
 	});
   }
-	
-	
-	
 	
 });
 </script>

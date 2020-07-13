@@ -11,6 +11,7 @@ use App\Models\Setting;
 use App\Models\User;
 use App\Models\EmailTemplate;
 use Auth;
+use Session;
 use App\Models\AuditLog;
 class LoginController extends Controller
 {
@@ -34,8 +35,8 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-	    
-       //$this->middleware('guest')->except('logout');
+		$this->middleware('guest')->except('logout');
+	 //  $this->middleware('auth');
     }
 	
 	public function login(Request $request)
@@ -49,41 +50,42 @@ class LoginController extends Controller
 		$validator = Validator::make($request->input(), $rules);
 		if ($validator->fails())
 		{
-			//EVENT FAILED
-			create_failed_attemp_log($input['email'],$input['password']);
 			return redirect('login')->withErrors($validator)->withInput($request->except('password'));
 		}else
 		{
 			
-			if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
+			if(Auth::attempt(array('email' => $input['email'], 'password' => $input['password'])))
 			{ 
 		        //IF STATUS IS NOT ACTIVE 
 				if(Auth::check() && Auth::user()->verify_token !=NULL){
 					//EVENT FAILED
-					create_failed_attemp_log($input['email'],$input['password']);
 					Auth::logout();
 					return redirect('/login')->with('error', 'Your account is not verified.Please check your email and verify your account.');
 				}else if(Auth::check() && Auth::user()->status == 0){ 
 					//IF STATUS IS NOT ACTIVE 
 					//EVENT FAILED
-					create_failed_attemp_log($input['email'],$input['password']);
 					Auth::logout();
 					return redirect('/login')->with('error', 'Your account is deactivated.');
 				}
 				
+				if(Auth::check() && Auth::user()->status == 1){
+					$user = Auth::user();
+					$role_id =  $user->role_id;
+					$role_id = Config::get('constant.role_id');
+					/* Auth::login($user, true);
+					Session::put('user',$user); */
+					/* if($role_id['SUPER_ADMIN']== current_user_role_id()){
+					  return redirect('account');	 
+					} 
+					if($role_id['INDIA_HEAD']== current_user_role_id()){
+					  return redirect('account');	 
+					}  */
+					
+				}else{
+					
+					return redirect()->route('login');
+				}
 				
-			  $user = auth()->user();
-			  $role_id =  $user->role_id;
-			  $role_id = Config::get('constant.role_id');
-			  
-			
-			  // DATA_ADMIN LOGIN 
-			  if($role_id['SUPER_ADMIN']== current_user_role_id()){
-				  
-					return redirect('account');	 
-	 
-			   }
-
 			  /* USE/ANALYST/USER-ADMIN LOGIN SETTING ADMIN ENABLE DOUBLE AUTHENTICATION  */ 
 			  $setting = Setting::where('user_id',1)->get();
 			  //pr($setting);
@@ -120,7 +122,8 @@ class LoginController extends Controller
 				 return redirect('send-otp')
 				->with('message','Please check email or phone for OTP.');
 				  
-			  }else{			  
+			  }else{		
+					
 					// IF DOUBLE AUTHENTICATION IS OFF : ANALYST/ADMIN/USER/USER_ADMIN 
 					 return redirect(redirect_route_name());
 			  }
@@ -134,8 +137,5 @@ class LoginController extends Controller
 		}
 
     }
-	
-	
-	
 	
 }

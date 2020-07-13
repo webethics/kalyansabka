@@ -106,14 +106,13 @@ class UsersController extends Controller
 			
 			
 			// Creating timestamp from given date
-			$timestamp = strtotime($request->date_of_birth);
+			/* $timestamp = strtotime($request->date_of_birth);
 			 
 			// Creating new date format from that timestamp
-			$new_date = date("d-m-Y", $timestamp);
-			$new_date; // Outputs: 31-03-2019
+			//$new_date = date("d-m-Y", $timestamp);
+			echo $new_date;die;  */
 			
-			
-			$dob = new DateTime($new_date);
+			$dob = new DateTime($request->date_of_birth);
 			
 			
 			//We need to compare the user's date of birth with today's date.

@@ -4,10 +4,10 @@
 				$redirect = url('/');
 				$role_id = Config::get('constant.role_id');
 				if($role_id['SUPER_ADMIN']== current_user_role_id()){
-					$redirect =  url('/users'); 
+					$redirect =  url('/account'); 
 				}
 				else if($role_id['NORMAL_USER']== current_user_role_id()){
-					$redirect =  url('/business-users');					
+					$redirect =  url('/account');					
 				}
 				@endphp
 		   

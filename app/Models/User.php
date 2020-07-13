@@ -44,6 +44,7 @@ class User extends Authenticatable
 		'price',
 		'remember_token',
 		'refered_by',
+		'hard_copy_certificate',
 		'verify_token'
 		 	 
     ];

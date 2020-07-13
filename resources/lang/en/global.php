@@ -2,11 +2,13 @@
 
 return [
 	
-    'add'                                  => 'Add',
-     'day'                                  => 'Day',
-     'month'                              	 => 'Month',
-     'year'                                  => 'Year',
-      'date_of_birth'                        => 'Date of Birth',
+	'add'                                  => 'Add',
+	'day'                                  => 'Day',
+	'month'                              	 => 'Month',
+	'year'                                  => 'Year',
+	'date_of_birth'                        => 'Date of Birth',
+    'age'                     		   => 'Age',
+    'price'                     		   => 'Price',
     'create'                               => 'Create',
     'card_name'                               => 'Name on Card',
     'card_number'                               => 'Card Number',
