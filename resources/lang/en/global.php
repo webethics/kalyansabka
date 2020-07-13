@@ -233,7 +233,6 @@ return [
     'request_management'                   => 'Request management',
     'requests'                             => 'Requests',
     'request_name'                         => 'Request name',
-    'price'                                => 'Price',
     'tags'                                 => 'Tags',
     'tag'                                  => 'Tag',
     'photo1'                               => 'Photo1',
