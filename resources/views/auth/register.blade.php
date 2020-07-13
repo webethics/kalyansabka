@@ -57,7 +57,7 @@
 												
 													<input type="text" class="form-control"  id="date_of_birth" name="date_of_birth"
 														 value="{{old('date_of_birth')}}">
-													<span>{{trans('global.date_of_birth')}}<em>(MM/DD/YYYY)</em><span style="color:red;">*</span></span>
+													<span>{{trans('global.date_of_birth')}}<em>(DD-MM-YYYY)</em><span style="color:red;">*</span></span>
 													
 													<div class="error_margin"><span class="error date_of_birth_error" >  {{ $errors->first('date_of_birth')  }} </span></div>
 												</label>
