@@ -180,6 +180,7 @@ class RegisterController extends Controller
 			'state_id' => $data['state'],
 			'district_id' => $data['district'],
 			'refered_by' => $data['refered_by'],
+			'hard_copy_certificate' => $data['hard_copy_certificate'],
 			'role_id' => 3,
 			'status' => 1,
 		]);
