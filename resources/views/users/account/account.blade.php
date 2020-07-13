@@ -21,9 +21,23 @@
 								<a class="nav-link active" id="first-tab" data-toggle="tab" href="#first" role="tab"
 									aria-controls="first" aria-selected="true">{{trans('global.basic')}}</a>
 							</li>
+							@if(current_user_role_id()==3 || current_user_role_id()==2)
 							<li class="nav-item">
 								<a class="nav-link" id="second-tab" data-toggle="tab" href="#second" role="tab"
-									aria-controls="second" aria-selected="false">{{trans('global.reset_password')}}</a>
+									aria-controls="second" aria-selected="true">{{trans('global.nominee')}}</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="third-tab" data-toggle="tab" href="#third" role="tab"
+									aria-controls="third" aria-selected="true">{{trans('global.documents')}}</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="fourth-tab" data-toggle="tab" href="#fourth" role="tab"
+									aria-controls="fourth" aria-selected="true">{{trans('global.bank_details')}}</a>
+							</li>
+							@endif
+							<li class="nav-item">
+								<a class="nav-link" id="fifth-tab" data-toggle="tab" href="#fifth" role="tab"
+									aria-controls="fifth" aria-selected="false">{{trans('global.reset_password')}}</a>
 							</li>
 						
 						</ul>
@@ -148,8 +162,18 @@
 								</form>
 							</div>	
 
-
+							
 							<div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
+									<h3>Nominee Coming Soon...</h3>
+							</div>
+							<div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
+									<h3>Documents Coming Soon...</h3>
+							</div>
+							<div class="tab-pane fade" id="fourth" role="tabpanel" aria-labelledby="fourth-tab">
+									<h3>Bnk Details Coming Soon...</h3>
+							</div>
+							
+							<div class="tab-pane fade" id="fifth" role="tabpanel" aria-labelledby="fifth-tab">
 								<form name="reset_pass" id="reset_pass" data-id="{{$user->id}}">
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.old_password')}}</label>

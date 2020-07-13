@@ -8,7 +8,7 @@ return [
 	'year'                                  => 'Year',
 	'date_of_birth'                        => 'Date of Birth',
     'age'                     		   => 'Age',
-    'price'                     		   => 'Price',
+    'price'                     		   => 'Policy Price',
     'create'                               => 'Create',
     'card_name'                               => 'Name on Card',
     'card_number'                               => 'Card Number',

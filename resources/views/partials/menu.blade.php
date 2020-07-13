@@ -9,6 +9,16 @@
 			$sactive ='';$emactive ='';$site_sactive ='';$accactive  ='';
 		 @endphp
 		 
+		 @if(collect(request()->segments())->last()=='account')
+		 @php
+	      $accactive ='active'
+	     @endphp
+		 @endif
+		  @if(collect(request()->segments())->last()=='settings')
+		 @php
+	      $configactive ='active'
+	     @endphp
+		 @endif
 		 
 			<ul class="list-unstyled">
 				@if(current_user_role_id()==$roleArray['SUPER_ADMIN'])

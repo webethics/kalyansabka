@@ -75,8 +75,8 @@
 										</div>
 										
 										<div class="col-md-6">
-											<label class="has-float-label form-group mb-3 ">
-												<input name="price" id="price" readonly="readonly" type="text" value="{{ old('price')}}" class="form-control">
+											<label class="has-float-label form-group mb-3 input-icon input-icon-right">
+												<input name="price" id="price" readonly="readonly" type="text" value="{{ old('price')}}" class="form-control"> <i>INR</i>
 												<span>{{ trans('global.price') }}<span style="color:red;">*</span></span>
 											</label>
 										</div>
@@ -93,7 +93,7 @@
 										<div class="col-md-6">
 											<label class="has-float-label form-group mb-3">
 												<input data-type="adhaar-number" name="aadhar_number" maxLength="14" minLength="14"  id="aadhar_number" type="text" value="{{ old('aadhar_number')}}" class="form-control">
-												<span>Aadhar<span style="color:red;">*</span></span>
+												<span>Aadhaar<span style="color:red;">*</span></span>
 												<div class="error_margin"><span class="error aadhar_number_error" >  {{ $errors->first('aadhar_number')  }} </span></div>
 											</label>
 										</div>
@@ -321,7 +321,7 @@ function getAgePriceCalculation(){
 					
 					//$('#age_and_price').html('<h3 class="success">Your age is '+data.age+' and  Price for your plan is  &#8377;'+data.price+'</h3>').show();
 					
-					$('#buttonCheck').val('Pay Rs. '+data.price);
+					$('#buttonCheck').val('Pay '+data.price+' INR');
 				}else{
 					
 					$('#age_and_price').html('<h3 class="failure">Your age must be greater than 21 and less than 65.</h3>').show();
@@ -366,12 +366,14 @@ $("input[name='hard_copy']").change(function(){
 	if(selected_val == 'yes'){
 		total_value = parseInt(price_val) + 50 ;
 		$('#hard_copy_certificate').val('yes');
+		
+		
 	}
 	if(selected_val == 'no'){
 		$('#hard_copy_certificate').val('no');
 		total_value = $('#price').val();
 	}
-	
+	$('#price').val(total_value);
 	$('#buttonCheck').val('Pay Rs. '+total_value);
 	
 });
