@@ -8,6 +8,8 @@
 				}
 				else if($role_id['NORMAL_USER']== current_user_role_id()){
 					$redirect =  url('/account');					
+				}else{
+					$redirect =  url('/account');		
 				}
 				@endphp
 		   
