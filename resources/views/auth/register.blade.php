@@ -22,7 +22,7 @@
 								{{ csrf_field() }}
 								
 								<div id="first_part">
-									<h2>Personal Information</h2>
+									
 									<div class="form-row">
 										<div class="col-md-6">
 											<label class="has-float-label form-group mb-3 ">
