@@ -168,9 +168,10 @@
 											
 											<div class="input-group mb-3">
 												<label for="civilite" class="">Do you need a hard copy of Certificate ?</label>
-												<label class="radio-inline ml-3"><input type="radio" name="hard_copy" class="" value="yes" /> <span>Yes(Post Fee &#8377;50)</span></label>
+												<label class="radio-inline ml-3"><input type="radio" name="hard_copy" class="" value="yes" /> <span>Yes(Post Fee 50INR)</span></label>
 												<label class="radio-inline ml-3"><input type="radio" checked name="hard_copy" class="" value="no" /> <span>No</span></label>
 												<input type="hidden" name="hard_copy_certificate" id = "hard_copy_certificate" value="no">
+												<input type="hidden" name="actual_price" id = "actual_price" value="">
 											</div>
 										</div>
 									</div>
@@ -318,10 +319,11 @@ function getAgePriceCalculation(){
 				if(data.age >= 21 && data.age <= 65){
 					$('#age').val(data.age);
 					$('#price').val(data.price);
+					$('#actual_price').val(data.price);
 					
 					//$('#age_and_price').html('<h3 class="success">Your age is '+data.age+' and  Price for your plan is  &#8377;'+data.price+'</h3>').show();
 					
-					$('#buttonCheck').val('Pay '+data.price+' INR');
+					$('#buttonCheck').val('Pay '+data.price+'INR');
 				}else{
 					
 					$('#age_and_price').html('<h3 class="failure">Your age must be greater than 21 and less than 65.</h3>').show();
@@ -360,8 +362,7 @@ $('[data-type="adhaar-number"]').on("change, blur", function() {
 
 $("input[name='hard_copy']").change(function(){
 	var selected_val = $(this).val();
-	var price_val = $('#price').val();
-	
+	var price_val = $('#actual_price').val();
 	var total_value;
 	if(selected_val == 'yes'){
 		total_value = parseInt(price_val) + 50 ;
@@ -371,10 +372,10 @@ $("input[name='hard_copy']").change(function(){
 	}
 	if(selected_val == 'no'){
 		$('#hard_copy_certificate').val('no');
-		total_value = $('#price').val();
+		total_value = $('#actual_price').val();
 	}
 	$('#price').val(total_value);
-	$('#buttonCheck').val('Pay Rs. '+total_value);
+	$('#buttonCheck').val('Pay '+total_value+ 'INR');
 	
 });
 
