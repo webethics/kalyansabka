@@ -98,13 +98,13 @@
 					<li class="{{$withdrawlactive}}">
 						<a href="{{url('/withdrawls')}}">
 							<i class="iconsminds-dollar"></i>
-							<span>Withdrawls</span>
+							<span>Withdrawls Requests</span>
 						</a>
 					</li>
 					<li class="{{$certactive}}">
 						<a href="{{url('/certificates')}}">
 							<i class="simple-icon-doc"></i>
-							<span>Certificates</span>
+							<span>Certificates Requests</span>
 						</a>
 					</li>
 					<li class="{{$editactive}}">
@@ -164,13 +164,13 @@
 						</a>
 					</li>
 					<li class="{{$custactive}}">
-						<a href="javascript:void(0)">
+						<a href="/customers">
 							<i class="iconsminds-digital-drawing"></i>
 							<span>Customers</span>
 						</a>
 					</li>
-					<li class="{{$payactive}}">
-						<a href="{{url('/account')}}">
+					<li class="{{$custpayactive}}">
+						<a href="{{url('/customer-payments')}}">
 							<i class="simple-icon-paypal"></i>
 							<span>Payments</span>
 						</a>

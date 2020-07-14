@@ -52,7 +52,7 @@
 							<div class="tab-pane fade show active" id="first" role="tabpanel"  aria-labelledby="first-tab">
 								<div class="" id="first_account_info">
 									<div class="col-xl-12"><a class="fl_right edit_link" id="basic_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
-									
+									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}</label>
 										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->first_name}}</label>
@@ -62,6 +62,7 @@
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.last_name')}}</label>
 										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->last_name}}</label>
 									</div>
+									
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.email')}}</label>
 										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->email}}</label>
@@ -206,7 +207,7 @@
 							<div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
 								<div class="" id="nomminee_pass_info">
 									<div class="col-xl-12"><a class="fl_right edit_link" id="nominee_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
-									
+									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
 										<label class="col-lg-9 col-xl-10 col-form-label">Path</label>
@@ -406,6 +407,7 @@
 							<div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
 								<div class="" id="site_customer_settings_info">
 									<div class="col-xl-12"><a class="fl_right edit_link" id="document_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
+									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Front Image</label>
 										<label class="col-lg-9 col-xl-10 col-form-label"><img src="{{asset('img/aadhaar_front.jpg')}}"></label>
@@ -456,6 +458,7 @@
 							<div class="tab-pane fade" id="fourth" role="tabpanel" aria-labelledby="fourth-tab">
 								<div class="" id="bank_info_show">
 									<div class="col-xl-12"><a class="fl_right edit_link" id="bank_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
+									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Account Number</label>
 										<label class="col-lg-9 col-xl-10 col-form-label">10008526XXXXX25</label>
