@@ -6,10 +6,7 @@
 		<div class="card-body">
 			<div class="row">
 				<div class="form-group col-lg-6">
-					<input type="text" name="first_name" id="first_name" class="form-control" placeholder="{{trans('global.search_by_first_name')}}">
-				</div>
-				<div class="form-group col-lg-6">
-					<input type="text" name="last_name" id="last_name" class="form-control" placeholder="{{trans('global.search_by_last_name')}}">
+					<input type="text" name="first_name" id="first_name" class="form-control" placeholder="{{trans('global.search_by_name')}}">
 				</div>
 				<div class="form-group col-lg-6">
 					<input type="text" name="email" id="email" class="form-control" placeholder="{{trans('global.search_by_email')}}">
@@ -19,11 +16,18 @@
 				<div class="form-group col-lg-6">
 				<select  id="role_id"  class="form-control select2-single"  name="role_id"  data-width="100%">
 							
-							<option value=" ">{{trans('global.filter_by_role')}}</option>
-							@foreach($roles as $key=>$role)
-							@if($role->id!=1)
-							<option value="{{$role->id}}">{{$role->title}}</option>
-							@endif
+							<option value=" ">{{trans('global.filter_by_state')}}</option>
+							@foreach(list_states() as $key=>$name)
+								<option value="{{$name->id}}">{{$name->state_name}}</option>
+							@endforeach
+				</select>
+				</div>
+				<div class="form-group col-lg-6">
+				<select  id="role_id"  class="form-control select2-single"  name="role_id"  data-width="100%">
+							
+							<option value=" ">{{trans('global.filter_by_city')}}</option>
+							@foreach(list_states() as $key=>$name)
+								<option value="{{$name->id}}">{{$name->state_name}}</option>
 							@endforeach
 				</select>
 				</div>
