@@ -58,7 +58,7 @@ body {
 	padding-top: 92px;
 	line-height:1.6;
 }
-
+html , body {overflow-x:hidden;}
 .h1,
 .h2,
 .h3,
@@ -136,8 +136,8 @@ hr.divider {
 }
 
 .masthead {
-	padding-top: 14.3rem;
-	padding-bottom: 16.3rem;
+	padding-top: 14rem;
+	padding-bottom: 14rem;
 	background-image: none;/* url("../img/bg-masthead.jpg"); */
 	background-position: center;
 	background-repeat: no-repeat;
@@ -481,6 +481,10 @@ input[type="submit"]:hover {
 }
 
 @media(max-width:1440px) {
+	.masthead {
+		padding-top: 11rem;
+		padding-bottom: 11rem;
+	}
 .about_sec p {
     font-size: 15px;
 }
@@ -557,7 +561,7 @@ input[type="submit"]:hover {
 		padding-top: 83.98px;
 	}
 	.navbar-brand img {
-		max-width: 260px;
+		max-width: 100px;
 	}
 	.masthead h1 {
 		font-size: 2.5rem;

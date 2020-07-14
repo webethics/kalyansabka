@@ -55,7 +55,7 @@ class RegisterController extends Controller
     public function __construct()
     {
 	
-        //$this->middleware('guest');
+        $this->middleware('guest');
     }
 	
 	
@@ -165,7 +165,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 		$data['aadhar_number'] = str_replace('-','',$data['aadhar_number']);
-		//	echo '<pre>';print_r($data);die;
+		//echo '<pre>';print_r($data);die;
 		$dat =  User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -179,8 +179,8 @@ class RegisterController extends Controller
 			'price' => $data['price'],
 			'state_id' => $data['state'],
 			'district_id' => $data['district'],
-			'refered_by' => $data['refered_by'],
 			'hard_copy_certificate' => $data['hard_copy_certificate'],
+			'refered_by' => $data['refered_by'],
 			'role_id' => 3,
 			'status' => 1,
 		]);

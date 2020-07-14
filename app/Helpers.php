@@ -11,7 +11,7 @@ use App\Models\Notification;
 use App\Models\EmailTemplate;
 use App\Models\StateList;
 
-use App\Models\Plan;
+
 //use Config;
 // Return User Role ID 
 function current_user_role_id(){
@@ -70,13 +70,13 @@ function redirect_route_name(){
 	  $role_id = Config::get('constant.role_id');
 	  $user_id =user_id();
 	  $user_data = user_data_by_id($user_id);
-
+		
 	  if(is_null($user_data->otp)){
 		  
 	   // IF DATA_ADMIN/DATA_ANALYST/CUSTOMER_USER/CUSTOMER_ADMIN 
 	   
 	   if($role_id['SUPER_ADMIN']== current_user_role_id()){
-			return 'account'; 
+		  return 'account'; 
 	   }
 	   else if($role_id['NORMAL_USER']== current_user_role_id()){
 			return 'account';					
@@ -267,6 +267,21 @@ function list_states(){
 	return $statesData;
 }
 
+function relationsArray(){
+	//$array = array();
+	$array = array(
+				'wife'=>'WIFE',
+				'husband'=>'HUSBAND',
+				'daughter'=>'DAUGHTER',
+				'son'=>'SON',
+				'mother'=>'MOTHER',
+				'father'=>'FATHER',
+				'brother'=>'BROTHER', 	
+				'sister'=>'SISTER',
+			);
+			print_r($array);die;
+	return $array;			
+}
 function birth_years(){
 	$birth_years = collect(range(12, 5))->map(function ($item) {
 		return (string) date('Y') - $item;

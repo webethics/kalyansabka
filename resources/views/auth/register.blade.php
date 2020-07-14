@@ -8,7 +8,7 @@
                             
                             <span class="logo_image d-block mb-3"><a href="{{url('/')}}"><img src="{{asset('img/logo.png')}}"></a></span>
                             
-                            <h5 class="mb-4 register_title">{{ trans('global.buy_policy') }}</h5>
+                             <h5 class="mb-4 register_title">{{ trans('global.buy_policy') }}</h5>
 							@if(Session::has('message'))
 							<div class="alert alert-success">
 							{{ Session::get('message') }}
@@ -22,7 +22,6 @@
 								{{ csrf_field() }}
 								
 								<div id="first_part">
-									
 									<div class="form-row">
 										<div class="col-md-6">
 											<label class="has-float-label form-group mb-3 ">

@@ -2,6 +2,7 @@
 
 return [
 	
+	'cancel'                                  => 'Cancel',
 	'add'                                  => 'Add',
 	'day'                                  => 'Day',
 	'month'                              	 => 'Month',
@@ -11,10 +12,13 @@ return [
     'age'                     		   => 'Age',
     'price'                     		   => 'Policy Price',
     'create'                               => 'Create',
-    'card_name'                               => 'Name on Card',
-    'card_number'                               => 'Card Number',
-    'expiry_month'                               => 'Expiry Month',
-    'expiry_year'                               => 'Expiry Year',
+    'nominee_name'                               => 'Nominee Name',
+    'nominee_number'                               => 'Number of Nominee you want to add ?',
+    'nominee_relation'                               => 'Nominee Relation',
+    'bank_name'                               => 'Bank Name',
+    'account_number'                               => 'Account Number',
+    'account_name'                               => 'Account name',
+    'ifsc_code'                               => 'IFSC Code',
     'card_cvv'                               => 'CVV Number',
     'phone_number'                         => 'Phone Number',
     'phone_code'                      	   => 'Code Number',
@@ -234,6 +238,7 @@ return [
     'request_management'                   => 'Request management',
     'requests'                             => 'Requests',
     'request_name'                         => 'Request name',
+    'price'                                => 'Price',
     'tags'                                 => 'Tags',
     'tag'                                  => 'Tag',
     'photo1'                               => 'Photo1',

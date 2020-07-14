@@ -3,8 +3,9 @@
 Route::get('/', 'User\UsersController@landing_page');
 
 
-Auth::routes(['login' => true]);
+/* Route::redirect('/login', '/login'); */
 
+Auth::routes(['login' => true]);
 //Route::redirect('/home', '/admin');
 Auth::routes(['register' => true]);
 
@@ -29,7 +30,6 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	
 	Route::post('user/enable-disable',array('uses'=>'UsersController@enableDisableUser'));
 	Route::post('user/delete_user/{id}', 'UsersController@delete_user')->name('users.delete');
-	Route::post('user/delete_customer/{id}', 'CustomersController@delete_customer')->name('customer.delete');
 	
 	
 	Route::post('user/edit/{request_id}', 'UsersController@edit'); //Edit User
@@ -65,22 +65,40 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::get('email/edit/{template_id}',array('uses'=>'EmailController@email_template_edit'));
 	Route::post('email/update',array('uses'=>'EmailController@email_template_update'));
 	
-	
-	
-	Route::get('report/viewdownload/{report_id}/{attached_id}', 'RequestsController@viewDonwloadReport'); //Download Report
-	Route::post('business-users',array('as'=>'ajax.pagination','uses'=>'BusinessUsersController@ajaxPagination'));
-	
-	
+
 	Route::post('uploads/custom_header/{request_id}',array('uses'=>'SettingsController@uploadCustomHeader'));
 	Route::post('fetch/custom_header/{request_id}',array('uses'=>'SettingsController@getCustomHeader'));
 	Route::post('delete/custom_header/{request_id}',array('uses'=>'SettingsController@deleteCustomHeader'));
-	//Route::get('export_customers',array('uses'=>'BusinessUsersController@export_customers'));
-	Route::post('export_customers',array('as'=>'ajax.pagination','uses'=>'BusinessUsersController@exportCustomers'));
+	
 	Route::post('export_users_customers/{id}',array('as'=>'ajax.pagination','uses'=>'UsersController@exportListingCustomers'));
 	Route::post('export_users',array('as'=>'ajax.pagination','uses'=>'UsersController@exportUsers'));
 	
 	
 	
+	//Payments
+	Route::get('payments',array('uses'=>'PaymentsController@payments'));
+	Route::get('customer-payments',array('uses'=>'PaymentsController@customer_payments'));
+	Route::get('withdrawls',array('uses'=>'PaymentsController@withdrawls'));
+	
+	
+	// customers
+	Route::get('customers',array('uses'=>'CustomersController@customers'));
+	
+	//Dashboard
+	Route::get('dashboard',array('uses'=>'DashboardController@index'));
+	
+	//certificates
+	Route::get('certificates',array('uses'=>'CertificateController@certificates'));
+	Route::get('customer-certificate',array('uses'=>'CertificateController@customer_certificate'));
+
+
+	//referrals
+	Route::get('referrals',array('uses'=>'ReferralController@referrals'));
+	
+	
+	//Requests
+	Route::get('edit-requests',array('uses'=>'RequestsController@edit_request'));
+	Route::get('requests',array('uses'=>'RequestsController@requests'));
 });
 
 Route::post('user/cityDropdown', 'User\UsersController@cityDropdown');

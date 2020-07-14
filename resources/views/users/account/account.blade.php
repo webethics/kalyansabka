@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 @section('content')
 @section('profilepageJsCss')
+
+<script src="{{ asset('js/module/jquery.customer.js')}}"></script>
 <script src="{{ asset('js/module/jquery.account.js')}}"></script>
 @stop
 
@@ -48,7 +50,44 @@
 						<div class="tab-content">
 							<div id="msg" class="alert hide"></div>
 							<div class="tab-pane fade show active" id="first" role="tabpanel"  aria-labelledby="first-tab">
-								<form name="accountinfo" id="accountinfo" data-id="{{$user->id}}">		
+								<div class="" id="first_account_info">
+									<div class="col-xl-12"><a class="fl_right edit_link" id="basic_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
+									
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->first_name}}</label>
+									</div>
+									
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.last_name')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->last_name}}</label>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.email')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->email}}</label>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->aadhar_number}}</label>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">Mobile</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->mobile_number}}</label>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.address')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->address}}</label>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.state')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->state_id}}</label>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.district')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->district_id}}</label>
+									</div>
+								</div>	
+								<form name="accountinfo" id="accountinfo" data-id="{{$user->id}}" style="display:none">		
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}<em>*</em> </label>
 										<div class="col-lg-9 col-xl-10">
@@ -80,7 +119,7 @@
 									@if(current_user_role_id()==3)
 										
 									<div class="form-group row">
-										<label class="col-lg-3 col-xl-2 col-form-label">Mobile Number <em>*</em></label>
+										<label class="col-lg-3 col-xl-2 col-form-label">Mobile <em>*</em></label>
 										
 										
 										<div class="col-lg-9 col-xl-10">
@@ -94,7 +133,7 @@
 
 									
 									<div class="form-group row">
-										<label class="col-lg-3 col-xl-2 col-form-label">Aadhar Number<em>*</em></label>
+										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar<em>*</em></label>
 										
 										
 										<div class="col-lg-9 col-xl-10">
@@ -155,6 +194,7 @@
 										<div class="col-lg-9 col-xl-10">
 											<!--input type="submit" id="update" value="Submit" class="btn btn-primary default btn-lg mb-1 mr-2"-->
 											<button type="button" id="update" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
+											<button type="button" id="basic_info_cancel" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.cancel')}}</button>
 										
 										</div>
 									</div>
@@ -164,13 +204,329 @@
 
 							
 							<div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
-									<h3>Nominee Coming Soon...</h3>
+								<div class="" id="nomminee_pass_info">
+									<div class="col-xl-12"><a class="fl_right edit_link" id="nominee_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
+									
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">Path</label>
+										
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">Father</label>
+									</div>
+									<hr>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">Path</label>
+										
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">Father</label>
+									</div>
+									<hr>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">Path</label>
+										
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">Father</label>
+									</div>
+									<hr>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">Path</label>
+										
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">Father</label>
+									</div>
+									<hr>
+									
+								</div>	
+								
+								<form name="nomminee_pass" id="nomminee_pass" data-id="{{$user->id}}" style="display:none">
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_number')}}</label>
+										<div class="col-lg-9 col-xl-10">
+										<div class="d-flex control-group">
+											<select name="nominee_number" id="nominee_name_1" onchange="showDiv('div',this.value)" class="form-control select2">
+												<option value="">Select Number of Nominee</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+											</select>
+										</div>
+										<div class="nominee_name_1_error errors"></div>
+										</div>
+										
+									</div>
+									
+									<div class="box nominee_number_1" id="div1">
+										<div class="form-group row" >
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<div class="col-lg-9 col-xl-10">
+											<div class="d-flex control-group">
+												<input type="text" name="nominee_name_1" id="nominee_name_1" class="form-control">
+											</div>
+											<div class="nominee_name_1_error errors"></div>
+											</div>
+											
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<div class="col-lg-9 col-xl-10">
+											<div class="d-flex control-group">
+												<select name="nominee_number" id="nominee_name_1" onchange="showDiv('div',this.value)" class="form-control select2">
+													<option value="">Select Relations</option>
+													<option value="wife">WIFE</option>
+													<option value="husband">HUSBAND</option>
+													<option value="daughter">DAUGHTER</option>
+													<option value="son">SON</option>
+													<option value="mother">MOTHER</option>
+													<option value="father">FATHER</option>
+													<option value="brother">BROTHER</option>
+													<option value="sister">SISTER</option>
+												</select>
+											</div>
+											<div class="nominee_name_1_error errors"></div>
+											</div>
+											
+										</div>
+										<hr>
+									</div>
+									<div class="box nominee_number_2"  id="div2">
+										<div class="form-group row">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<div class="col-lg-9 col-xl-10">
+											<div class="d-flex control-group">
+												<input type="text" name="nominee_name_2" id="nominee_name_2" class="form-control">
+											</div>
+											<div class="nominee_name_2_error errors"></div>
+											</div>
+											
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<div class="col-lg-9 col-xl-10">
+											<div class="d-flex control-group">
+												<select name="nominee_number" id="nominee_name_1" onchange="showDiv('div',this.value)" class="form-control select2">
+													<option value="">Select Relations</option>
+													<option value="wife">WIFE</option>
+													<option value="husband">HUSBAND</option>
+													<option value="daughter">DAUGHTER</option>
+													<option value="son">SON</option>
+													<option value="mother">MOTHER</option>
+													<option value="father">FATHER</option>
+													<option value="brother">BROTHER</option>
+													<option value="sister">SISTER</option>
+												</select>
+											</div>
+											<div class="nominee_name_1_error errors"></div>
+											</div>
+											
+										</div>
+										<hr>
+									</div>
+									<div class="box nominee_number_3"  id="div3">
+										<div class="form-group row">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<div class="col-lg-9 col-xl-10">
+											<div class="d-flex control-group">
+												<input type="text" name="nominee_name_3" id="nominee_name_3" class="form-control">
+											</div>
+											<div class="nominee_name_3_error errors"></div>
+											</div>
+											
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<div class="col-lg-9 col-xl-10">
+											<div class="d-flex control-group">
+												<select name="nominee_number" id="nominee_name_1" onchange="showDiv('div',this.value)" class="form-control select2">
+													<option value="">Select Relations</option>
+													<option value="wife">WIFE</option>
+													<option value="husband">HUSBAND</option>
+													<option value="daughter">DAUGHTER</option>
+													<option value="son">SON</option>
+													<option value="mother">MOTHER</option>
+													<option value="father">FATHER</option>
+													<option value="brother">BROTHER</option>
+													<option value="sister">SISTER</option>
+												</select>
+											</div>
+											<div class="nominee_name_1_error errors"></div>
+											</div>
+											
+										</div>
+										<hr>
+									</div>
+									<div class="box nominee_number_4"  id="div4">
+										<div class="form-group row">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<div class="col-lg-9 col-xl-10">
+											<div class="d-flex control-group">
+												<input type="text" name="nominee_name_4" id="nominee_name_4" class="form-control">
+											</div>
+											<div class="nominee_name_4_error errors"></div>
+											</div>
+											
+										</div>
+										
+										<div class="form-group row">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<div class="col-lg-9 col-xl-10">
+											<div class="d-flex control-group">
+												<select name="nominee_number" id="nominee_name_1" onchange="showDiv('div',this.value)" class="form-control select2">
+													<option value="">Select Relations</option>
+													<option value="wife">WIFE</option>
+													<option value="husband">HUSBAND</option>
+													<option value="daughter">DAUGHTER</option>
+													<option value="son">SON</option>
+													<option value="mother">MOTHER</option>
+													<option value="father">FATHER</option>
+													<option value="brother">BROTHER</option>
+													<option value="sister">SISTER</option>
+												</select>
+											</div>
+											<div class="nominee_name_1_error errors"></div>
+											</div>
+											
+										</div>
+									</div>									
+									
+									<div class="form-row mt-4">
+										<label class="col-lg-3 col-xl-2 col-form-label"></label>
+										<div class="col-lg-9 col-xl-10">
+											<button type="button" id="reset" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
+											<button type="button" id="nominee_info_cancel" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.cancel')}}</button>
+										</div>
+									</div>
+								</form>
 							</div>
+							
 							<div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
-									<h3>Documents Coming Soon...</h3>
+								<div class="" id="site_customer_settings_info">
+									<div class="col-xl-12"><a class="fl_right edit_link" id="document_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Front Image</label>
+										<label class="col-lg-9 col-xl-10 col-form-label"><img src="{{asset('img/aadhaar_front.jpg')}}"></label>
+									</div>
+									
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Back Image</label>
+										<label class="col-lg-9 col-xl-10 col-form-label"><img src="{{asset('img/aadhaar_front.jpg')}}"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">Pan Card Image</label>
+										<label class="col-lg-9 col-xl-10 col-form-label"><img src="{{asset('img/pancard.jpg')}}"></label>
+									</div>
+								</div>
+							
+								<form name="reset_pass" id="site_customer_settings" data-id="{{$user->id}}" style="display:none">
+									<div class="form-group">
+										<label class="col-form-label">Upload Aadhaar Front Image</label>
+									
+										<div id="drop_here_header" data-type="header" class="dropzone drop_here_logo"></div>
+										<div class="dropzoneError errors"></div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-form-label">Upload Aadhaar Back Image</label>
+									
+										<div id="drop_here_footer" data-type="footer" class="dropzone drop_here_logo"></div>
+										<div class="dropzoneError errors"></div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-form-label">Upload Pan Card</label>
+									
+										<div id="drop_here_pan_card" data-type="pan_card" class="dropzone drop_here_logo"></div>
+										<div class="dropzoneError errors"></div>
+									</div>
+									
+									
+									<div class="form-row mt-4">
+										<label class="col-lg-3 col-xl-2 col-form-label"></label>
+										<div class="col-lg-9 col-xl-10">
+											<button type="button" id="reset" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
+											<button type="button" id="document_info_cancel" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.cancel')}}</button>
+										</div>
+									</div>
+								</form>
 							</div>
 							<div class="tab-pane fade" id="fourth" role="tabpanel" aria-labelledby="fourth-tab">
-									<h3>Bnk Details Coming Soon...</h3>
+								<div class="" id="bank_info_show">
+									<div class="col-xl-12"><a class="fl_right edit_link" id="bank_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">Account Number</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">10008526XXXXX25</label>
+									</div>
+									
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">Account Name</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">Test XXXXX</label>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">IFSC Code</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">SBINXXX</label>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">Branch Name</label>
+										<label class="col-lg-9 col-xl-10 col-form-label">India</label>
+									</div>
+								</div>
+								<form name="reset_pass" id="bank_info_edit" data-id="{{$user->id}}" style="display:none">
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.account_number')}}</label>
+										<div class="col-lg-9 col-xl-10">
+										<div class="d-flex control-group">
+											<input type="text" name="account_number" id="account_number" class="form-control">
+										</div>
+										<div class="account_number_error errors"></div>
+										</div>
+										
+									</div>
+									
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.account_name')}}</label>
+										<div class="col-lg-9 col-xl-10">
+										<div class="d-flex control-group">
+											<input type="text" name="account_name" id="account_name" class="form-control">
+										</div>
+										<div class="account_name_error errors"></div>
+										</div>
+										
+									</div>								
+									
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.ifsc_code')}}</label>
+										<div class="col-lg-9 col-xl-10">
+										<div class="d-flex control-group">
+											<input type="text" name="ifsc_code" id="ifsc_code" class="form-control">
+										</div>
+										<div class="ifsc_code_error errors"></div>
+										</div>
+										
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.bank_name')}}</label>
+										<div class="col-lg-9 col-xl-10">
+										<div class="d-flex control-group">
+											<input type="text" name="bank_name" id="bank_name" class="form-control">
+										</div>
+										<div class="bank_name_error errors"></div>
+										</div>
+										
+									</div>
+									
+									
+									<div class="form-row mt-4">
+										<label class="col-lg-3 col-xl-2 col-form-label"></label>
+										<div class="col-lg-9 col-xl-10">
+											<button type="button" id="reset" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
+											<button type="button" id="bank_info_cancel" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.cancel')}}</button>
+										</div>
+									</div>
+								</form>
 							</div>
 							
 							<div class="tab-pane fade" id="fifth" role="tabpanel" aria-labelledby="fifth-tab">
@@ -231,9 +587,114 @@
 	</div>
 </div>
 @section('cancelsubscriptionJsAccountBlade')
+
+
 <script>
-$(document).ready(function(){
+
+jQuery('#basic_info').click(function(){
+	jQuery('#first_account_info').hide('slow');
+	jQuery('#accountinfo').show('slow');
+});
+
+jQuery('#nominee_info').click(function(){
+	jQuery('#nomminee_pass_info').hide('slow');
+	jQuery('#nomminee_pass').show('slow');
 	
+
+});
+
+jQuery('#bank_info').click(function(){
+	jQuery('#bank_info_show').hide('slow');
+	jQuery('#bank_info_edit').show('slow');	
+});
+
+jQuery('#document_info').click(function(){
+	jQuery('#site_customer_settings_info').hide('slow');
+	jQuery('#site_customer_settings').show('slow');	
+});
+
+
+jQuery('#basic_info_cancel').click(function(){
+	jQuery('#first_account_info').show('slow');
+	jQuery('#accountinfo').hide('slow');
+});
+
+jQuery('#nominee_info_cancel').click(function(){
+	jQuery('#nomminee_pass_info').show('slow');
+	jQuery('#nomminee_pass').hide('slow');
+	
+
+});
+
+jQuery('#bank_info_cancel').click(function(){
+	jQuery('#bank_info_show').show('slow');
+	jQuery('#bank_info_edit').hide('slow');	
+});
+
+jQuery('#document_info_cancel').click(function(){
+	jQuery('#site_customer_settings_info').show('slow');
+	jQuery('#site_customer_settings').hide('slow');	
+});
+
+
+	function showDiv(prefix,chooser) 
+	{
+		
+		for(var i=1;i<=chooser;i++) 
+		{
+			var div = document.getElementById(prefix+i);
+			div.style.display = 'none';
+		}
+
+		var selectedOption = chooser;
+
+		if(selectedOption == "1")
+		{
+			displayDiv(prefix,"1");
+			hideDiv(prefix,"2");
+			hideDiv(prefix,"3");
+			hideDiv(prefix,"4");
+			
+		}
+		if(selectedOption == "2")
+		{
+			displayDiv(prefix,"1");
+			displayDiv(prefix,"2");
+			hideDiv(prefix,"3");
+			hideDiv(prefix,"4");
+			
+		}
+		if(selectedOption == "3")
+		{
+			displayDiv(prefix,"1");
+			displayDiv(prefix,"2");
+			displayDiv(prefix,"3");
+			hideDiv(prefix,"4");
+		}
+		if(selectedOption == "4")
+		{
+			displayDiv(prefix,"1");
+			displayDiv(prefix,"2");
+			displayDiv(prefix,"3");
+			displayDiv(prefix,"4");
+		}
+    }
+
+    function displayDiv(prefix,suffix) 
+    {
+		var div = document.getElementById(prefix+suffix);
+		div.style.display = 'block';
+    }
+	 function hideDiv(prefix,suffix) 
+    {
+		var div = document.getElementById(prefix+suffix);
+		div.style.display = 'none';
+    }
+	
+	
+	
+$(document).ready(function(){
+	$(".box").hide();
 	var  state = $('#state').val();
 	if(state != ''){
 		getCityDropDown(state);

@@ -29,7 +29,10 @@
 
 }
 
-
+.edit_link{
+	width:100%;
+	text-align:right;
+}
 
 
 .logo_image{
@@ -176,6 +179,9 @@ height:30px;
     font-weight: normal;
     font-family: open_sansregular;
 }
+.balance{color:#145388;font-size:15px;font-weight : bold}
+.fl_right{float:right}
+
 /* .login .card{
 	background:none;
 	box-shadow:none;
