@@ -48,7 +48,7 @@
 										
 
 										<td>
-										<a href ="{{url('email/edit')}}/{{$email->id}}" title="Edit"><i class="simple-icon-note"></i></a>
+										<a class="action" href ="{{url('email/edit')}}/{{$email->id}}" title="Edit"><i class="simple-icon-note"></i></a>
 										</td>
 									</tr>
 									@php $i++;  @endphp

@@ -94,5 +94,27 @@ class PaymentsController extends Controller
 		return $payments;
 	}
 	
+	public function payment_edit($user_id)
+    {
+		
+        $user = User::where('id',$user_id)->get();
+		$roles = Role::all();
+		if(count($user)>0){
+			$user =$user[0];
+			$view = view("modal.paymentEdit",compact('user','roles'))->render();
+			$success = true;
+		}else{
+			$view = '';
+			$success = false;
+		}
+		
+        //abort_unless(\Gate::allows('request_edit'), 403);
+		
+		return Response::json(array(
+		  'success'=>$success,
+		  'data'=>$view
+		 ), 200);
+    }
+	
 }
 ?>

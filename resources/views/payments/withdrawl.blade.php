@@ -21,10 +21,10 @@
 
                 </div>
             </div>
-<div class="modal fade modal-right userEditModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalRight" aria-hidden="true">
+<div class="modal fade modal-right paymentEditModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalRight" aria-hidden="true">
 			 </div>
 			 <div class="modal fade modal-top confirmBoxCompleteModal"  tabindex="-1" role="dialog"  aria-hidden="true"></div>
 @section('userJs')
-<script src="{{ asset('js/module/user.js')}}"></script>	
+<script src="{{ asset('js/module/payment.js')}}"></script>	
 @stop
 @endsection

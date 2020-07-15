@@ -8,7 +8,7 @@
                             
                             <span class="logo_image d-block mb-3"><a href="{{url('/')}}"><img src="{{asset('img/logo.png')}}"></a></span>
                             
-                             <h5 class="mb-4 register_title">{{ trans('global.buy_policy') }}</h5>
+                             
 							@if(Session::has('message'))
 							<div class="alert alert-success">
 							{{ Session::get('message') }}
@@ -20,6 +20,21 @@
 							@include('flash-message')	
                              <form method="POST" action="{{ route('register') }}" class="frm_class">
 								{{ csrf_field() }}
+								
+								<h5 class="mb-4 register_title">{{ trans('global.referral_information') }}</h5>
+								<div class="form-row">
+									<div class="col-md-6">
+										<label class="has-float-label form-group mb-3 ">
+											<input data-type="refered-adhaar-number" name="refered_by" maxLength="14" id="refered_by" type="text" value="{{ old('refered_by')}}"  class="form-control">
+											<span>{{ trans('global.refered_by') }}</span>
+											<div class="error_margin"><span class="error refered_by_error" >  {{ $errors->first('refered_by')  }} </span></div>
+										</label>
+									</div>
+									<div class="col-md-6">
+										<label class="has-float-label form-group mb-3 referred_name_label" id="referral_name"></label>	
+									</div>
+								</div>		
+								<h5 class="mb-4 register_title">{{ trans('global.buy_policy') }}</h5>
 								
 								<div id="first_part">
 									<div class="form-row">
@@ -74,10 +89,14 @@
 										</div>
 										
 										<div class="col-md-6">
-											<label class="has-float-label form-group mb-3 input-icon input-icon-right">
+											<!--label class="has-float-label form-group mb-3 input-icon input-icon-right">
 												<input name="price" id="price" readonly="readonly" type="text" value="{{ old('price')}}" class="form-control"> <i>INR</i>
 												<span>{{ trans('global.price') }}<span style="color:red;">*</span></span>
-											</label>
+											</label-->
+											<label for="civilite" class="">{{ trans('global.price') }}</label>
+											<label id="htmldata"></label>
+											<input name="price" id="price" type="hidden" value="{{ old('price')}}" class="form-control">
+												
 										</div>
 									</div>	
 								
@@ -153,13 +172,7 @@
 												<div class="error_margin"><span class="error address_error" >  {{ $errors->first('address')  }} </span></div>
 											</label>
 										</div>
-										<div class="col-md-6">
-											<label class="has-float-label form-group mb-3 ">
-												<input data-type="refered-adhaar-number" name="refered_by" maxLength="14" id="refered_by" type="text" value="{{ old('refered_by')}}"  class="form-control">
-												<span>{{ trans('global.refered_by') }}</span>
-												<div class="error_margin"><span class="error refered_by_error" >  {{ $errors->first('refered_by')  }} </span></div>
-											</label>
-										</div>	
+											
 									</div>
 								
 									<div class="form-row">
@@ -212,68 +225,24 @@ function checkValue(str, max) {
   return str;
 };
 
-/* date.addEventListener('input', function(e) {
-  this.type = 'text';
-  var input = this.value;
-  if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
-  var values = input.split('/').map(function(v) {
-    return v.replace(/\D/g, '')
-  });
-  if (values[0]) values[0] = checkValue(values[0], 12);
-  if (values[1]) values[1] = checkValue(values[1], 31);
-  var output = values.map(function(v, i) {
-    return v.length == 2 && i < 2 ? v + '/' : v;
-  });
-  this.value = output.join('').substr(0, 14);
-}); */
-
-date.addEventListener('input', function(e) { 
-	console.log('INPUT');
-	  this.type = 'text';
-	  var input = this.value;
-	  if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
-	  var values = input.split('-').map(function(v) {
-	  console.log(v)
+date.addEventListener('input', function(e) { console.log('INPUT');
+	this.type = 'text';
+	var input = this.value;
+	if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
+	var values = input.split('-').map(function(v) {
+		console.log(v)
 		return v.replace(/\D/g, '')
-	  });
-	  console.log(values)
-	  if (values[0]) values[0] = checkValue(values[0], 31);
-	  if (values[1]) values[1] = checkValue(values[1], 12);
-			
-	  var output = values.map(function(v, i) {
+	});
+	console.log(values)
+	if (values[0]) values[0] = checkValue(values[0], 31);
+	if (values[1]) values[1] = checkValue(values[1], 12);
+		 
+	var output = values.map(function(v, i) {
 		return v.length == 2 && i < 2 ? v + '-' : v;
-	  });
-	this.value = output.join('').substr(0, 14);
-	 console.log(this.value);
+	});
+	this.value = output.join('').substr(0, 10);
+	console.log(this.value);
 });
-			
-
-/* date.addEventListener('blur', function(e) {
-  this.type = 'text';
-  var input = this.value;
-  var values = input.split('/').map(function(v, i) {
-    return v.replace(/\D/g, '')
-  });
-  var output = '';
-  
-  if (values.length == 3) {
-    var year = values[2].length !== 4 ? parseInt(values[2]) + 2000 : parseInt(values[2]);
-    var month = parseInt(values[0]) - 1;
-    var day = parseInt(values[1]);
-    var d = new Date(year, month, day);
-    if (!isNaN(d)) {
-    //  document.getElementById('result').innerText = d.toString();
-      var dates = [d.getMonth() + 1, d.getDate(), d.getFullYear()];
-      output = dates.map(function(v) {
-        v = v.toString();
-        return v.length == 1 ? '0' + v : v;
-      }).join('/');
-    };
-  };
-  this.value = output;
-}); 
-	
-	*/
 	
 $(document).ready(function(){
 	//$('#buttonCheck').attr('disabled','disabled');
@@ -318,6 +287,7 @@ function getAgePriceCalculation(){
 				if(data.age >= 21 && data.age <= 65){
 					$('#age').val(data.age);
 					$('#price').val(data.price);
+					$('#htmldata').html(data.htmldata);
 					$('#actual_price').val(data.price);
 					
 					//$('#age_and_price').html('<h3 class="success">Your age is '+data.age+' and  Price for your plan is  &#8377;'+data.price+'</h3>').show();
@@ -391,10 +361,11 @@ $('[data-type="refered-adhaar-number"]').on("change, blur", function() {
 		success: function(data) {
 			if(data.success == true){
 				//$('#buttonCheck').removeAttr('disabled');
+				$('#referral_name').html('Referrd By: '+data.name);
 				$('.refered_by_error').html('<h3 class="success">Referred ID is verified.');
 			}else{
-				//$('#buttonCheck').attr('disabled','disabled');
-				$('.refered_by_error').html('<h3 class="failure">Not a valid Referred ID.');
+				$('#referral_name').html('');
+				$('.refered_by_error').html('<h3 class="failure">Enter Correct Mobile or Aadhaar Number.');
 			}
 			
 		},

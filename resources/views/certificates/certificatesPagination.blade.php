@@ -19,9 +19,11 @@
 			<td id="name_{{$certificate->id}}">10 July 2020</td>
 			<td id="mobile_number_{{$certificate->id}}">Path Coder</td>
 			<td id="business_url_{{$certificate->id}}">pathcodertest@gmail.com</td>
-			<th id="business_url_{{$certificate->id}}">Ambala, Haryana</th>
-			<th id="business_url_{{$certificate->id}}">Sent</th>
-			<th id="business_url_{{$certificate->id}}">Download Certificate</th>
+			<td id="business_url_{{$certificate->id}}">Ambala, Haryana</td>
+			<td id="business_url_{{$certificate->id}}">Sent</td>
+			<td id="business_url_{{$certificate->id}}">
+				<a class="action"  href="javascript:void(0)" title="Download Certificate"><i class="simple-icon-cloud-download"></i> </a> 
+			</td>
 		</tr>
 		
 	 @endforeach

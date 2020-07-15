@@ -79,10 +79,11 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::get('payments',array('uses'=>'PaymentsController@payments'));
 	Route::get('customer-payments',array('uses'=>'PaymentsController@customer_payments'));
 	Route::get('withdrawls',array('uses'=>'PaymentsController@withdrawls'));
-	
+	Route::post('payment/edit/{request_id}', 'PaymentsController@payment_edit'); //Edit User
 	
 	// customers
 	Route::get('customers',array('uses'=>'CustomersController@customers'));
+	Route::post('customer/edit/{request_id}', 'CustomersController@customer_edit'); //Edit User
 	
 	//Dashboard
 	Route::get('dashboard',array('uses'=>'DashboardController@index'));

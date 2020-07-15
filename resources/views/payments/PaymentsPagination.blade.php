@@ -18,7 +18,7 @@
 			<td id="email_{{$payment->id}}">RSDTOKIJEL254</td>
 			<td id="mobile_number_{{$payment->id}}">Path Coder</td>
 			<td id="business_url_{{$payment->id}}">pathcodertest@gmail.com</td>
-			<th id="business_url_{{$payment->id}}">INR 2500</th>
+			<td id="business_url_{{$payment->id}}">INR 2500</td>
 		</tr>
 		
 	 @endforeach

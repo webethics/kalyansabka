@@ -16,7 +16,7 @@
 			<td id="name_{{$payment->id}}">10 July 2020</td>
 			<td id="mobile_number_{{$payment->id}}">Narration</td>
 			<td id="business_url_{{$payment->id}}">INR 100</td>
-			<th id="business_url_{{$payment->id}}">INR 2500</th>
+			<td id="business_url_{{$payment->id}}">INR 2500</td>
 		</tr>
 		
 	 @endforeach

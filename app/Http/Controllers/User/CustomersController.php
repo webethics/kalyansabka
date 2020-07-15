@@ -53,6 +53,28 @@ class CustomersController extends Controller
 		$customers = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
 		return $customers;
 	}
+	public function customer_edit($user_id)
+    {
+		
+        $user = User::where('id',$user_id)->get();
+		$roles = Role::all();
+		if(count($user)>0){
+			$user =$user[0];
+			$view = view("modal.customerEdit",compact('user','roles'))->render();
+			$success = true;
+		}else{
+			$view = '';
+			$success = false;
+		}
+		
+        //abort_unless(\Gate::allows('request_edit'), 403);
+		
+		return Response::json(array(
+		  'success'=>$success,
+		  'data'=>$view
+		 ), 200);
+    }
+	
 	
 }
 ?>

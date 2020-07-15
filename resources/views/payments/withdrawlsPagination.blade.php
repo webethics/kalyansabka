@@ -18,9 +18,11 @@
 			<td id="name_{{$payment->id}}">10 July 2020</td>
 			<td id="mobile_number_{{$payment->id}}">Path Coder</td>
 			<td id="business_url_{{$payment->id}}">pathcodertest@gmail.com</td>
-			<th id="business_url_{{$payment->id}}">2500 INR</th>
+			<td id="business_url_{{$payment->id}}">2500 INR</td>
 			<td id="email_{{$payment->id}}">PAID</td>
-			<td id="email_{{$payment->id}}"><i class="simple-icon-edit"></i>Edit</td>
+			<td id="email_{{$payment->id}}">
+				<a class="action editPayment" href="javascript:void(0)" data-user_id="{{ $payment->id }}" title="Edit Payment"><i class="simple-icon-note"></i> </a>
+			</td>
 		</tr>
 		
 	 @endforeach

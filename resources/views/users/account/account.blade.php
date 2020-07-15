@@ -51,7 +51,7 @@
 							<div id="msg" class="alert hide"></div>
 							<div class="tab-pane fade show active" id="first" role="tabpanel"  aria-labelledby="first-tab">
 								<div class="" id="first_account_info">
-									<div class="col-xl-12"><a class="fl_right edit_link" id="basic_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
+									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="basic_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
 									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}</label>
@@ -206,7 +206,7 @@
 							
 							<div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
 								<div class="" id="nomminee_pass_info">
-									<div class="col-xl-12"><a class="fl_right edit_link" id="nominee_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
+									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="nominee_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
 									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
@@ -406,7 +406,7 @@
 							
 							<div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
 								<div class="" id="site_customer_settings_info">
-									<div class="col-xl-12"><a class="fl_right edit_link" id="document_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
+									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="document_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
 									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Front Image</label>
@@ -457,7 +457,7 @@
 							</div>
 							<div class="tab-pane fade" id="fourth" role="tabpanel" aria-labelledby="fourth-tab">
 								<div class="" id="bank_info_show">
-									<div class="col-xl-12"><a class="fl_right edit_link" id="bank_info" href="javascript:void(0)"><i class="fa fa-edit"></i> Edit</a></div>
+									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="bank_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
 									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Account Number</label>
@@ -617,24 +617,24 @@ jQuery('#document_info').click(function(){
 });
 
 
-jQuery('#basic_info_cancel').click(function(){
+jQuery('#basic_info_cancel,.nav-link').click(function(){
 	jQuery('#first_account_info').show('slow');
 	jQuery('#accountinfo').hide('slow');
 });
 
-jQuery('#nominee_info_cancel').click(function(){
+jQuery('#nominee_info_cancel,.nav-link').click(function(){
 	jQuery('#nomminee_pass_info').show('slow');
 	jQuery('#nomminee_pass').hide('slow');
 	
 
 });
 
-jQuery('#bank_info_cancel').click(function(){
+jQuery('#bank_info_cancel,.nav-link').click(function(){
 	jQuery('#bank_info_show').show('slow');
 	jQuery('#bank_info_edit').hide('slow');	
 });
 
-jQuery('#document_info_cancel').click(function(){
+jQuery('#document_info_cancel,.nav-link').click(function(){
 	jQuery('#site_customer_settings_info').show('slow');
 	jQuery('#site_customer_settings').hide('slow');	
 });

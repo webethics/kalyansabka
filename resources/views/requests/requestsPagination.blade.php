@@ -19,8 +19,11 @@
 			<td id="mobile_number_{{$request->id}}">Path Coder</td>
 			<td id="business_url_{{$request->id}}">pathcodertest@gmail.com</td>
 			<td id="business_url_{{$request->id}}">Ambala Haryana</td>
-			<th id="business_url_{{$request->id}}">Approve</th>
-			<th id="business_url_{{$request->id}}">New Details | Download Documents</th>
+			<td id="business_url_{{$request->id}}">Approve</td>
+			<td id="business_url_{{$request->id}}">
+				<a class="action"  href="javascript:void(0)" title="New Details"><i class="simple-icon-eye"></i> </a> 
+				<a class="action"  href="javascript:void(0)" title="Download Documents"><i class="simple-icon-cloud-download"></i> </a> 
+			</td>
 		</tr>
 		
 	 @endforeach
