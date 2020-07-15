@@ -69,7 +69,7 @@
 												
 												<label class="has-float-label mb-3">
 												
-													<input type="text" class="form-control"  id="date_of_birth" name="date_of_birth"
+													<input type="text" class="form-control datepicker"  id="date_of_birth" name="date_of_birth"
 														 value="{{old('date_of_birth')}}">
 													<span>{{trans('global.date_of_birth')}}<em>(DD-MM-YYYY)</em><span style="color:red;">*</span></span>
 													
@@ -245,6 +245,9 @@ date.addEventListener('input', function(e) { console.log('INPUT');
 });
 	
 $(document).ready(function(){
+	var ref_val = $('#refered_by').val();
+	valdateReferral(ref_val);
+	
 	//$('#buttonCheck').attr('disabled','disabled');
 	var  state = $('#state').val();
 	if(state != ''){
@@ -254,6 +257,9 @@ $(document).ready(function(){
 	if(date_of_birth != ''){
 		getAgePriceCalculation();
 	}
+	
+	
+	
 });
 
 function getCityDropDown(state_id){
@@ -348,30 +354,33 @@ $("input[name='hard_copy']").change(function(){
 	
 });
 
+function valdateReferral(value){
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	  if(value){
+		  $.ajax({
+			type: "POST",
+			dataType: 'json',
+			url: base_url+'/user/verifiedAadhar',
+			data: {_token:csrf_token,aadhar_number:value},
+			success: function(data) {
+				if(data.success == true){
+					$('#referral_name').html('Referrd By: '+data.name);
+					$('.refered_by_error').html('<h3 class="success">Referred ID is verified.');
+				}else{
+					$('#referral_name').html('');
+					$('.refered_by_error').html('<h3 class="failure">Enter Correct Mobile or Aadhaar Number.');
+				}
+				
+			},
+			error :function( data ) {}
+		});
+	  }
+}
+
 $('[data-type="refered-adhaar-number"]').on("change, blur", function() {
+	
   var value = $(this).val();
-  var maxLength = $(this).attr("maxLength");
-  var csrf_token = $('meta[name="csrf-token"]').attr('content');
-  if(value){
-	  $.ajax({
-		type: "POST",
-		dataType: 'json',
-		url: base_url+'/user/verifiedAadhar',
-		data: {_token:csrf_token,aadhar_number:value},
-		success: function(data) {
-			if(data.success == true){
-				//$('#buttonCheck').removeAttr('disabled');
-				$('#referral_name').html('Referrd By: '+data.name);
-				$('.refered_by_error').html('<h3 class="success">Referred ID is verified.');
-			}else{
-				$('#referral_name').html('');
-				$('.refered_by_error').html('<h3 class="failure">Enter Correct Mobile or Aadhaar Number.');
-			}
-			
-		},
-		error :function( data ) {}
-	});
-  }
+  valdateReferral(value);
 	
 });
 </script>

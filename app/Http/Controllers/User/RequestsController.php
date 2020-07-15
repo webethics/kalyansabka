@@ -58,6 +58,27 @@ class RequestsController extends Controller
 		$requests = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
 		return $requests;
 	}
+	public function request_view($user_id)
+    {
+		
+        $user = User::where('id',$user_id)->get();
+		$roles = Role::all();
+		if(count($user)>0){
+			$user =$user[0];
+			$view = view("modal.viewDetail",compact('user','roles'))->render();
+			$success = true;
+		}else{
+			$view = '';
+			$success = false;
+		}
+		
+        //abort_unless(\Gate::allows('request_edit'), 403);
+		
+		return Response::json(array(
+		  'success'=>$success,
+		  'data'=>$view
+		 ), 200);
+    }
 	
 }
 ?>

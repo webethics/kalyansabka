@@ -73,13 +73,14 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('export_users_customers/{id}',array('as'=>'ajax.pagination','uses'=>'UsersController@exportListingCustomers'));
 	Route::post('export_users',array('as'=>'ajax.pagination','uses'=>'UsersController@exportUsers'));
 	
-	
+	Route::post('confirmModal', 'CommonController@confirmModal');
 	
 	//Payments
 	Route::get('payments',array('uses'=>'PaymentsController@payments'));
 	Route::get('customer-payments',array('uses'=>'PaymentsController@customer_payments'));
 	Route::get('withdrawls',array('uses'=>'PaymentsController@withdrawls'));
 	Route::post('payment/edit/{request_id}', 'PaymentsController@payment_edit'); //Edit User
+	
 	
 	// customers
 	Route::get('customers',array('uses'=>'CustomersController@customers'));
@@ -100,6 +101,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	//Requests
 	Route::get('edit-requests',array('uses'=>'RequestsController@edit_request'));
 	Route::get('requests',array('uses'=>'RequestsController@requests'));
+	Route::post('request/view/{request_id}', 'RequestsController@request_view'); //Edit User
 });
 
 Route::post('user/cityDropdown', 'User\UsersController@cityDropdown');

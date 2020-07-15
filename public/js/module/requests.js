@@ -36,20 +36,21 @@ $(document).on('click','input[type="checkbox"]', function(e) {
 /*==============================================
 	SHOW EDIT REQUEST FORM 
 ============================================*/
-$(document).on('click', '.editCustomer' , function() {
+$(document).on('click', '.viewDetail' , function() {
+	
 	
 	var user_id = $(this).data('user_id');
 	var csrf_token = $('meta[name="csrf-token"]').attr('content');
 	 $.ajax({
         type: "POST",
 		dataType: 'json',
-        url: base_url+'/customer/edit/'+user_id,
+        url: base_url+'/request/view/'+user_id,
         data: {_token:csrf_token,user_id:user_id},
         success: function(data) {
 			if(data.success){
 			
-				$('.customerEditModal').html(data.data);
-				$('.customerEditModal').modal('show');
+				$('.viewDetailModal').html(data.data);
+				$('.viewDetailModal').modal('show');
 				var selectedVal = $('#selectedVal').val();
 				if(selectedVal){
 					$("#selected_code option[value="+selectedVal+"]").attr("selected","selected");

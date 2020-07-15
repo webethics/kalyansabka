@@ -617,29 +617,40 @@ jQuery('#document_info').click(function(){
 });
 
 
-jQuery('#basic_info_cancel,.nav-link').click(function(){
+jQuery('#basic_info_cancel').click(function(){
 	jQuery('#first_account_info').show('slow');
 	jQuery('#accountinfo').hide('slow');
 });
 
-jQuery('#nominee_info_cancel,.nav-link').click(function(){
+jQuery('#nominee_info_cancel').click(function(){
 	jQuery('#nomminee_pass_info').show('slow');
 	jQuery('#nomminee_pass').hide('slow');
 	
 
 });
 
-jQuery('#bank_info_cancel,.nav-link').click(function(){
+jQuery('#bank_info_cancel').click(function(){
 	jQuery('#bank_info_show').show('slow');
 	jQuery('#bank_info_edit').hide('slow');	
 });
 
-jQuery('#document_info_cancel,.nav-link').click(function(){
+jQuery('#document_info_cancel').click(function(){
 	jQuery('#site_customer_settings_info').show('slow');
 	jQuery('#site_customer_settings').hide('slow');	
 });
 
-
+jQuery('.nav-link').click(function(){
+	jQuery('#first_account_info').show('slow');
+	jQuery('#nomminee_pass_info').show('slow');
+	jQuery('#bank_info_show').show('slow');
+	jQuery('#site_customer_settings_info').show('slow');
+	
+	
+	jQuery('#site_customer_settings').hide('');	
+	jQuery('#bank_info_edit').hide('');	
+	jQuery('#nomminee_pass').hide('');	
+	jQuery('#accountinfo').hide('');	
+});
 	function showDiv(prefix,chooser) 
 	{
 		

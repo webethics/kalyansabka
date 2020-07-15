@@ -21,7 +21,7 @@
 			<td id="business_url_{{$request->id}}">Ambala Haryana</td>
 			<td id="business_url_{{$request->id}}">Approve</td>
 			<td id="business_url_{{$request->id}}">
-				<a class="action"  href="javascript:void(0)" title="New Details"><i class="simple-icon-eye"></i> </a> 
+				<a class="action viewDetail"  href="javascript:void(0)" data-user_id="{{ $request->id }}" title="New Details"><i class="simple-icon-eye"></i> </a> 
 				<a class="action"  href="javascript:void(0)" title="Download Documents"><i class="simple-icon-cloud-download"></i> </a> 
 			</td>
 		</tr>
