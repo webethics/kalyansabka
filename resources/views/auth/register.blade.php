@@ -69,7 +69,7 @@
 												
 												<label class="has-float-label mb-3">
 												
-													<input type="text" class="form-control datepicker"  id="date_of_birth" name="date_of_birth"
+													<input type="text" autocomplete="off"  class="form-control datepickerClass"  id="date_of_birth" name="date_of_birth"
 														 value="{{old('date_of_birth')}}">
 													<span>{{trans('global.date_of_birth')}}<em>(DD-MM-YYYY)</em><span style="color:red;">*</span></span>
 													
@@ -103,7 +103,7 @@
 									<div class="form-row">
 										<div class="col-md-6">
 											<label class="has-float-label form-group mb-3">
-												<input name="mobile_number" id="mobile_number"  type="datepicker" value="{{ old('mobile_number')}}" class="form-control">
+												<input name="mobile_number" id="mobile_number"  type="text" value="{{ old('mobile_number')}}" class="form-control">
 												<span>Mobile <span style="color:red;">*</span></span>
 												<div class="error_margin"><span class="error mobile_number_error" >  {{ $errors->first('mobile_number')  }} </span></div>
 											</label>
@@ -257,7 +257,9 @@ $(document).ready(function(){
 	if(date_of_birth != ''){
 		getAgePriceCalculation();
 	}
-	
+	$('.datepickerClass').datepicker({
+		format: 'dd-mm-yyyy',
+	});
 	
 	
 });

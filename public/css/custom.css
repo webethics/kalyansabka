@@ -76,6 +76,13 @@
 	color: #fff;
 }
 
+
+.datepicker-dropdown {
+	-webkit-transform: translate(0);
+	-ms-transform: translate(0);
+	transform: translate(0);
+}
+
 .error,.editable-error-block{
 	color:red;
 	font-size:11px;
