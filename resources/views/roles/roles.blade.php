@@ -3,7 +3,9 @@
 	<div class="row">
 		<div class="col-12">
 			<h1>Roles </h1>
+			@if(check_role_access('roles_create'))
 			<span class="fl_right balance"><a id="create_role" class="btn btn-primary" href="javascript:void(0)">Create New Role</a></span>
+			@endif
 			<div class="separator mb-5"></div>
 		</div>
 	</div>
