@@ -21,18 +21,16 @@
 			<td id="business_url_{{$certificate->id}}">pathcodertest@gmail.com</td>
 			<td id="business_url_{{$certificate->id}}">Ambala, Haryana</td>
 			<td id="business_url_{{$certificate->id}}">
-				@php  $selected=''; @endphp
-				@if($certificate->status==1)
-				@php	$selected = 'checked=checked'@endphp
-				@endif
-				<div class="custom-switch  custom-switch-primary custom-switch-small">
-					<input class="custom-switch-input switch_status" id="switch{{ $certificate->id }}" type="checkbox" data-user_id="{{ $certificate->id }}" {{$selected}}>
-				   <label class="custom-switch-btn" for="switch{{ $certificate->id }}"></label>
-
-				</div>
+				Sent
 			</td>
 			<td id="business_url_{{$certificate->id}}">
-				<a class="action"  href="javascript:void(0)" title="Download Certificate"><i class="simple-icon-cloud-download"></i> </a> 
+				
+				@if(check_role_access('certificate_request_edit'))
+					<a class="action editCertitificateRequest" href="javascript:void(0)" data-user_id="{{ $certificate->id }}" title="Edit Request"><i class="simple-icon-note"></i> </a>
+				@endif
+				@if(check_role_access('certificate_download'))
+					<a class="action"  href="javascript:void(0)" title="Download Certificate"><i class="simple-icon-cloud-download"></i> </a> 
+				@endif
 			</td>
 		</tr>
 		

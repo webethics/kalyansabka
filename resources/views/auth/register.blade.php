@@ -259,6 +259,7 @@ $(document).ready(function(){
 	}
 	$('.datepickerClass').datepicker({
 		format: 'dd-mm-yyyy',
+		 maxDate: 0
 	});
 	
 	

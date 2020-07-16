@@ -42,7 +42,7 @@
 			
 				<select name="" class="form-control select2">
 					<option value="">Select Status</option>
-					<option value="paid">Paid</option>
+					<option value="paid">Sent</option>
 					<option value="pending">Pending</option>
 				</select>
 		</div>	

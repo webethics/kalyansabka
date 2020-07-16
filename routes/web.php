@@ -82,9 +82,12 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('payment/edit/{request_id}', 'PaymentsController@payment_edit'); //Edit User
 	
 	
+	
+	
 	// customers
 	Route::get('customers',array('uses'=>'CustomersController@customers'));
 	Route::post('customer/edit/{request_id}', 'CustomersController@customer_edit'); //Edit User
+	Route::get('customer/create/',array('uses'=>'CustomersController@customer_create')); //Edit User
 	
 	//Dashboard
 	Route::get('dashboard',array('uses'=>'DashboardController@index'));
@@ -92,7 +95,9 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	//certificates
 	Route::get('certificates',array('uses'=>'CertificateController@certificates'));
 	Route::get('customer-certificate',array('uses'=>'CertificateController@customer_certificate'));
+	Route::post('request/edit/{request_id}', 'CertificateController@certificate_request_edit'); //Edit request
 
+	
 
 	//referrals
 	Route::get('referrals',array('uses'=>'ReferralController@referrals'));
@@ -101,7 +106,15 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	//Requests
 	Route::get('edit-requests',array('uses'=>'RequestsController@edit_request'));
 	Route::get('requests',array('uses'=>'RequestsController@requests'));
-	Route::post('request/view/{request_id}', 'RequestsController@request_view'); //Edit User
+	Route::post('request/view/{request_id}', 'RequestsController@request_view'); //view request
+	
+	//roles
+	Route::get('roles',array('uses'=>'RolesController@roles'));
+	Route::post('roles/edit/{request_id}', 'RolesController@roles_edit'); //Edit request
+	Route::get('role/create/',array('uses'=>'RolesController@role_create')); //Edit User
+	Route::post('/create-role-permissions/',array('uses'=>'RolesController@role_permission_create')); //Edit User
+	Route::post('/update-role-permissions/',array('uses'=>'RolesController@role_permission_update')); //Edit User
+	
 });
 
 Route::post('user/cityDropdown', 'User\UsersController@cityDropdown');

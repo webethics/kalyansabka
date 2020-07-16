@@ -62,6 +62,8 @@ $(document).on('click', '.editCustomer' , function() {
     });
 })
 	
+
+	
 $(document).on('click', '.delete_customer' , function() {
 	var user_id = $(this).data('id');
 	var csrf_token = $('meta[name="csrf-token"]').attr('content');
@@ -177,3 +179,25 @@ $(document).on('submit','#updateCustomer', function(e) {
     });
 });
 	
+/*==============================================
+	SHOW Create Customer FORM 
+============================================*/
+$(document).on('click', '#create_user' , function() {
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	 $.ajax({
+        type: "GET",
+		dataType: 'json',
+        url: base_url+'/customer/create/',
+        data: {},
+        success: function(data) {
+			if(data.success){
+			
+				$('.userCreateModal').html(data.data);
+				$('.userCreateModal').modal('show');
+				$('.errors').html('');
+			}else{
+				notification('Error','Something went wrong.','top-right','error',3000);
+			}	
+        },
+    });
+})

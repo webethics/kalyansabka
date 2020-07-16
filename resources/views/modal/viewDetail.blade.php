@@ -9,35 +9,44 @@
 	<form action="{{ url('update-profile/') }}/{{ $user->id }}" method="POST" id="updateUser" >
 	 @csrf
 	 
-		
-		
-		<div class="form-group form-row-parent">
-			<label class="col-form-label">Aadhaar Front Image<em>*</em></label>
-			<div class="d-flex control-group">
-				<img src="{{asset('img/aadhaar_front.jpg')}}">									
-			</div>	
-			<div class="first_name_error errors"></div>	
+		<h2>Current Details</h2>
+		<div class="form-group row">
+			<label class="col-lg-3 col-xl-4 col-form-label">First Name</label>
+			<label class="col-lg-9 col-xl-8 col-form-label">Path</label>
 		</div>
 		
-		
-	
-		<div class="form-group form-row-parent">
-			<label class="col-form-label">Aadhaar Back Image<em>*</em></label>
-			<div class="d-flex control-group">
-				<img src="{{asset('img/aadhaar_front.jpg')}}">									
-			</div>	
-			<div class="last_name_error errors"></div>	
+		<div class="form-group row">
+			<label class="col-lg-3 col-xl-4 col-form-label">Last Name</label>
+			<label class="col-lg-9 col-xl-8 col-form-label">Test</label>
+		</div>
+		<div class="form-group row">
+			<label class="col-lg-3 col-xl-4 col-form-label">Mobile</label>
+			<label class="col-lg-9 col-xl-8 col-form-label">9857458596</label>
+		</div>
+		<div class="form-group row">
+			<label class="col-lg-3 col-xl-4 col-form-label">Aadhaar</label>
+			<label class="col-lg-9 col-xl-8 col-form-label">258963147852</label>
+		</div>
+									
+		<h2>Requested Details</h2>
+		<div class="form-group row">
+			<label class="col-lg-3 col-xl-4 col-form-label">First Name</label>
+			<label class="col-lg-9 col-xl-8 col-form-label">Path</label>
 		</div>
 		
-		
-		
-		<div class="form-group form-row-parent">
-		<label class="col-form-label">Pan Card Image</label>
-		<div class="d-flex control-group">
-			<img src="{{asset('img/pancard.jpg')}}">							
-		</div>								
-		</div>	
-	
+		<div class="form-group row">
+			<label class="col-lg-3 col-xl-4 col-form-label">Last Name</label>
+			<label class="col-lg-9 col-xl-8 col-form-label">Coder</label>
+		</div>
+		<div class="form-group row">
+			<label class="col-lg-3 col-xl-4 col-form-label">Mobile</label>
+			<label class="col-lg-9 col-xl-8 col-form-label">9857458506</label>
+		</div>
+		<div class="form-group row">
+			<label class="col-lg-3 col-xl-4 col-form-label">Aadhaar</label>
+			<label class="col-lg-9 col-xl-8 col-form-label">2258963147852</label>
+		</div>
+									
 								
 		<div class="form-row mt-4">
 		<div class="col-md-12">

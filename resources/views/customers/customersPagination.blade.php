@@ -29,9 +29,15 @@
 				  </div>
 			</td>
 			<td id="business_url_{{$customer->id}}">
-				<a class="action editCustomer" href="javascript:void(0)" data-user_id="{{ $customer->id }}" title="Edit Customer"><i class="simple-icon-note"></i> </a> 
-				<a class="action"  href="javascript:void(0)" title="Manage Customer"><i class="simple-icon-login"></i> </a> 
-				<a class="action"  href="javascript:void(0)" title="Download Certificate"><i class="simple-icon-cloud-download"></i> </a> 
+				@if(check_role_access('customer_edit'))
+					<a class="action editCustomer" href="javascript:void(0)" data-user_id="{{ $customer->id }}" title="Edit Customer"><i class="simple-icon-note"></i> </a> 
+				@endif
+				@if(check_role_access('customer_manage'))
+					<a class="action"  href="javascript:void(0)" title="Manage Customer"><i class="simple-icon-login"></i> </a> 
+				@endif
+				@if(check_role_access('customer_certificate_download'))
+					<a class="action"  href="javascript:void(0)" title="Download Certificate"><i class="simple-icon-cloud-download"></i> </a>
+				@endif				
 			</td>	
 		</tr>
 		

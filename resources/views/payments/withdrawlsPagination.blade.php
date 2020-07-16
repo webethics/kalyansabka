@@ -21,7 +21,9 @@
 			<td id="business_url_{{$payment->id}}">2500 INR</td>
 			<td id="email_{{$payment->id}}">PAID</td>
 			<td id="email_{{$payment->id}}">
+				@if(check_role_access('withdrawl_edit'))
 				<a class="action editPayment" href="javascript:void(0)" data-user_id="{{ $payment->id }}" title="Edit Payment"><i class="simple-icon-note"></i> </a>
+				@endif
 			</td>
 		</tr>
 		

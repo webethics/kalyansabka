@@ -48,7 +48,9 @@
 										
 
 										<td>
-										<a class="action" href ="{{url('email/edit')}}/{{$email->id}}" title="Edit"><i class="simple-icon-note"></i></a>
+										@if(check_role_access('email_edit'))
+											<a class="action" href ="{{url('email/edit')}}/{{$email->id}}" title="Edit"><i class="simple-icon-note"></i></a>
+										@endif
 										</td>
 									</tr>
 									@php $i++;  @endphp

@@ -75,6 +75,19 @@ class CustomersController extends Controller
 		 ), 200);
     }
 	
+	public function customer_create()
+    {
+		$roles = Role::all();
+	
+		$view = view("modal.customerCreate",compact('roles'))->render();
+		$success = true;
+
+        return Response::json(array(
+		  'success'=>$success,
+		  'data'=>$view
+		 ), 200);
+    }
+	
 	
 }
 ?>

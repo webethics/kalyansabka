@@ -17,10 +17,15 @@ class Role extends Model
 
     protected $fillable = [
         'title',
+        'slug',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
-
+	
+	public function rolePermissions()
+    {
+    	return $this->hasMany('App\Models\RolesPermission','role_id');
+    }
   
 }
