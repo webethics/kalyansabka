@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\CdrGroup;
 use App\Models\EmailTemplate;
 use App\Models\PermissionList;
+use App\Models\PermissionCategory;
 use App\Models\RolesPermission;
 use App\Models\CityLists;
 use League\Csv\Writer;	
@@ -33,13 +34,14 @@ class RolesController extends Controller
 	
 	public function roles()
     {
-		$roles = Role::all();
+		access_denied_user('roles_listing');
+		$roles = Role::whereNotIn('id',[3,4,5])->get();
         return view('roles.roles',compact('roles'));	
 	}
 	
 	public function roles_edit($role_id)
     {
-		
+		access_denied_user('roles_edit');
         $roles = Role::where('id',$role_id)->with('rolePermissions')->first();
 		
 		$permission_array = array();
@@ -47,8 +49,9 @@ class RolesController extends Controller
 			 $permission_array[] = $permission->permission_id;
 			 $roles->permissionArray = $permission_array;
 		}
+		$listPermission  = PermissionCategory::with('permissionList')->get();
 		
-		$listPermission = PermissionList::all();
+		//$listPermission = PermissionList::all();
 		if($roles){
 			$view = view("modal.roleEdit",compact('roles','listPermission'))->render();
 			$success = true;
@@ -65,8 +68,11 @@ class RolesController extends Controller
 	
 	public function role_create()
     {
+		access_denied_user('roles_create');
 		$roles = Role::all();
-		$listPermission = PermissionList::all();
+		//$listPermission = PermissionList::all();
+		$listPermission  = PermissionCategory::with('permissionList')->get();
+		//echo '<pre>';print_r($listPermission->toArray());die;
 		$view = view("modal.roleCreate",compact('roles','listPermission'))->render();
 		$success = true;
 
@@ -78,10 +84,10 @@ class RolesController extends Controller
 	
 	public function role_permission_update(UpdateRoleRequest $request)
     {
-		$roles = Role::all();
+		/* $roles = Role::all();
 		$listPermission = PermissionList::all();
-		$view = view("modal.roleCreate",compact('roles','listPermission'))->render();
-		
+		$view = view("modal.roleCreate",compact('roles','listPermission'))->render(); */
+		//echo '<pre>';print_r($request->all());die;
 		if($request->ajax()){
 			
 			$data =array();
@@ -103,7 +109,7 @@ class RolesController extends Controller
 			}
 			 return Response::json(array(
 					  'success'=>true,
-					  'data'=>$view
+					  
 					), 200);
 		
 		}
@@ -135,6 +141,24 @@ class RolesController extends Controller
 		
 		}
     }
+	
+	
+	
+	public function role_delete($role_id){
+		if($role_id){
+			$main_user  = Role::where('id',$role_id)->first();
+			if($role_id != 1 && $role_id!= 2){
+				Role::where('id',$role_id)->delete();
+				$result =array('success' => true);	
+				return Response::json($result, 200);
+			}else{
+				$result =array('success' => false,'message'=>'This account can not be deleted');	
+				return Response::json($result, 200);
+			}
+			
+		}
+	}
+	
 	function slugify($string, $replace = array(), $delimiter = '-') {
 		// https://github.com/phalcon/incubator/blob/master/Library/Phalcon/Utils/Slug.php
 		if (!extension_loaded('iconv')) {

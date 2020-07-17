@@ -20,7 +20,7 @@ $(document).ready(function(){
 		var page=$(this).attr('href').split('page=')[1];
 		getData(page);
 	}); 
-	countnotification();
+	
 });
 	function getData(page){
 		
@@ -110,6 +110,7 @@ $('.clear').click(function(){
 	
 	var id = $(this).data('id');
 	var confirm_message = $(this).data('confirm_message');
+	var confirm_message_1 = $(this).data('confirm_message_1');
 	var leftButtonId = $(this).data('left_button_id');
 	var leftButtonName = $(this).data('left_button_name');
 	var leftButtonCls = $(this).data('left_button_cls');
@@ -118,7 +119,7 @@ $('.clear').click(function(){
     $.ajax({
         type: "POST",
         url: base_url+'/confirmModal',
-        data:{id:id,confirm_message:confirm_message,leftButtonId:leftButtonId,leftButtonName:leftButtonName,leftButtonCls:leftButtonCls,_token:csrf_token},
+        data:{id:id,confirm_message:confirm_message,confirm_message_1:confirm_message_1,leftButtonId:leftButtonId,leftButtonName:leftButtonName,leftButtonCls:leftButtonCls,_token:csrf_token},
         success: function(data) {
 			 $('.confirmBoxCompleteModal').html(data)
 			 $('.confirmBoxCompleteModal').modal('show')

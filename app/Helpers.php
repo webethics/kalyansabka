@@ -118,14 +118,36 @@ function check_role_access($permission_slug){
 		return false;
 	}
 }
-// USER/ANALYST NOT ALBE TO ACCESS 
+
+function access_denied_user($permission_slug){
+	$user = \Auth::user();
+	$current_user_role_id = $user->role_id;
+	
+	$permission_list_for_role = RolesPermission::where('role_id',$current_user_role_id)->get();
+	
+	
+	$permission_array = array();
+	foreach($permission_list_for_role as $permission){
+			
+		 $slug = PermissionList::where('id',$permission->permission_id)->select('slug')->first();
+		 $permission_array[] = $slug->slug;
+	}
+	
+	if(in_array($permission_slug,$permission_array)){
+		return true;
+	}else{
+		return abort_unless(\Gate::denies(current_user_role_name()), 403);
+	}
+}
+
+/* // USER/ANALYST NOT ALBE TO ACCESS 
 function access_denied_user(){
 	
 		$role_id = Config::get('constant.role_id');
 	    if($role_id['CUSTOMER_USER']== current_user_role_id()){
 		  return abort_unless(\Gate::denies(current_user_role_name()), 403);
 	    } 
-}
+} */
 
 function access_denied_user_analyst(){
 	

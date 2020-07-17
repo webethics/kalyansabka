@@ -112,6 +112,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::get('roles',array('uses'=>'RolesController@roles'));
 	Route::post('roles/edit/{request_id}', 'RolesController@roles_edit'); //Edit request
 	Route::get('role/create/',array('uses'=>'RolesController@role_create')); //Edit User
+	Route::post('role/delete_role/{request_id}',array('uses'=>'RolesController@role_delete')); //Edit User
 	Route::post('/create-role-permissions/',array('uses'=>'RolesController@role_permission_create')); //Edit User
 	Route::post('/update-role-permissions/',array('uses'=>'RolesController@role_permission_update')); //Edit User
 	

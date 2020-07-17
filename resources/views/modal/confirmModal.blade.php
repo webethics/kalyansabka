@@ -3,6 +3,9 @@
 	
 	<div class="modal-body">
 	{{$confirm_message}}
+	<br>
+	<br>
+	{{$confirm_message_1}}
 	</div>
 	<div id="confirm">
 	 

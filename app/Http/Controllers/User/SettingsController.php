@@ -35,6 +35,7 @@ class SettingsController extends Controller
 	*/
     public function index()
     {
+		access_denied_user('config_listing');
 		$user_id = user_id();
 		$settings =  Setting::where('id',1)->get()[0];
         return view('users.settings.create',compact('user_id','settings'));

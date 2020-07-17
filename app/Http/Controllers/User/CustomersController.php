@@ -35,7 +35,7 @@ class CustomersController extends Controller
 	
 	public function customers(Request $request)
     {
-		
+		access_denied_user('customer_listing');
 		$request->role_id = 1;
         $customers = $this->customer_search($request,'');
 		$roles = Role::all();
@@ -55,7 +55,7 @@ class CustomersController extends Controller
 	}
 	public function customer_edit($user_id)
     {
-		
+		access_denied_user('customer_edit');
         $user = User::where('id',$user_id)->get();
 		$roles = Role::all();
 		if(count($user)>0){
@@ -77,6 +77,7 @@ class CustomersController extends Controller
 	
 	public function customer_create()
     {
+		access_denied_user('customer_create');
 		$roles = Role::all();
 	
 		$view = view("modal.customerCreate",compact('roles'))->render();

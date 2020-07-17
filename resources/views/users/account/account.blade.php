@@ -37,11 +37,12 @@
 									aria-controls="fourth" aria-selected="true">{{trans('global.bank_details')}}</a>
 							</li>
 							@endif
-							<li class="nav-item">
-								<a class="nav-link" id="fifth-tab" data-toggle="tab" href="#fifth" role="tab"
-									aria-controls="fifth" aria-selected="false">{{trans('global.reset_password')}}</a>
-							</li>
-						
+							@if(check_role_access('account_reset_password'))
+								<li class="nav-item">
+									<a class="nav-link" id="fifth-tab" data-toggle="tab" href="#fifth" role="tab"
+										aria-controls="fifth" aria-selected="false">{{trans('global.reset_password')}}</a>
+								</li>
+							@endif
 						</ul>
 					</div>				  
 				</div>	
@@ -51,7 +52,9 @@
 							<div id="msg" class="alert hide"></div>
 							<div class="tab-pane fade show active" id="first" role="tabpanel"  aria-labelledby="first-tab">
 								<div class="" id="first_account_info">
+								@if(check_role_access('account_edit'))
 									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="basic_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
+								@endif
 									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}</label>
