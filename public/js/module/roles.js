@@ -68,7 +68,7 @@ $(document).on('submit','#createUserRolePermission', function(e) {
 			 $('.search_spinloder').css('display','none');
             notification('Success','User Updated Successfully','top-right','success',2000);
 			setTimeout(function(){ $('.roleEditModal').modal('hide'); }, 2000);
-			setTimeout(function(){location.reload(); }, 2500);
+			setTimeout(function(){window.location.href = base_url+'/roles'; }, 2500);
 			
         },
 		error :function( data ) {
