@@ -86,8 +86,12 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	
 	// customers
 	Route::get('customers',array('uses'=>'CustomersController@customers'));
+	Route::post('customers',array('uses'=>'CustomersController@customers'));
+	Route::post('update-customer/{request_id}', 'CustomersController@update_customer'); //Edit User
 	Route::post('customer/edit/{request_id}', 'CustomersController@customer_edit'); //Edit User
 	Route::get('customer/create/',array('uses'=>'CustomersController@customer_create')); //Edit User
+	Route::post('create-new-customer', 'CustomersController@customer_create_new'); //Edit User
+	
 	
 	//Dashboard
 	Route::get('dashboard',array('uses'=>'DashboardController@index'));

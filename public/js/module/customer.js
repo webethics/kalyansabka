@@ -56,6 +56,7 @@ $(document).on('click', '.editCustomer' , function() {
 				}
 				$('.errors').html('');
 			}else{
+				
 				notification('Error','Something went wrong.','top-right','error',3000);
 			}	
         },
@@ -93,7 +94,7 @@ $(document).on('submit','#updateUser', function(e) {
     $.ajax({
         type: "POST",
 		dataType: 'json',
-        url: base_url+'/update-profile/'+user_id,
+        url: base_url+'/update-customer/'+user_id,
         data: $(this).serialize(),
         success: function(data) {
 			//alert(data)
@@ -103,11 +104,8 @@ $(document).on('submit','#updateUser', function(e) {
 			 if(data.success){
 				 
 				notification('Success','User Updated Successfully','top-right','success',2000);
-				$('#business_name_'+user_id).text(data.business_name);
-				$('#name_'+user_id).text(data.name);
-				$('#mobile_number_'+user_id).text(data.mobile_number);
-				$('#business_url_'+user_id).text(data.business_url);
-				setTimeout(function(){ $('.userEditModal').modal('hide'); }, 2000);
+				$('#full_name_'+user_id).text(data.full_name);
+				setTimeout(function(){ $('.customerEditModal').modal('hide'); }, 2000);
 			}	 
         },
 		error :function( data ) {
@@ -133,28 +131,30 @@ $(document).on('submit','#updateUser', function(e) {
 
     });
 });
-	
+
 /*==============================================
-	UPDATE CUSTOMER REQUEST FORM 
+	UPDATE REQUEST FORM 
 ============================================*/
-$(document).on('submit','#updateCustomer', function(e) {
-    e.preventDefault(); 
-	var user_id = $('#user_id').val();
+$(document).on('submit','#createNewCustomer', function(e) {
+	e.preventDefault(); 
 	$('.request_loader').css('display','inline-block');
     $.ajax({
         type: "POST",
 		dataType: 'json',
-        url: base_url+'/update-customer/'+user_id,
+        url: base_url+'/create-new-customer',
         data: $(this).serialize(),
         success: function(data) {
-			
-			$('#name_'+user_id).text(data.name);
-			$('#email_'+user_id).text(data.email);
-			var my_number = data.code+'-'+data.mobile_number;
-			$('#mobile_number_'+user_id).text(my_number);
-			notification('Success','Customer Updated Successfully','top-right','success',2000);
-			setTimeout(function(){ $('.customerEditModal').modal('hide'); }, 2000);
-		},
+			//alert(data)
+			$('.errors').html('');
+			$('.request_loader').css('display','none');
+			// If data inserted into DB
+			 if(data.success){
+				 
+				notification('Success','User Updated Successfully','top-right','success',2000);
+				setTimeout(function(){ $('.userCreateModal').modal('hide'); }, 2000);
+				setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
+			}	 
+        },
 		error :function( data ) {
          if( data.status === 422 ) {
 			$('.request_loader').css('display','none');
@@ -201,3 +201,28 @@ $(document).on('click', '#create_user' , function() {
         },
     });
 })
+
+/*==============================================
+	SEARCH FILTER FORM 
+============================================*/
+$(document).on('submit','#searchForm', function(e) {
+    e.preventDefault(); 
+	$('.search_spinloder').css('display','inline-block');
+    $.ajax({
+        type: "POST",
+		//dataType: 'json',
+        url: base_url+'/customers',
+        data: $(this).serialize(),
+        success: function(data) {
+			 $('.search_spinloder').css('display','none');
+             //start date and end date error 
+			 if(data=='date_error'){
+				notification('Error','Start date not greater than end date.','top-right','error',4000);	
+			}else{
+             // Set search result
+			 $("#tag_container").empty().html(data); 
+			}	
+        },
+		error :function( data ) {}
+    });
+});

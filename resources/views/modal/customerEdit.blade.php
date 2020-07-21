@@ -6,7 +6,7 @@
 		</button>
 	</div>
 	<div class="modal-body">
-	<form action="{{ url('update-profile/') }}/{{ $user->id }}" method="POST" id="updateUser" >
+	<form action="{{ url('update-customer/') }}/{{ $user->id }}" method="POST" id="updateUser" >
 	 @csrf
 		
 		<div class="form-group form-row-parent">
@@ -32,7 +32,7 @@
 		<div class="form-group form-row-parent">
 		<label class="col-form-label">{{ trans('global.email') }}</label>
 		<div class="d-flex control-group">
-		<input type="email" name="email" disabled="disabled" value="{{$user->email}}" class="form-control" placeholder="{{ trans('global.email') }}">								
+		<input type="email" name="email" disabled="disabled" value="{{$user->email}}" readonly class="form-control" placeholder="{{ trans('global.email') }}">								
 		</div>								
 		</div>	
 	
@@ -59,6 +59,20 @@
 		<input type="text" name="aadhar_number" value="{{$user->aadhar_number}}" class="form-control" placeholder="{{$user->aadhar_number}}">							
 		</div>
 		 <div class="aadhar_number_error errors"></div>	
+		</div>	
+		
+		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">Select Role<em>*</em></label>
+		<div class="d-flex control-group">
+			<select  id="role_id"  class="form-control select2-single"  name="role_id"  data-width="100%">
+							
+				<option value="">Select Role</option>
+				<option value="4">State Head</option>
+				<option value="5">District Head</option>
+			</select>
+		</div>
+		 <div class="role_id_error errors"></div>	
 		</div>	
 		
 		

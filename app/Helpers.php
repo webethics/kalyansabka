@@ -90,6 +90,8 @@ function redirect_route_name(){
 	   }
 	   else if($role_id['STATE_HEAD']== current_user_role_id()){
 			return 'account'; 
+	   }else if(current_user_role_id() > 5){
+		   return 'account'; 
 	   }
 	   	  
 	   }else{

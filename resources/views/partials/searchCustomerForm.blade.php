@@ -1,4 +1,4 @@
- <form action="{{ url('users/advance-search') }}" method="POST" id="searchForm" >
+ <form action="{{ url('customer/advance-search') }}" method="POST" id="searchForm" >
 		@csrf
 <div class="row">
 	<div class="col-md-6 mb-4">
@@ -19,12 +19,12 @@
 				<div class="form-group col-lg-6">
 				<select  id="role_id"  class="form-control select2-single"  name="role_id"  data-width="100%">
 							
-							<option value=" ">{{trans('global.filter_by_role')}}</option>
-							@foreach($roles as $key=>$role)
-							@if($role->id!=1)
-							<option value="{{$role->id}}">{{$role->title}}</option>
-							@endif
-							@endforeach
+					<option value=" ">{{trans('global.filter_by_role')}}</option>
+					@foreach($roles as $key=>$role)
+					@if($role->id!=1)
+					<option value="{{$role->id}}">{{$role->title}}</option>
+					@endif
+					@endforeach
 				</select>
 				</div>
 				@endif

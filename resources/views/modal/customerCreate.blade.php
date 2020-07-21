@@ -6,7 +6,7 @@
 		</button>
 	</div>
 	<div class="modal-body">
-	<form action="" method="POST" id="updateUser" >
+	<form action="" method="POST" id="createNewCustomer" >
 	 @csrf
 		
 		<div class="form-group form-row-parent">
@@ -32,8 +32,9 @@
 		<div class="form-group form-row-parent">
 		<label class="col-form-label">{{ trans('global.email') }}</label>
 		<div class="d-flex control-group">
-		<input type="email" name="email" disabled="disabled" value="" class="form-control" placeholder="{{ trans('global.email') }}">								
-		</div>								
+		<input type="email" name="email" value="" class="form-control" placeholder="{{ trans('global.email') }}">								
+		</div>		
+		<div class="email_error errors"></div>		
 		</div>	
 	
 		<div class="form-group form-row-parent">
@@ -59,6 +60,22 @@
 		<input type="text" name="aadhar_number" value="" class="form-control" placeholder="{{ trans('global.aadhar_number') }}">							
 		</div>
 		 <div class="aadhar_number_error errors"></div>	
+		</div>	
+		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">Role<em>*</em></label>
+		<div class="d-flex control-group">
+			<select  id="role_id"  class="form-control select2-single"  name="role_id"  data-width="100%">
+							
+				<option value=" ">Select Role</option>
+				@foreach($roles as $key=>$role)
+				@if($role->id!=1)
+				<option value="{{$role->id}}">{{$role->title}}</option>
+				@endif
+				@endforeach
+			</select>
+		</div>
+		 <div class="role_id_error errors"></div>	
 		</div>	
 		
 		
