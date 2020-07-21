@@ -342,7 +342,7 @@ class CustomersController extends Controller
 			'Content-Type: application/pdf',
 		);
 		$file_name = 'FullPlan.pdf';
-		$file_path = public_path().'/uploads/certificates/';
+		$file_path = public_path().'/uploads/certificates';
 		$filetopath=$file_path.'/'.$file_name;
 		//echo $filetopath;die;
 		return response()->download($filetopath,$file_name,$headers);
