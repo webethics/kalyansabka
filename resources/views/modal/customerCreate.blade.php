@@ -78,7 +78,30 @@
 		 <div class="role_id_error errors"></div>	
 		</div>	
 		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">{{ trans('global.state') }} <em>*</em></label>
+		<div class="d-flex control-group">
+			<select name="state" id="state" class="form-control">
+				<option value="">Select State</option>
+				@foreach(list_states() as $key=>$value)
+					<option value="{{$value->id}}" @if (old('state') == "$value->id") {{ 'selected' }} @endif >{{$value->state_name}}</option>
+				@endforeach
+			</select>							
+		</div>
+		 <div class="state_error errors"></div>	
+		</div>	
 		
+		
+		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">{{ trans('global.district') }}<em>*</em></label>
+		<div class="d-flex control-group">
+			<select name="district" id="district" class="form-control" >
+				<option value="">Select District</option>
+			</select>						
+		</div>
+		 <div class="state_error errors"></div>	
+		</div>
 		
 								
 		<div class="form-row mt-4">

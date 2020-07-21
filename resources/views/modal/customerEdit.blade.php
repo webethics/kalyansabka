@@ -61,21 +61,32 @@
 		 <div class="aadhar_number_error errors"></div>	
 		</div>	
 		
-		
-		<!--div class="form-group form-row-parent">
-		<label class="col-form-label">Select Role<em>*</em></label>
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">{{ trans('global.state') }} <em>*</em></label>
 		<div class="d-flex control-group">
-			<select  id="role_id"  class="form-control select2-single"  name="role_id"  data-width="100%">
-							
-				<option value="">Select Role</option>
-				<option value="4">State Head</option>
-				<option value="5">District Head</option>
-			</select>
+			<select name="state" id="state" class="form-control">
+				<option value="">Select State</option>
+				@foreach(list_states() as $key=>$value)
+					<option value="{{$value->id}}" @if ("$user->state_id" == "$value->id") {{ 'selected' }} @endif >{{$value->state_name}}</option>
+				@endforeach
+			</select>							
 		</div>
-		 <div class="role_id_error errors"></div>	
-		</div-->	
+		 <div class="state_error errors"></div>	
+		</div>	
 		
-								
+		
+		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">{{ trans('global.district') }}<em>*</em></label>
+		<div class="d-flex control-group">
+			<select name="district" id="district" class="form-control" >
+				<option value="">Select District</option>
+			</select>						
+		</div>
+		 <div class="state_error errors"></div>	
+		</div>	
+		<input type="hidden" name="district_selected" id="district_selected" value="{{$user->district_id}}">
+	
 		<div class="form-row mt-4">
 		<div class="col-md-12">
 		<input id ="user_id" class="form-check-input" type="hidden" value="{{$user->id}}">

@@ -50,10 +50,13 @@ $(document).on('click', '.editCustomer' , function() {
 			
 				$('.customerEditModal').html(data.data);
 				$('.customerEditModal').modal('show');
-				var selectedVal = $('#selectedVal').val();
-				if(selectedVal){
-					$("#selected_code option[value="+selectedVal+"]").attr("selected","selected");
+				var selectedVal = $('#district_selected').val();
+				var  state = $('#state').val();
+				if(state != ''){
+					getCityDropDown(state);
+					setTimeout(function(){ $("#district option[value="+selectedVal+"]").attr("selected","selected")}, 1000);
 				}
+	
 				$('.errors').html('');
 			}else{
 				
@@ -225,4 +228,148 @@ $(document).on('submit','#searchForm', function(e) {
         },
 		error :function( data ) {}
     });
+});
+
+
+/*-------------------------------------------
+
+Delete Customer
+-----------------------------------------------------*/
+
+$(document).on('click', '.delete_customer' , function() {
+	var customer_id = $(this).data('id');
+	
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	 $.ajax({
+        type: "POST",
+		dataType: 'json',
+        url: base_url+'/customer/delete_customer/'+customer_id,
+        data: {_token:csrf_token,customer_id:customer_id},
+        success: function(data) {
+			if(data.success){
+				notification('Success','User deleted Successfully','top-right','success',2000);
+				$('.user_row_'+customer_id).hide();
+			}else{
+				
+				notification('Error','Something went wrong.','top-right','error',3000);
+				
+				
+			}	
+        },
+    });
+});
+
+/*-----------------------------------------------
+Export Customer 
+--------------------------------------------------*/
+
+$(document).on('click','#export_customers_right,#export_customers_left', function(e) {
+	 e.preventDefault(); 
+	$('.search_spinloder').css('display','inline-block');
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        type: "POST",
+		//dataType: 'json',
+        url: base_url+'/export_customers',
+        data: {first_name:$('#first_name').val(),last_name:$('#last_name').val(),email:$('#email').val(),role_id:$('#role_id').val(),start_date:$('#start_date').val(),end_date:$('#end_date').val(),email:$('#email').val(),_token:csrf_token},
+        success: function(data) {
+			
+			$('.search_spinloder').css('display','none');
+			if(data.success == false){
+				notification('Error','No data found.','top-right','error',4000);	
+			}else{
+				var downloadLink = document.createElement("a");
+				var fileData = ['\ufeff'+data];
+
+				var blobObject = new Blob(fileData,{
+					type: "text/csv;charset=utf-8;"
+				});
+
+				var url = URL.createObjectURL(blobObject);
+				downloadLink.href = url;
+				downloadLink.download = "Customers.csv";
+
+				/*
+					* Actually download CSV
+				*/
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+			
+        },
+		error :function( data ) {}
+    });
+});
+
+$(document).on('click', '.mark_as_district_head' , function() {
+	var customer_id = $(this).data('id');
+	
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	 $.ajax({
+        type: "POST",
+		dataType: 'json',
+        url: base_url+'/customer/mark_as_district_head/'+customer_id,
+        data: {_token:csrf_token,customer_id:customer_id},
+        success: function(data) {
+			if(data.success){
+				notification('Success',data.message,'top-right','success',2000);
+				
+			}else{
+				
+				notification('Error',data.message,'top-right','error',3000);
+				
+				
+			}	
+        },
+    });
+});
+
+$(document).on('click', '.mark_as_state_head' , function() {
+	var customer_id = $(this).data('id');
+	
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	 $.ajax({
+        type: "POST",
+		dataType: 'json',
+        url: base_url+'/customer/mark_as_state_head/'+customer_id,
+        data: {_token:csrf_token,customer_id:customer_id},
+        success: function(data) {
+			if(data.success){
+				notification('Success',data.message,'top-right','success',2000);
+				
+			}else{
+				
+				notification('Error',data.message,'top-right','error',3000);
+				
+				
+			}	
+        },
+    });
+});
+
+function getCityDropDown(state_id){
+	 
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	$.ajax({
+		type: "POST",
+		//dataType: 'json',
+		url: base_url+'/user/cityDropdown',
+		data: {_token:csrf_token,state_id:state_id},
+		success: function(data) {
+			 $("#district").empty().html(data); 
+		},
+		error :function( data ) {}
+	});
+}
+$(document).on('change','#state', function(e) {
+	var state_id = $(this).val();
+	getCityDropDown(state_id);
+});
+$(document).on('ready', function(e) {
+	var  state = $('#state').val();
+	if(state != ''){
+		getCityDropDown(state);
+	}
+	
 });

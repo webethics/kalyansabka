@@ -91,6 +91,11 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('customer/edit/{request_id}', 'CustomersController@customer_edit'); //Edit User
 	Route::get('customer/create/',array('uses'=>'CustomersController@customer_create')); //Edit User
 	Route::post('create-new-customer', 'CustomersController@customer_create_new'); //Edit User
+	Route::post('customer/delete_customer/{request_id}',array('uses'=>'CustomersController@customer_delete')); //Edit User
+	Route::post('customer/mark_as_district_head/{request_id}',array('uses'=>'CustomersController@mark_as_district_head')); //Edit User
+	Route::post('customer/mark_as_state_head/{request_id}',array('uses'=>'CustomersController@mark_as_state_head')); //Edit User
+	Route::post('export_customers',array('uses'=>'CustomersController@export_customers')); //Edit User
+	Route::get('download-certificate/{request_id}',array('uses'=>'CustomersController@downloadCertificate')); //Edit User
 	
 	
 	//Dashboard

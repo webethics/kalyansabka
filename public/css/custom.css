@@ -287,6 +287,16 @@ h3.failure{
 	font-size:16px;
 	margin:10px 0;
 }
+.spinner-border{
+	vertical-align:middle;
+}
+
+.markStateHead .simple-icon-like{
+	color:green;
+}
+.markDistrictHead .simple-icon-like{
+	color:orange;
+}
 
 @media(min-width:768px) {
 	.termcondition {

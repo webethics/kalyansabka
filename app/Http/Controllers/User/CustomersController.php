@@ -13,7 +13,8 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\CdrGroup;
 use App\Models\EmailTemplate;
-
+use App\Models\StateHeads;
+use App\Models\DistrictHeads;
 use App\Models\CityLists;
 use League\Csv\Writer;	
 use Auth;
@@ -37,7 +38,7 @@ class CustomersController extends Controller
     {
 		access_denied_user('customer_listing');
 		
-        $customers_data = $this->customer_search($request);
+        $customers_data = $this->customer_search($request,$pagination=true);
 		$customers = $customers_data['customers'];
 		$page_number =  $customers_data['current_page'];
 		if($page_number > 1 )$page_number = $page_number - 1;else $page_number = $page_number;
@@ -49,7 +50,7 @@ class CustomersController extends Controller
         return view('customers.customers',compact('customers','page_number','roles'));	
 	}
 	
-	public function customer_search($request)
+	public function customer_search($request,$pagination)
 	{
 		
 		$page_number = $request->page;
@@ -106,8 +107,14 @@ class CustomersController extends Controller
 		
 		$result->where('role_id', '!=', 1);
 		$result->orderBy('created_at', 'desc')->toSql();
-				
-		$customers = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
+		
+		if($pagination == true){
+			$customers = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
+		}else{
+			$customers = $result->orderBy('created_at', 'desc')->get();
+		}
+		
+		
 		$data = array();
 		$data['customers'] = $customers;
 		$data['current_page'] = $page_number;
@@ -148,6 +155,8 @@ class CustomersController extends Controller
 			$data['address'] = $request->address;			
 			$data['role_id'] = $request->role_id;			
 			$data['aadhar_number'] = str_replace('-','',$data['aadhar_number']);
+			$data['state_id'] = $request->state;
+			$data['district_id'] = $request->district;
 			$dat = User::create($data);
 			return Response::json(array(
 			  'success'=>true,
@@ -167,6 +176,9 @@ class CustomersController extends Controller
 			$data['mobile_number'] = $request->mobile_number;
 			$data['aadhar_number'] = $request->aadhar_number;
 			$data['address'] = $request->address;
+			$data['state_id'] = $request->state;
+			$data['district_id'] = $request->district;
+			//echo '<pre>';print_r($data);die;
 			//$data['role_id'] = $request->role_id;		
 			$requestData->update($data);
 			
@@ -191,6 +203,150 @@ class CustomersController extends Controller
 		 ), 200);
     }
 	
+	public function customer_delete($customer_id)
+    {
+		access_denied_user('customer_delete');
+		if($customer_id){
+			$main_customer  = User::where('id',$customer_id)->first();
+			if($main_customer){
+				User::where('id',$customer_id)->delete();
+				$result =array('success' => true);	
+				return Response::json($result, 200);
+			}else{
+				$result =array('success' => false);	
+				return Response::json($result, 200);
+			}
+			
+		}
+	}
+	public function export_customers(Request $request)
+	{
+		$customers_data = $this->customer_search($request,$pagination = false);
+		
+		$customers  = $customers_data['customers'];
+		
+		if($customers && count($customers) > 0){
+			$records = [];
+			foreach ($customers as $key => $customer) {
+				$records[$key]['sl_no'] = ++$key;
+				$records[$key]['first_name'] = $customer->first_name;
+				$records[$key]['last_name'] = $customer->last_name;
+				$records[$key]['email'] = $customer->email;
+				$records[$key]['phone'] = $customer->mobile_number;
+				$records[$key]['aadhar'] = $customer->aadhar_number;
+				$records[$key]['address'] =  $customer->address;
+				$records[$key]['role'] =  $customer->role_id;
+				$records[$key]['registraion'] =  date('d-m-Y h:i:s', strtotime($customer->created_at));
+			}
+			$header = ['S.No.', 'First Name','Last Name', 'Email','Mobile', 'Aadhar Number', 'Address', 'Role', 'Registration Date/Time'];
+		
+
+			//load the CSV document from a string
+			$csv = Writer::createFromString('');
+
+			//insert the header
+			$csv->insertOne($header);
+
+			//insert all the records
+			$csv->insertAll($records);
+			@header("Last-Modified: " . @gmdate("D, d M Y H:i:s",$_GET['timestamp']) . " GMT");
+			@header("Content-type: text/x-csv");
+			// If the file is NOT requested via AJAX, force-download
+			if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+				header("Content-Disposition: attachment; filename=search_results.csv");
+			}
+			//
+			//Generate csv
+			//
+			echo $csv;
+			exit();
+		}else{
+			$result =array('success' => false);	
+		    return Response::json($result, 200);
+		}
+		
+	}
+	
+	public function mark_as_district_head($customer_id){
+		$requestData = User::where('id',$customer_id);
+		$stored_data = User::where('id',$customer_id)->first();
+		$district_id  = $stored_data->district_id;
+		
+		$checkCurrentDistrictHead = DistrictHeads::where('district_id',$district_id)->first();
+		
+		$checkUserAsDistrictHead = DistrictHeads::where('user_id',$customer_id)->first();
+		
+		 if($checkUserAsDistrictHead){
+			if($checkUserAsDistrictHead->district_id == $district_id){
+				$result =array('success' => false,'message'=>'Customer is already assigned as District Head');	
+				return Response::json($result, 200);
+			}else{
+				$result =array('success' => false,'message'=>'District Head is already assigned.');	
+				return Response::json($result, 200);
+			}
+		}elseif($checkCurrentDistrictHead){
+			$result =array('success' => false,'message'=>'District Head is already assigned for the Customer`s District');	
+		    return Response::json($result, 200);
+		}else{
+			$data = array();
+			$data['district_id'] = $district_id;
+			$data['user_id'] = $customer_id;
+			DistrictHeads::create($data);
+			
+			$updateRoledate = array();
+			$updateRoledate['role_id'] = 5;
+			$requestData->update($updateRoledate);
+			
+			$result =array('success' => true,'message'=>'District Head assigned successfully.');	
+			return Response::json($result, 200);
+		}
+		
+	}
+
+	public function mark_as_state_head($customer_id){
+		$requestData = User::where('id',$customer_id);
+		$stored_data = User::where('id',$customer_id)->first();
+		$state_id  = $stored_data->state_id;
+		
+		
+		$checkCurrentStateHead = StateHeads::where('state_id',$state_id)->first();
+		
+		$checkUserAsStateHead = StateHeads::where('user_id',$customer_id)->first();
+		
+		 if($checkUserAsStateHead){
+			if($checkUserAsStateHead->state_id == $state_id){
+				$result =array('success' => false,'message'=>'Customer is already assigned as State Head');	
+				return Response::json($result, 200);
+			}else{
+				$result =array('success' => false,'message'=>'State Head is already assigned.');	
+				return Response::json($result, 200);
+			}
+		}elseif($checkCurrentStateHead){
+			$result =array('success' => false,'message'=>'State Head is already assigned for the Customer`s State');	
+		    return Response::json($result, 200);
+		}else{
+			$data = array();
+			$data['state_id'] = $state_id;
+			$data['user_id'] = $customer_id;
+			StateHeads::create($data);
+			$updateRoledate = array();
+			$updateRoledate['role_id'] = 4;
+			$requestData->update($updateRoledate);
+			$result =array('success' => true,'message'=>'State Head assigned successfully.');	
+			return Response::json($result, 200);
+		}
+	}
+	
+	public function downloadCertificate($customer_id){
+		$headers = array(
+			'Content-Type: application/pdf',
+		);
+		$file_name = 'FullPlan.pdf';
+		$file_path = public_path().'/uploads/certificates/';
+		$filetopath=$file_path.'/'.$file_name;
+		//echo $filetopath;die;
+		return response()->download($filetopath,$file_name,$headers);
+	}
 	
 }
 ?>
