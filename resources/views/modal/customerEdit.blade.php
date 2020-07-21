@@ -62,7 +62,7 @@
 		</div>	
 		
 		
-		<div class="form-group form-row-parent">
+		<!--div class="form-group form-row-parent">
 		<label class="col-form-label">Select Role<em>*</em></label>
 		<div class="d-flex control-group">
 			<select  id="role_id"  class="form-control select2-single"  name="role_id"  data-width="100%">
@@ -73,9 +73,7 @@
 			</select>
 		</div>
 		 <div class="role_id_error errors"></div>	
-		</div>	
-		
-		
+		</div-->	
 		
 								
 		<div class="form-row mt-4">

@@ -167,7 +167,7 @@ class CustomersController extends Controller
 			$data['mobile_number'] = $request->mobile_number;
 			$data['aadhar_number'] = $request->aadhar_number;
 			$data['address'] = $request->address;
-			$data['role_id'] = $request->role_id;		
+			//$data['role_id'] = $request->role_id;		
 			$requestData->update($data);
 			
 			//UPDATE PROFILE EVENT LOG END  
