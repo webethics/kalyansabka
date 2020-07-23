@@ -413,16 +413,16 @@
 									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Front Image</label>
-										<label class="col-lg-9 col-xl-10 col-form-label"><img id="aadhaar_front_show" src="{{asset('uploads/documents')}}/{{$document_details->aadhaar_front}}"></label>
+										<label class="col-lg-9 col-xl-10 col-form-label"><img id="aadhaar_front_show" src="{{$document_details && $document_details->aadhaar_front?asset('uploads/documents')}}/{{$document_details->aadhaar_front:'No Document Uploaded'}}"></label>
 									</div>
 									
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Back Image</label>
-										<label class="col-lg-9 col-xl-10 col-form-label"><img id="aadhaar_back_show" src="{{asset('uploads/documents')}}/{{$document_details->aadhaar_back}}"></label>
+										<label class="col-lg-9 col-xl-10 col-form-label"><img id="aadhaar_back_show" src="{{$document_details && $document_details->aadhaar_back?asset('uploads/documents')}}/{{$document_details->aadhaar_back:'No Document Uploaded'}}"></label>
 									</div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Pan Card Image</label>
-										<label class="col-lg-9 col-xl-10 col-form-label"><img id="pan_card_show" src="{{asset('uploads/documents')}}/{{$document_details->pan_card}}"></label>
+										<label class="col-lg-9 col-xl-10 col-form-label"><img id="pan_card_show" src="{{$document_details && $document_details->pan_card?asset('uploads/documents')}}/{{$document_details->pan_card:'No Document Uploaded'}}"></label>
 									</div>
 								</div>
 							
