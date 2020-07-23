@@ -122,19 +122,19 @@ $('.dropzone').each(function(){
 				mockFile.previewElement.classList.add('dz-success');
 				mockFile.previewElement.classList.add('dz-complete');
 				
-				/* if(value_type == 'aadhaar_front'){
+				if(value_type == 'aadhaar_front'){
 					
-					$('#empty_aadhaar_front').html('<img src="'+base_url+settings.dropzoneURL+responseText.name+'">');
-					$('#aadhaar_front_show').attr('src',base_url+settings.dropzoneURL+responseText.name);
+					$('#empty_aadhaar_front').html('<img src="'+base_url+dropzoneURL+responseText.name+'">');
+					$('#aadhaar_front_show').attr('src',base_url+dropzoneURL+responseText.name);
 				}
 				if(value_type == 'aadhaar_back'){
-					$('#empty_aadhaar_back').html('<img src="'+base_url+settings.dropzoneURL+responseText.name+'">');
-					$('#aadhaar_back_show').attr('src',base_url+settings.dropzoneURL+responseText.name);
+					$('#empty_aadhaar_back').html('<img src="'+base_url+dropzoneURL+responseText.name+'">');
+					$('#aadhaar_back_show').attr('src',base_url+dropzoneURL+responseText.name);
 				}
 				if(value_type == 'pan_card'){
-					$('#empty_pan_card').html('<img src="'+base_url+settings.dropzoneURL+responseText.name+'">');
-					$('#pan_card_show').attr('src',base_url+settings.dropzoneURL+responseText.name);
-				} */
+					$('#empty_pan_card').html('<img src="'+base_url+dropzoneURL+responseText.name+'">');
+					$('#pan_card_show').attr('src',base_url+dropzoneURL+responseText.name);
+				}
 				
 				
 				
@@ -147,6 +147,23 @@ $('.dropzone').each(function(){
 				$.post(base_url+'/delete/custom_logo/'+id+'/'+value_type,{'_token': csrf_token,file_name:file.name}, function(data, textStatus) {
 					if(data.msg !='Error')notification('Success',data.msg,'top-right','success',4000);
 				}, "json"); 
+				
+				
+				if(value_type == 'aadhaar_front'){
+					
+					$('#empty_aadhaar_front').html('No Document Uploaded').show();
+					$('#aadhaar_front_show').attr('src','').hide();
+				}
+				if(value_type == 'aadhaar_back'){
+					$('#empty_aadhaar_back').html('No Document Uploaded').show();
+					$('#aadhaar_back_show').attr('src','').hide();
+				}
+				if(value_type == 'pan_card'){
+					$('#empty_pan_card').html('No Document Uploaded').show();
+					$('#pan_card_show').attr('src','').hide();
+				}
+				
+				
 				$(dropzoneErrorClass).text('');
 			}); 
 			
