@@ -36,7 +36,16 @@
 		</div>		
 		<div class="email_error errors"></div>		
 		</div>	
-	
+		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">{{ trans('global.password') }}<em>*</em></label>
+		<div class="d-flex control-group">
+		<input type="password" name="password" value="" class="form-control" placeholder="{{ trans('global.password') }}">							
+		</div>
+		 <div class="password_error errors"></div>	
+		</div>	
+		
+		
 		<div class="form-group form-row-parent">
 		<label class="col-form-label">{{ trans('global.address') }}<em>*</em></label>
 		<div class="d-flex control-group">

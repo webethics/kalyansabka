@@ -214,12 +214,13 @@ class SettingsController extends Controller
 		}
 		if($request->ajax()){
 			$data =array();
-			$logo = $request->file('file');
+			
 			if (!is_dir($this->custom_photos_path)) {
 				mkdir($this->custom_photos_path, 0777);
 			}
 			//$documents =  UserDocuments::where('user_id',$user_id)->first();
 			if($type == 'aadhaar_front'){
+				$logo = $request->file('file1');
 				if(!empty($documents->aadhaar_front)){
 					$file_path = $this->custom_photos_path.$documents->aadhaar_front;
 					File::delete($file_path);
@@ -230,6 +231,7 @@ class SettingsController extends Controller
 			}
 			
 			if($type == 'aadhaar_back'){
+				$logo = $request->file('file2');
 				if(!empty($documents->aadhaar_back)){
 					$file_path = $this->custom_photos_path.$documents->aadhaar_back;
 					File::delete($file_path);
@@ -239,6 +241,7 @@ class SettingsController extends Controller
 				$data['aadhaar_back'] = $save_name;
 			}
 			if($type == 'pan_card'){
+				$logo = $request->file('file3');
 				if(!empty($documents->pan_card)){
 					$file_path = $this->custom_photos_path.$documents->pan_card;
 					File::delete($file_path);

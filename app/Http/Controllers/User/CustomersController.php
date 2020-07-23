@@ -62,11 +62,13 @@ class CustomersController extends Controller
 		$role_id = $request->role_id;
 		$start_date = $request->start_date;
 		$end_date = $request->end_date;
+		$mobile = $request->mobile_number;
+		$aadhaar = $request->aadhar_number;
 			
 		
 		$result = User::where(`1`, '=', `1`);
 			
-		if($first_name!='' || $last_name!='' || $role_id!='' || $start_date!='' || $end_date!='' || $email!=''){
+		if($first_name!='' || $last_name!='' || $role_id!='' || $start_date!='' || $end_date!='' || $email!='' || $mobile!='' || $aadhaar!=''){
 			
 			if($start_date!= '' || $end_date!=''){
 				if((($start_date!= '' && $end_date=='') || ($start_date== '' && $end_date!='')) || (strtotime($start_date) >= strtotime($end_date))){	
@@ -99,6 +101,12 @@ class CustomersController extends Controller
 			}
 			if(isset($last_name) && !empty($last_name)){
 				$result->where('last_name','LIKE',$last_name_s);
+			}
+		 	if(isset($mobile) && !empty($mobile)){
+				$result->where('mobile_number','=',$mobile);
+			}
+		 	if(isset($aadhaar) && !empty($aadhaar)){
+				$result->where('aadhar_number','LIKE',$aadhaar);
 			}
 		 	if(isset($role_id) && !empty($role_id)){
 				$result->where('role_id',$role_id);
@@ -151,7 +159,7 @@ class CustomersController extends Controller
 			$data['email'] = $request->email;
 			$data['mobile_number'] = $request->mobile_number;
 			$data['aadhar_number'] = $request->aadhar_number;
-			$hashed = Hash::make('Teamwebethics3!');
+			$hashed = Hash::make($request->password);
 			$data['password'] = $hashed;
 			$data['address'] = $request->address;			
 			$data['role_id'] = $request->role_id;			
@@ -168,8 +176,8 @@ class CustomersController extends Controller
 		$data=array();
 		$result =array();
 		$requestData = User::where('id',$customer_id);
-		$stored_data = User::where('id',$customer_id)->first()->toArray();
-		 
+		$stored_data = User::where('id',$customer_id)->first();
+		
 		if($request->ajax()){
 			$data =array();
 			$data['first_name']= $request->first_name;
@@ -179,12 +187,90 @@ class CustomersController extends Controller
 			$data['address'] = $request->address;
 			$data['state_id'] = $request->state;
 			$data['district_id'] = $request->district;
-			//echo '<pre>';print_r($data);die;
-			//$data['role_id'] = $request->role_id;		
+			
+			if(isset($request->mark_as_head) && $request->mark_as_head != ''){
+				if($request->mark_as_head == 'state_head'){
+					if($stored_data->state_id){
+						$state_id  = $stored_data->state_id;
+						$districtHead = DistrictHeads::where('user_id',$customer_id)->first();
+						
+						$checkCurrentStateHead = StateHeads::where('state_id',$state_id)->first();
+						
+						$checkUserAsStateHead = StateHeads::where('user_id',$customer_id)->first();
+						
+						 if($checkUserAsStateHead){
+							if($checkUserAsStateHead->state_id == $state_id){
+								$data['role_id'] = 4;
+							}else{
+								$result =array('success' => false,'message'=>'State Head is already assigned.');	
+								return Response::json($result, 200);
+							}
+						}elseif($checkCurrentStateHead){
+							
+							$result =array('success' => false,'message'=>'State Head is already assigned for the Customer`s State');	
+							return Response::json($result, 200);
+						}elseif($districtHead){
+							$result =array('success' => false,'message'=>'Customer is already assigned as the District Head');	
+							return Response::json($result, 200);
+						}else{
+							
+							$data['role_id'] = 4;
+						}
+					}
+						
+				
+				}
+				if($request->mark_as_head == 'district_head'){
+					$district_id  = $stored_data->district_id;
+					$stateHead = StateHeads::where('user_id',$customer_id)->first();
+					$checkCurrentDistrictHead = DistrictHeads::where('district_id',$district_id)->first();
+					
+					$checkUserAsDistrictHead = DistrictHeads::where('user_id',$customer_id)->first();
+					
+					 if($checkUserAsDistrictHead){
+						if($checkUserAsDistrictHead->district_id == $district_id){
+							$data['role_id'] = 5;
+						}else{
+							$result =array('success' => false,'message'=>'District Head is already assigned.');	
+							return Response::json($result, 200);
+						}
+					}elseif($checkCurrentDistrictHead){
+						$result =array('success' => false,'message'=>'District Head is already assigned for the Customer`s District');	
+						return Response::json($result, 200);
+					}elseif($stateHead){
+						$result =array('success' => false,'message'=>'Customer is already assigned as the State Head');	
+						return Response::json($result, 200);
+					}else{
+						$data['role_id'] = 5;
+					}
+				}
+			}
 			$requestData->update($data);
+			$result['success'] = true;
+			if($data['role_id'] == 4 ){
+				$state_data['state_id'] = $request->state;
+				$state_data['user_id'] = $customer_id;
+				
+				$checkCurrentStateHead1 = StateHeads::where('state_id',$request->state)->where('user_id',$customer_id)->first();
+				if(!$checkCurrentStateHead1){
+					$result['state_head'] = 'updated';
+					StateHeads::create($state_data);
+				}
+				
+			}
+			if($data['role_id'] == 5){
+				$district_data['district_id'] = $request->district;
+				$district_data['user_id'] = $customer_id;
+				
+				$checkCurrentDistrictHead2 = DistrictHeads::where('district_id',$request->district)->where('user_id',$customer_id)->first();
+				if(!$checkCurrentDistrictHead2){
+					$result['state_head'] = 'updated';
+					DistrictHeads::create($district_data);
+				}
+			}
 			
 			//UPDATE PROFILE EVENT LOG END  
-			$result['success'] = true;
+			
 			$result['full_name'] = $request->first_name.' '.$request->last_name;
 			
 			return Response::json($result, 200);
@@ -307,7 +393,7 @@ class CustomersController extends Controller
 				return Response::json($result, 200);
 			}
 		}else{
-			$result =array('success' => true,'message'=>'No District is assigned to the customer.');	
+			$result =array('success' => false,'message'=>'No District is assigned to the customer.');	
 			return Response::json($result, 200);
 		}
 		
@@ -352,7 +438,7 @@ class CustomersController extends Controller
 				return Response::json($result, 200);
 			}
 		}else{
-			$result =array('success' => true,'message'=>'No State is assigned to the customer.');	
+			$result =array('success' => false,'message'=>'No State is assigned to the customer.');	
 			return Response::json($result, 200);
 		}
 	}

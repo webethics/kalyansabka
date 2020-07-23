@@ -290,10 +290,10 @@ h3.failure{
 .spinner-border{
 	vertical-align:middle;
 }
-.stateHead .simple-icon-like{
+.stateHead .simple-icon-user{
 	color:green;
 }
-.districtHead .simple-icon-like{
+.districtHead .simple-icon-user{
 	color:orange;
 }
 #aadhaar_front_show,#aadhaar_back_show,#pan_card_show{

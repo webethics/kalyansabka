@@ -24,6 +24,9 @@ class CreateCustomerRequest extends FormRequest
 			 'last_name'     => [
                 'required',
             ],
+			'password'     => [
+                'required', 'regex:/^.*(?=.{3,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!$#%@]).*$/',
+            ],
 			'email*' => [
 				'required','email','unique:users'
 			],
@@ -48,7 +51,7 @@ class CreateCustomerRequest extends FormRequest
           /* 'password.regex' => 'Your password must contain 1 lower case character 1 upper case character one number and One special character.', */
 		  'mobile_number.regex' => 'Your Mobile Number should be minimum 9 digits.',
           'mobile_number.min' => 'fhfgs.',
-		  'login_password.regex' => 'Your password must contain 1 lower case character 1 upper case character one number and One special character.',
+		  'password.regex' => 'Your password must contain 1 lower case character 1 upper case character one number and One special character.',
         ];
 			 
     }

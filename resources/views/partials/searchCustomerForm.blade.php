@@ -65,6 +65,13 @@
 						</div>
 					</div>
 				</div>
+				<div class="form-group col-lg-6">
+					<input type="text" name="mobile_number" id="mobile_number" class="form-control" placeholder="Search by Mobile Number">
+				</div>
+				<div class="form-group col-lg-6">
+					<input type="text" name="aadhar_number" id="aadhar_number" class="form-control" placeholder="Search by Aadhaar Number">
+				</div>
+				
 			<div class="col-md-12">
 			<button type="submit" class="btn btn-primary default  btn-lg mb-2 mb-lg-0 col-12 col-lg-auto">{{trans('global.submit')}}</button>
 			<button type="button" id="export_customers_right" class="btn btn-primary default  btn-lg mb-2 mb-lg-0 col-12 col-lg-auto">Export Users</button>

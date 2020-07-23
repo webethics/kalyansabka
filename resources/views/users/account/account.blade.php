@@ -5,7 +5,7 @@
 
 <script src="{{ asset('js/module/jquery.account.js')}}"></script>
 <script src="{{ asset('js/module/account_form.js')}}"></script>
-<script src="{{ asset('js/module/jquery.customer.js')}}"></script>
+<script src="{{ asset('js/module/jquery.customer_1.js')}}"></script>
 @stop
 
 <div class="row">
@@ -422,7 +422,7 @@
 									
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Back Image</label>
-										@if($document_details && $document_details->aadhaar_front)
+										@if($document_details && $document_details->aadhaar_back)
 											<label class="col-lg-9 col-xl-10 col-form-label"><img id="aadhaar_back_show" src="{{asset('uploads/documents')}}/{{$document_details->aadhaar_back}}"></label>
 										@else
 											<label class="col-lg-9 col-xl-10 col-form-label" id="empty_aadhaar_back">No Document Uploaded</label>
@@ -430,7 +430,7 @@
 									</div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Pan Card Image</label>
-										@if($document_details && $document_details->aadhaar_front)
+										@if($document_details && $document_details->pan_card)
 											<label class="col-lg-9 col-xl-10 col-form-label"><img id="pan_card_show" src="{{asset('uploads/documents')}}/{{$document_details->pan_card}}"></label>
 										@else
 											<label class="col-lg-9 col-xl-10 col-form-label" id="empty_pan_card">No Document Uploaded</label>
@@ -444,33 +444,34 @@
 									
 									<div class="clearfix"></div>
 									
+									
 									<div class="form-group">
 										<label class="col-form-label">Upload Aadhaar Front Image</label>
 									
-										<div id="drop_here_aadhaar_front" data-type="aadhaar_front" class="dropzone drop_here_logo"></div>
+										<div id="image-1-10-1" dropzone_Required = "true" data-type="aadhaar_front" data_id = "126" class="dropzone drop_here_logo"></div>
 										<div class="dropzoneError errors"></div>
 									</div>
 									
 									<div class="form-group">
 										<label class="col-form-label">Upload Aadhaar Back Image</label>
 									
-										<div id="drop_here_aadhar_back" data-type="aadhaar_back" class="dropzone drop_here_logo"></div>
+										<div id="image-2-20-2" dropzone_Required = "true"  data-type="aadhaar_back"  data_id = "126"  class="dropzone drop_here_logo"></div>
 										<div class="dropzoneError errors"></div>
 									</div>
 									
 									<div class="form-group">
 										<label class="col-form-label">Upload Pan Card</label>
 									
-										<div id="drop_here_pan_card" data-type="pan_card" class="dropzone drop_here_logo"></div>
+										<div id="image-3-30-3" dropzone_Required = "false"  data-type="pan_card"  data_id = "126"  class="dropzone drop_here_logo"></div>
 										<div class="dropzoneError errors"></div>
 									</div>
 									
-									<div class="form-row mt-4">
+									<!--div class="form-row mt-4">
 										<div class="col-lg-12 col-xl-12">
 											<button type="button" id="uploadDocuments" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
 											
 										</div>
-									</div>
+									</div--->
 									
 									
 								</form>

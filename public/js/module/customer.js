@@ -2,7 +2,7 @@
 /*==============================================
 	ENABLE/DISABLE USER ACCOUNT 
 ============================================*/
-$(document).on('click','input[type="checkbox"]', function(e) {
+$(document).on('click','.switch_status', function(e) {
 	
 	if($(this).is(":checked")){
 		var user_status = 1;
@@ -108,7 +108,14 @@ $(document).on('submit','#updateUser', function(e) {
 				 
 				notification('Success','User Updated Successfully','top-right','success',2000);
 				$('#full_name_'+user_id).text(data.full_name);
+				
 				setTimeout(function(){ $('.customerEditModal').modal('hide'); }, 2000);
+				if(data.state_head == 'updated'){
+					setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
+				}
+			}else{
+				$('.mark_as_head_error').show().append(data.message);
+				//notification('Error',data.message,'top-right','error',3000);
 			}	 
         },
 		error :function( data ) {
@@ -271,7 +278,7 @@ $(document).on('click','#export_customers_right,#export_customers_left', functio
         type: "POST",
 		//dataType: 'json',
         url: base_url+'/export_customers',
-        data: {first_name:$('#first_name').val(),last_name:$('#last_name').val(),email:$('#email').val(),role_id:$('#role_id').val(),start_date:$('#start_date').val(),end_date:$('#end_date').val(),email:$('#email').val(),_token:csrf_token},
+        data: {first_name:$('#first_name').val(),last_name:$('#last_name').val(),email:$('#email').val(),role_id:$('#role_id').val(),mobile_number:$('#mobile_number').val(),aadhar_number:$('#aadhar_number').val(),start_date:$('#start_date').val(),end_date:$('#end_date').val(),email:$('#email').val(),_token:csrf_token},
         success: function(data) {
 			
 			$('.search_spinloder').css('display','none');
@@ -347,7 +354,11 @@ $(document).on('click', '.mark_as_state_head' , function() {
         },
     });
 });
-
+$(document).on('change','.mark_as_head', function(e) {
+	 $('.mark_as_head').not(this).prop('checked', false);  
+	//$(this).siblings('input:checkbox').prop('checked', false);
+});
+	
 function getCityDropDown(state_id){
 	 
 	var csrf_token = $('meta[name="csrf-token"]').attr('content');

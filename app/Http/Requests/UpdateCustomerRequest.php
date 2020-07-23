@@ -29,6 +29,15 @@ class UpdateCustomerRequest extends FormRequest
 			],
 			'address'   => [
                'required',
+            ],
+			'state'   => [
+               'required',
+            ],
+			'district'   => [
+               'required',
+            ],
+			'address'   => [
+               'required',
             ] 
 			
         ];
