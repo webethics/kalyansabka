@@ -299,6 +299,10 @@ h3.failure{
 #aadhaar_front_show,#aadhaar_back_show,#pan_card_show{
 	height:200px;width:350px;
 }
+#empty_aadhaar_front img,
+#empty_aadhaar_back img,#empty_pan_card img{
+		height:200px;width:350px;
+}
 
 .markStateHead.btn.btn-primary.default{
 	background-color:green;
