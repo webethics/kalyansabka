@@ -182,12 +182,16 @@
 									mockFile.previewElement.classList.add('dz-complete');
 									
 									if(value_type == 'aadhaar_front'){
+										
+										$('#empty_aadhaar_front').html('<img src="'+base_url+settings.dropzoneURL+responseText.name+'">');
 										$('#aadhaar_front_show').attr('src',base_url+settings.dropzoneURL+responseText.name);
 									}
 									if(value_type == 'aadhaar_back'){
+										$('#empty_aadhaar_back').html('<img src="'+base_url+settings.dropzoneURL+responseText.name+'">');
 										$('#aadhaar_back_show').attr('src',base_url+settings.dropzoneURL+responseText.name);
 									}
 									if(value_type == 'pan_card'){
+										$('#empty_pan_card').html('<img src="'+base_url+settings.dropzoneURL+responseText.name+'">');
 										$('#pan_card_show').attr('src',base_url+settings.dropzoneURL+responseText.name);
 									}
 									
