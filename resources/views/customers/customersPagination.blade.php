@@ -32,26 +32,27 @@
 				  </div>
 			</td>
 			<td id="action_{{$customer->id}}">
+				
 				@if(check_role_access('customer_edit'))
 					<a class="action editCustomer" href="javascript:void(0)" data-user_id="{{ $customer->id }}" title="Edit Customer"><i class="simple-icon-note"></i> </a> 
 				@endif
 				@if(check_role_access('customer_manage'))
-					<a class="action"  href="javascript:void(0)"  data-user_id="{{ $customer->id }}" title="Manage Customer"><i class="simple-icon-login"></i> </a> 
+					<a class="action" target = "_blank" href="{{url('manage-customer')}}/{{$customer->id}}"  data-user_id="{{ $customer->id }}" title="Manage Customer"><i class="simple-icon-login"></i> </a> 
 				@endif
 				@if(check_role_access('customer_certificate_download'))
 					<a class="action markStateHead"  href="{{url('download-certificate')}}/{{ $customer->id }}"  data-user_id="{{ $customer->id }}" title="Download Certificate"><i class="simple-icon-cloud-download"></i> </a>
 				@endif	
 				
-				@if(check_role_access('mark_state_head'))
-					<a title="Mark as State Head"  data-id="{{ $customer->id }}" data-confirm_type="complete" data-confirm_message ="Are you sure you want to mark the Customer as State Head?"  data-left_button_name ="Yes" data-left_button_id ="mark_as_state_head" data-left_button_cls="btn-primary" class="open_confirmBox action markStateHead"  href="javascript:void(0)" data-customer_id="{{ $customer->id }}"><i class="simple-icon-like"></i></a>
-				@endif	
-				@if(check_role_access('mark_district_head'))
-					<a title="Mark as District Head"  data-id="{{ $customer->id }}" data-confirm_type="complete" data-confirm_message ="Are you sure you want to  mark the Customer as District Head?"  data-left_button_name ="Yes" data-left_button_id ="mark_as_district_head" data-left_button_cls="btn-primary" class="open_confirmBox action markDistrictHead"  href="javascript:void(0)" data-customer_id="{{ $customer->id }}"><i class="simple-icon-like"></i></a>
-				@endif	
-				
 				@if(check_role_access('customer_delete'))
 					<a title="Delete Customer"  data-id="{{ $customer->id }}" data-confirm_type="complete" data-confirm_message ="Are you sure you want to delete the Customer?"  data-left_button_name ="Yes" data-left_button_id ="delete_customer" data-left_button_cls="btn-primary" class="open_confirmBox action deleteCustomer"  href="javascript:void(0)" data-customer_id="{{ $customer->id }}"><i class="simple-icon-trash"></i></a>
-				@endif				
+				@endif	
+				@if($customer->role_id == 4)
+					<a title="State Head" class="open_confirmBox action stateHead"  href="javascript:void(0)"><i class="simple-icon-like"></i></a>
+				@endif	
+				@if($customer->role_id == 5)
+					<a title="District Head" class="open_confirmBox action districtHead"  href="javascript:void(0)"><i class="simple-icon-like"></i></a>
+				@endif
+				
 			</td>	
 		</tr>
 			@php $sno++ @endphp

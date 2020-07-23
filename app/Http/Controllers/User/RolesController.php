@@ -147,11 +147,19 @@ class RolesController extends Controller
 	public function role_delete($role_id){
 		if($role_id){
 			$main_user  = Role::where('id',$role_id)->first();
+			$userWithRole = User::where('role_id',$role_id)->first();
 			if($role_id != 1 && $role_id!= 2){
-				Role::where('id',$role_id)->delete();
-				$result =array('success' => true);	
-				return Response::json($result, 200);
+				
+				if($userWithRole){
+					$result =array('success' => false,'message'=>'This Role Contained Users So it cannot be deleted.');	
+					return Response::json($result, 200);
+				}else{
+					Role::where('id',$role_id)->delete();
+					$result =array('success' => true);	
+					return Response::json($result, 200);
+				}
 			}else{
+				
 				$result =array('success' => false,'message'=>'This account can not be deleted');	
 				return Response::json($result, 200);
 			}

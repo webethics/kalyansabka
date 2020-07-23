@@ -10,6 +10,7 @@ use Intervention\Image\Facades\Image;
 use App\Models\User;
 use App\Models\Setting;
 use App\Models\SiteSetting;
+use App\Models\UserDocuments;
 use App\Models\EmailTemplate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -27,7 +28,7 @@ class SettingsController extends Controller
 	public function __construct()
     {
 		$this->photos_path = public_path('/uploads/logo/');
-		$this->custom_photos_path = public_path('/uploads/custom_logo/');
+		$this->custom_photos_path = public_path('/uploads/documents/');
     }
    
 	/*
@@ -182,30 +183,12 @@ class SettingsController extends Controller
 	/*
 	* UPDATING SITE AND OTHER SETTINGS
 	*/
-    public function update_custom_site_settings(UpdateCustomsiteSettings $request, $user_id)
+    public function update_user_documents(UpdateCustomsiteSettings $request, $user_id)
     {
-		$requestData = SiteSetting::where('user_id',$user_id)->first();
-		$requestUpdateData = SiteSetting::where('user_id',$user_id);
 		
 		if($request->ajax()){
 			$data =array();
 			
-			$data['background_color']			= $request->background_color;
-			$data['font_color']					= $request->font_color;
-			$data['user_id']					= $user_id;
-			$data['welcome_text']				= $request->welcome_text;
-			$data['verbiage_text']				= $request->verbiage_text;
-			
-			/* Below commented code is for future user */
-			//$data['message_api_name']	= $request->api_name;
-			//$data['message_api_key']	= $request->api_key; */
-			if($requestData){
-				
-				$requestUpdateData->update($data);
-			}else{
-				
-				SiteSetting::create($data);
-			}
 			
 			$result =array(
 				'success' => true,
@@ -219,40 +202,55 @@ class SettingsController extends Controller
 	* LOGO UPLOAD ON AJAX REQUEST
 	*/
 	public function uploadCustomLogo(Request $request, $user_id,$type){
-		$requestData = SiteSetting::where('user_id',$user_id);
-		$getData = SiteSetting::where('user_id',$user_id)->first();
+		$requestData = UserDocuments::where('user_id',$user_id);
+		$data['user_id']  = $user_id;
+		
+		$documents = UserDocuments::where('user_id',$user_id)->first();
+		
+		if($documents){
+			$requestData->update($data);
+		}else{
+			UserDocuments::create($data);
+		}
 		if($request->ajax()){
 			$data =array();
 			$logo = $request->file('file');
 			if (!is_dir($this->custom_photos_path)) {
 				mkdir($this->custom_photos_path, 0777);
 			}
-			$settings =  SiteSetting::where('user_id',$user_id)->first();
-			if($type == 'header'){
-				if(!empty($settings->header_image)){
-					$file_path = $this->custom_photos_path.$settings->header_image;
+			//$documents =  UserDocuments::where('user_id',$user_id)->first();
+			if($type == 'aadhaar_front'){
+				if(!empty($documents->aadhaar_front)){
+					$file_path = $this->custom_photos_path.$documents->aadhaar_front;
 					File::delete($file_path);
 				}
 				$randomString = sha1(date('YmdHis') . Str::random(30));
 				$save_name = $randomString . '.' . $logo->getClientOriginalExtension();
-				$data['header_image'] = $save_name;
+				$data['aadhaar_front'] = $save_name;
 			}
 			
-			if($type == 'footer'){
-				if(!empty($settings->footer_image)){
-					$file_path = $this->custom_photos_path.$settings->footer_image;
+			if($type == 'aadhaar_back'){
+				if(!empty($documents->aadhaar_back)){
+					$file_path = $this->custom_photos_path.$documents->aadhaar_back;
 					File::delete($file_path);
 				}
 				$randomString = sha1(date('YmdHis') . Str::random(30));
 				$save_name = $randomString . '.' . $logo->getClientOriginalExtension();
-				$data['footer_image'] = $save_name;
+				$data['aadhaar_back'] = $save_name;
+			}
+			if($type == 'pan_card'){
+				if(!empty($documents->pan_card)){
+					$file_path = $this->custom_photos_path.$documents->pan_card;
+					File::delete($file_path);
+				}
+				$randomString = sha1(date('YmdHis') . Str::random(30));
+				$save_name = $randomString . '.' . $logo->getClientOriginalExtension();
+				$data['pan_card'] = $save_name;
 			}
 			
-			if($getData){
-				$requestData->update($data);
-			}else{
-				SiteSetting::create($data);
-			}
+			
+			$requestData->update($data);
+			
 			
 			$logo->move($this->custom_photos_path, $save_name);
 			$result =array(
@@ -269,15 +267,15 @@ class SettingsController extends Controller
 	*/
 	public function getCustomLogo(Request $request, $user_id,$type){
 		if($request->ajax()){
-			$settings =  SiteSetting::where('user_id',$user_id)->first();
+			$documents =  UserDocuments::where('user_id',$user_id)->first();
 			
-			if($type == 'header'){
-				if(!empty($settings->header_image)){				
-					$file_path = $this->custom_photos_path.$settings->header_image;
+			if($type == 'aadhaar_front'){
+				if(!empty($documents->aadhaar_front)){				
+					$file_path = $this->custom_photos_path.$documents->aadhaar_front;
 					$fileSize =  File::size($file_path);
 					$result =array(
 						'success' => true,
-						'name'=>$settings->header_image,
+						'name'=>$documents->aadhaar_front,
 						'size'=>$fileSize
 					);	
 				}else{
@@ -286,13 +284,28 @@ class SettingsController extends Controller
 					);
 				}
 			}
-			if($type == 'footer'){
-				if(!empty($settings->footer_image)){				
-					$file_path = $this->custom_photos_path.$settings->footer_image;
+			if($type == 'aadhaar_back'){
+				if(!empty($documents->aadhaar_back)){				
+					$file_path = $this->custom_photos_path.$documents->aadhaar_back;
 					$fileSize =  File::size($file_path);
 					$result =array(
 						'success' => true,
-						'name'=>$settings->footer_image,
+						'name'=>$documents->aadhaar_back,
+						'size'=>$fileSize
+					);	
+				}else{
+					$result =array(
+						'msg' => 'Error'
+					);
+				}
+			}
+			if($type == 'pan_card'){
+				if(!empty($documents->pan_card)){				
+					$file_path = $this->custom_photos_path.$documents->pan_card;
+					$fileSize =  File::size($file_path);
+					$result =array(
+						'success' => true,
+						'name'=>$documents->pan_card,
 						'size'=>$fileSize
 					);	
 				}else{
@@ -313,15 +326,15 @@ class SettingsController extends Controller
 			$data =array();
 			$rqst_file_name = $request->file_name;
 			
-			$requestData = SiteSetting::where('user_id',$user_id);
-			$settings =  SiteSetting::where('user_id',$user_id)->get()[0];
-			if($type == 'header'){
-				$file_path = $this->custom_photos_path.$settings->header_image;
-				$db_file_name = $settings->header_image;
+			$requestData = UserDocuments::where('user_id',$user_id);
+			$documents =  UserDocuments::where('user_id',$user_id)->get()[0];
+			if($type == 'aadhaar_front'){
+				$file_path = $this->custom_photos_path.$documents->aadhaar_front;
+				$db_file_name = $documents->aadhaar_front;
 				$fileSize =  File::size($file_path);
 				if($db_file_name == $rqst_file_name){
 					File::delete($file_path);
-					$data['header_image'] = '';
+					$data['aadhaar_front'] = '';
 					$requestData->update($data);
 					$result =array(
 						'success' => true,
@@ -333,13 +346,31 @@ class SettingsController extends Controller
 					);
 				}
 			}
-			if($type == 'footer'){
-				$file_path = $this->custom_photos_path.$settings->footer_image;
-				$db_file_name = $settings->footer_image;
+			if($type == 'aadhaar_back'){
+				$file_path = $this->custom_photos_path.$documents->aadhaar_back;
+				$db_file_name = $documents->aadhaar_back;
 				$fileSize =  File::size($file_path);
 				if($db_file_name == $rqst_file_name){
 					File::delete($file_path);
-					$data['footer_image'] = '';
+					$data['aadhaar_back'] = '';
+					$requestData->update($data);
+					$result =array(
+						'success' => true,
+						'msg'=>'Logo deleted successfully.',
+					);
+				}else{
+					$result =array(
+						'msg'=>'Error',
+					);
+				}
+			}
+			if($type == 'pan_card'){
+				$file_path = $this->custom_photos_path.$documents->pan_card;
+				$db_file_name = $documents->pan_card;
+				$fileSize =  File::size($file_path);
+				if($db_file_name == $rqst_file_name){
+					File::delete($file_path);
+					$data['pan_card'] = '';
 					$requestData->update($data);
 					$result =array(
 						'success' => true,

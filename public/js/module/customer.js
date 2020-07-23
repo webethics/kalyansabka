@@ -314,7 +314,7 @@ $(document).on('click', '.mark_as_district_head' , function() {
         success: function(data) {
 			if(data.success){
 				notification('Success',data.message,'top-right','success',2000);
-				
+				setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
 			}else{
 				
 				notification('Error',data.message,'top-right','error',3000);
@@ -337,7 +337,7 @@ $(document).on('click', '.mark_as_state_head' , function() {
         success: function(data) {
 			if(data.success){
 				notification('Success',data.message,'top-right','success',2000);
-				
+				setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
 			}else{
 				
 				notification('Error',data.message,'top-right','error',3000);

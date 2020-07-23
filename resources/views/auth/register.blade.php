@@ -69,8 +69,7 @@
 												
 												<label class="has-float-label mb-3">
 												
-													<input type="text" autocomplete="off"  class="form-control datepickerClass"  id="date_of_birth" name="date_of_birth"
-														 value="{{old('date_of_birth')}}">
+													<input type="text" class="form-control datepicker" placeholder="">
 													<span>{{trans('global.date_of_birth')}}<em>(DD-MM-YYYY)</em><span style="color:red;">*</span></span>
 													
 													<div class="error_margin"><span class="error date_of_birth_error" >  {{ $errors->first('date_of_birth')  }} </span></div>
@@ -211,6 +210,15 @@
                 </div>
             </div>
 
+
+<style>
+.datepicker-dropdown {
+	-webkit-transform: translate(0);
+	-ms-transform: translate(0);
+	transform: translate(0);   
+}
+</style>
+
 @section('strpieJs')
 <script>
 
@@ -257,12 +265,6 @@ $(document).ready(function(){
 	if(date_of_birth != ''){
 		getAgePriceCalculation();
 	}
-	$('.datepickerClass').datepicker({
-		format: 'dd-mm-yyyy',
-		 maxDate: 0
-	});
-	
-	
 });
 
 function getCityDropDown(state_id){

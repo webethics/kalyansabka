@@ -87,6 +87,21 @@
 		</div>	
 		<input type="hidden" name="district_selected" id="district_selected" value="{{$user->district_id}}">
 	
+		
+		<div class="form-row mt-4">
+			<div class="col-md-12">
+			
+				@if(check_role_access('mark_state_head'))
+					<a title="Mark as State Head"  data-id="{{ $user->id }}" data-confirm_type="complete" data-confirm_message ="Are you sure you want to mark the Customer as State Head?"  data-left_button_name ="Yes" data-left_button_id ="mark_as_state_head" data-left_button_cls="btn-primary" class="open_confirmBox action markStateHead btn btn-primary default"  href="javascript:void(0)" data-customer_id="{{ $user->id }}">Mark As State Head</a>
+				@endif	
+				@if(check_role_access('mark_district_head'))
+					<a title="Mark as District Head"  data-id="{{ $user->id }}" data-confirm_type="complete" data-confirm_message ="Are you sure you want to  mark the Customer as District Head?"  data-left_button_name ="Yes" data-left_button_id ="mark_as_district_head" data-left_button_cls="btn-primary" class="open_confirmBox action markDistrictHead btn btn-primary default"  href="javascript:void(0)" data-customer_id="{{ $user->id }}">Mark As District Head</a>
+				@endif	
+				
+			</div>
+		</div>
+		
+		
 		<div class="form-row mt-4">
 		<div class="col-md-12">
 		<input id ="user_id" class="form-check-input" type="hidden" value="{{$user->id}}">
@@ -94,6 +109,7 @@
 		<div class="spinner-border text-primary request_loader" style="display:none"></div>
 		</div>
 		</div>
+		
 		</form>
 
 				</div>

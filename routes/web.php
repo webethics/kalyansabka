@@ -34,6 +34,9 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	
 	Route::post('user/edit/{request_id}', 'UsersController@edit'); //Edit User
 	Route::post('update-profile/{user_id}', 'UsersController@profileUpdate');//UPDATE USER
+	Route::post('update-bank-details/{user_id}', 'UsersController@updateBankDetails');//UPDATE USER
+	
+	
 	Route::post('user/roleDropdown', 'UsersController@roleDropdown');
 	
 	Route::get('account', 'UsersController@account');
@@ -56,10 +59,10 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('fetch/logo/{request_id}',array('uses'=>'SettingsController@getLogo'));
 	Route::post('delete/logo/{request_id}',array('uses'=>'SettingsController@deleteLogo'));
 	// Custom  Setting 
-	Route::post('uploads/custom_logo/{request_id}/{request_type}',array('uses'=>'SettingsController@uploadCustomLogo'));
+	Route::post('uploads/documents/{request_id}/{request_type}',array('uses'=>'SettingsController@uploadCustomLogo'));
 	Route::post('fetch/custom_logo/{request_id}/{request_type}',array('uses'=>'SettingsController@getCustomLogo'));
 	Route::post('delete/custom_logo/{request_id}/{request_type}',array('uses'=>'SettingsController@deleteCustomLogo'));
-	Route::post('update/site_settings/{request_id}',array('uses'=>'SettingsController@update_custom_site_settings'));
+	Route::post('update/update_documents/{request_id}',array('uses'=>'SettingsController@update_user_documents'));
 	//EMAIL TEMPLATE 
 	Route::get('emails',array('uses'=>'EmailController@index'));
 	Route::get('email/edit/{template_id}',array('uses'=>'EmailController@email_template_edit'));
@@ -96,7 +99,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('customer/mark_as_state_head/{request_id}',array('uses'=>'CustomersController@mark_as_state_head')); //Edit User
 	Route::post('export_customers',array('uses'=>'CustomersController@export_customers')); //Edit User
 	Route::get('download-certificate/{request_id}',array('uses'=>'CustomersController@downloadCertificate')); //Edit User
-	
+	Route::get('manage-customer/{id}', 'CustomersController@manageCustomer');
 	
 	//Dashboard
 	Route::get('dashboard',array('uses'=>'DashboardController@index'));

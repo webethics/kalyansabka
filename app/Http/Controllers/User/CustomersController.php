@@ -20,6 +20,7 @@ use League\Csv\Writer;
 use Auth;
 use Config;
 use Response;
+use Session;
 use Hash;
 use DB;
 use DateTime;
@@ -270,69 +271,88 @@ class CustomersController extends Controller
 	public function mark_as_district_head($customer_id){
 		$requestData = User::where('id',$customer_id);
 		$stored_data = User::where('id',$customer_id)->first();
-		$district_id  = $stored_data->district_id;
 		
-		$checkCurrentDistrictHead = DistrictHeads::where('district_id',$district_id)->first();
-		
-		$checkUserAsDistrictHead = DistrictHeads::where('user_id',$customer_id)->first();
-		
-		 if($checkUserAsDistrictHead){
-			if($checkUserAsDistrictHead->district_id == $district_id){
-				$result =array('success' => false,'message'=>'Customer is already assigned as District Head');	
+		if($stored_data->district_id){
+			$district_id  = $stored_data->district_id;
+			$stateHead = StateHeads::where('user_id',$customer_id)->first();
+			$checkCurrentDistrictHead = DistrictHeads::where('district_id',$district_id)->first();
+			
+			$checkUserAsDistrictHead = DistrictHeads::where('user_id',$customer_id)->first();
+			
+			 if($checkUserAsDistrictHead){
+				if($checkUserAsDistrictHead->district_id == $district_id){
+					$result =array('success' => false,'message'=>'Customer is already assigned as District Head');	
+					return Response::json($result, 200);
+				}else{
+					$result =array('success' => false,'message'=>'District Head is already assigned.');	
+					return Response::json($result, 200);
+				}
+			}elseif($checkCurrentDistrictHead){
+				$result =array('success' => false,'message'=>'District Head is already assigned for the Customer`s District');	
+				return Response::json($result, 200);
+			}elseif($stateHead){
+				$result =array('success' => false,'message'=>'Customer is already assigned as the State Head');	
 				return Response::json($result, 200);
 			}else{
-				$result =array('success' => false,'message'=>'District Head is already assigned.');	
+				$data = array();
+				$data['district_id'] = $district_id;
+				$data['user_id'] = $customer_id;
+				DistrictHeads::create($data);
+				
+				$updateRoledate = array();
+				$updateRoledate['role_id'] = 5;
+				$requestData->update($updateRoledate);
+				
+				$result =array('success' => true,'message'=>'District Head assigned successfully.');	
 				return Response::json($result, 200);
 			}
-		}elseif($checkCurrentDistrictHead){
-			$result =array('success' => false,'message'=>'District Head is already assigned for the Customer`s District');	
-		    return Response::json($result, 200);
 		}else{
-			$data = array();
-			$data['district_id'] = $district_id;
-			$data['user_id'] = $customer_id;
-			DistrictHeads::create($data);
-			
-			$updateRoledate = array();
-			$updateRoledate['role_id'] = 5;
-			$requestData->update($updateRoledate);
-			
-			$result =array('success' => true,'message'=>'District Head assigned successfully.');	
+			$result =array('success' => true,'message'=>'No District is assigned to the customer.');	
 			return Response::json($result, 200);
 		}
+		
 		
 	}
 
 	public function mark_as_state_head($customer_id){
 		$requestData = User::where('id',$customer_id);
 		$stored_data = User::where('id',$customer_id)->first();
-		$state_id  = $stored_data->state_id;
 		
-		
-		$checkCurrentStateHead = StateHeads::where('state_id',$state_id)->first();
-		
-		$checkUserAsStateHead = StateHeads::where('user_id',$customer_id)->first();
-		
-		 if($checkUserAsStateHead){
-			if($checkUserAsStateHead->state_id == $state_id){
-				$result =array('success' => false,'message'=>'Customer is already assigned as State Head');	
+		if($stored_data->state_id){
+			$state_id  = $stored_data->state_id;
+			$districtHead = DistrictHeads::where('user_id',$customer_id)->first();
+			
+			$checkCurrentStateHead = StateHeads::where('state_id',$state_id)->first();
+			
+			$checkUserAsStateHead = StateHeads::where('user_id',$customer_id)->first();
+			
+			 if($checkUserAsStateHead){
+				if($checkUserAsStateHead->state_id == $state_id){
+					$result =array('success' => false,'message'=>'Customer is already assigned as State Head');	
+					return Response::json($result, 200);
+				}else{
+					$result =array('success' => false,'message'=>'State Head is already assigned.');	
+					return Response::json($result, 200);
+				}
+			}elseif($checkCurrentStateHead){
+				$result =array('success' => false,'message'=>'State Head is already assigned for the Customer`s State');	
+				return Response::json($result, 200);
+			}elseif($districtHead){
+				$result =array('success' => false,'message'=>'Customer is already assigned as the District Head');	
 				return Response::json($result, 200);
 			}else{
-				$result =array('success' => false,'message'=>'State Head is already assigned.');	
+				$data = array();
+				$data['state_id'] = $state_id;
+				$data['user_id'] = $customer_id;
+				StateHeads::create($data);
+				$updateRoledate = array();
+				$updateRoledate['role_id'] = 4;
+				$requestData->update($updateRoledate);
+				$result =array('success' => true,'message'=>'State Head assigned successfully.');	
 				return Response::json($result, 200);
 			}
-		}elseif($checkCurrentStateHead){
-			$result =array('success' => false,'message'=>'State Head is already assigned for the Customer`s State');	
-		    return Response::json($result, 200);
 		}else{
-			$data = array();
-			$data['state_id'] = $state_id;
-			$data['user_id'] = $customer_id;
-			StateHeads::create($data);
-			$updateRoledate = array();
-			$updateRoledate['role_id'] = 4;
-			$requestData->update($updateRoledate);
-			$result =array('success' => true,'message'=>'State Head assigned successfully.');	
+			$result =array('success' => true,'message'=>'No State is assigned to the customer.');	
 			return Response::json($result, 200);
 		}
 	}
@@ -347,6 +367,23 @@ class CustomersController extends Controller
 		//echo $filetopath;die;
 		return response()->download($filetopath,$file_name,$headers);
 	}
-	
+	public function manageCustomer($id){
+		// edit user profile
+	    $result = DB::table('users')->where('id', '=' , $id)->get();
+	    //$email=$result[0]->email;
+		
+	    if (Auth::loginUsingId($id))
+		{
+			//Session::put('is_admin_login', '1');
+			return redirect('account');
+		}
+		else
+		{
+			return redirect('/login');
+		}
+		//Session::put('user_id', $result[0]->id);
+		
+		//return redirect('dashboard');
+	}
 }
 ?>

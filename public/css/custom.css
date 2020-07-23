@@ -77,12 +77,12 @@
 }
 
 
-.datepicker-dropdown {
+/* .datepicker-dropdown {
 	-webkit-transform: translate(0);
 	-ms-transform: translate(0);
-	transform: translate(0);
+	transform: translate(0);   
 }
-
+ */
 .error,.editable-error-block{
 	color:red;
 	font-size:11px;
@@ -290,12 +290,25 @@ h3.failure{
 .spinner-border{
 	vertical-align:middle;
 }
-
-.markStateHead .simple-icon-like{
+.stateHead .simple-icon-like{
 	color:green;
 }
-.markDistrictHead .simple-icon-like{
+.districtHead .simple-icon-like{
 	color:orange;
+}
+#aadhaar_front_show,#aadhaar_back_show,#pan_card_show{
+	height:200px;width:350px;
+}
+
+.markStateHead.btn.btn-primary.default{
+	background-color:green;
+	border:none;
+	padding:.4rem 1.0rem .4rem 1.0rem
+}
+.markDistrictHead.btn-primary{
+	background-color:orange;
+	border:none;
+	padding:.4rem 1.0rem .4rem 1.0rem
 }
 
 @media(min-width:768px) {
