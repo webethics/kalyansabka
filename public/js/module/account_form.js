@@ -15,14 +15,16 @@ $(document).on('submit','#bank_info_edit', function(e) {
 				notification('Success','User Updated Successfully','top-right','success',2000);
 				$('#bank_info_show').show('slow');
 				$('#bank_info_edit').hide('slow');	
+				
 				$('#account_name_show').text(data.account_name);
 				$('#account_number_show').text(data.account_number);
-				$('#bank_name_show').text(data.bank_name);
-				$('#branch_name_show').text(data.branch_name);
+				$('#ifsc_code_show').text(data.ifsc_code);
+				$('#branch_name_show').text(data.bank_name);
+				
 				$('#account_name').text(data.account_name);
 				$('#account_number').text(data.account_number);
+				$('#ifsc_code').text(data.ifsc_code);
 				$('#bank_name').text(data.bank_name);
-				$('#branch_name').text(data.branch_name);
 				
 			}
         },
