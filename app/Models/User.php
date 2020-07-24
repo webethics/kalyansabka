@@ -45,9 +45,11 @@ class User extends Authenticatable
 		'remember_token',
 		'refered_by',
 		'hard_copy_certificate',
-		'verify_token'
-		 	 
+        'certificate_status',
+		'verify_token' 
     ];
+
+    protected $appends = ['full_name'];
 
     public function getEmailVerifiedAtAttribute($value)
     {
@@ -70,8 +72,10 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPassword($token));
     }
-	
-	
 
+    public function getFullNameAttribute()
+    {
+        return ucfirst("{$this->first_name} {$this->last_name}");
+    }
    
 }

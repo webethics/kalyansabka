@@ -388,6 +388,7 @@ return [
 	'filter_by_role'           		=> 'Filter by Role',
 	'filter_by_state'           	=> 'Filter by State',
 	'filter_by_city'           		=> 'Filter by City',
+    'filter_by_district'            => 'Filter by District',
 	'filter_by_priority'           	=> 'Filter by priority',
 	'search_by_case_number'         => 'Search by case number',
 	'search_by_text'           		=> 'Search by text',

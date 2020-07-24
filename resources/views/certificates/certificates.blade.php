@@ -9,7 +9,7 @@
 	<div class="row mb-4">
 		<div class="col-12 mb-4">
 		
-			@include('partials.searchCustomerForm')
+			@include('partials.searchCertificateForm')
 							
 			<div class="card">
 				<div class="card-body">

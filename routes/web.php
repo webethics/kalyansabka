@@ -95,7 +95,8 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	//certificates
 	Route::get('certificates',array('uses'=>'CertificateController@certificates'));
 	Route::get('customer-certificate',array('uses'=>'CertificateController@customer_certificate'));
-	Route::post('request/edit/{request_id}', 'CertificateController@certificate_request_edit'); //Edit request
+	Route::post('certificate/edit/{request_id}', 'CertificateController@certificate_request_edit'); //Edit request
+	Route::post('update-certificate-request/{request_id}', 'CertificateController@update_certificate'); //Update certificate
 
 	
 
