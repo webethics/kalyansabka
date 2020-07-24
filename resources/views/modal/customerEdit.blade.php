@@ -6,7 +6,7 @@
 		</button>
 	</div>
 	<div class="modal-body">
-	<form action="{{ url('update-profile/') }}/{{ $user->id }}" method="POST" id="updateUser" >
+	<form action="{{ url('update-customer/') }}/{{ $user->id }}" method="POST" id="updateUser" >
 	 @csrf
 		
 		<div class="form-group form-row-parent">
@@ -32,7 +32,7 @@
 		<div class="form-group form-row-parent">
 		<label class="col-form-label">{{ trans('global.email') }}</label>
 		<div class="d-flex control-group">
-		<input type="email" name="email" disabled="disabled" value="{{$user->email}}" class="form-control" placeholder="{{ trans('global.email') }}">								
+		<input type="email" name="email" disabled="disabled" value="{{$user->email}}" readonly class="form-control" placeholder="{{ trans('global.email') }}">								
 		</div>								
 		</div>	
 	
@@ -61,9 +61,49 @@
 		 <div class="aadhar_number_error errors"></div>	
 		</div>	
 		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">{{ trans('global.state') }} <em>*</em></label>
+		<div class="d-flex control-group">
+			<select name="state" id="state" class="form-control">
+				<option value="">Select State</option>
+				@foreach(list_states() as $key=>$value)
+					<option value="{{$value->id}}" @if ("$user->state_id" == "$value->id") {{ 'selected' }} @endif >{{$value->state_name}}</option>
+				@endforeach
+			</select>							
+		</div>
+		 <div class="state_error errors"></div>	
+		</div>	
 		
 		
-								
+		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">{{ trans('global.district') }}<em>*</em></label>
+		<div class="d-flex control-group">
+			<select name="district" id="district" class="form-control" >
+				<option value="">Select District</option>
+			</select>						
+		</div>
+		 <div class="district_error errors"></div>	
+		
+		</div>	
+		<input type="hidden" name="district_selected" id="district_selected" value="{{$user->district_id}}">
+	
+		
+		<div class="form-row mt-4">
+			<div class="col-md-12">
+			
+				@if(check_role_access('mark_state_head'))
+					<label class="radio-inline ml-3"><input type="checkbox" name="mark_as_head" class="mark_as_head" value="state_head" @if($user->role_id == 4) checked @endif  /> <span>Mark as State Head</span></label>
+				@endif	
+				@if(check_role_access('mark_district_head'))
+					<label class="radio-inline ml-3"><input type="checkbox" name="mark_as_head" class="mark_as_head" value="district_head"  @if($user->role_id == 5) checked @endif  /> <span>Mark as District Head</span></label>
+				@endif	
+				
+			</div>
+			 <div class="mark_as_head_error errors"></div>	
+		</div>
+		
+		
 		<div class="form-row mt-4">
 		<div class="col-md-12">
 		<input id ="user_id" class="form-check-input" type="hidden" value="{{$user->id}}">
@@ -71,6 +111,7 @@
 		<div class="spinner-border text-primary request_loader" style="display:none"></div>
 		</div>
 		</div>
+		
 		</form>
 
 				</div>

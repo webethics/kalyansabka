@@ -2,6 +2,7 @@
      COMMON PAGINATION START
 ======================================*/
  $(window).on('hashchange', function() {
+	
 	if (window.location.hash) {
 		var page = window.location.hash.replace('#', '');
 		if (page == Number.NaN || page <= 0) {
@@ -20,43 +21,25 @@ $(document).ready(function(){
 		var page=$(this).attr('href').split('page=')[1];
 		getData(page);
 	}); 
-	countnotification();
+	
 });
 	function getData(page){
 		
 		
 	  var filter_str ='';
-	  // SEARCH FILTER FOR REQUEST 
-	  if($('#case_name').val()!='' && $('#case_name').val()!=undefined)
-		filter_str +=  '&name=' +$('#case_name').val();
-      if($('#case_number').val()!='' && $('#case_number').val()!=undefined)
-		filter_str +=  '&case_number=' +$('#case_number').val();
-      if($('#status').val()!=null && $('#status').val()!=undefined)
-		filter_str +=  '&status=' +$('#status').val();
-      if($('#priority').val()!=null && $('#priority').val()!=undefined)
-		filter_str +=  '&priority=' +$('#priority').val();
-      if($('#end_date').val()!='' && $('#end_date').val()!=undefined)
-		filter_str +=  '&end_date=' +$('#end_date').val();
-      if($('#start_date').val()!='' && $('#start_date').val()!=undefined)
-		filter_str +=  '&start_date=' +$('#start_date').val();
-	  if($('#url_name').val()!='' && $('#url_name').val()!=undefined)
-		filter_str +=  '&url_name=' +$('#url_name').val();
-	
-	  
-	  // SEARCH FILTER FOR USER 
-	  if($('#name').val()!='' && $('#name').val()!=undefined)
-		filter_str +=  '&name=' +$('#name').val();
-      if($('#email').val()!='' && $('#email').val()!=undefined)
+	 
+	  // SEARCH FILTER FOR Customer
+	if($('#first_name').val()!='' && $('#first_name').val()!=undefined)
+		filter_str +=  '&first_name=' +$('#first_name').val();
+	if($('#last_name').val()!='' && $('#last_name').val()!=undefined)
+		filter_str +=  '&last_name=' +$('#last_name').val();
+	if($('#email').val()!='' && $('#email').val()!=undefined)
 		filter_str +=  '&email=' +$('#email').val();
-      if($('#role_id').val()!=null && $('#role_id').val()!=undefined)
+	if($('#role_id').val()!=null && $('#role_id').val()!=undefined)
 		filter_str +=  '&role_id=' +$('#role_id').val(); 
-	  if($('#business_id').val()!=null && $('#business_id').val()!=undefined)
-		filter_str +=  '&business_id=' +$('#business_id').val();
-	  if($('#business_name').val()!=null && $('#business_name').val()!=undefined)
-		filter_str +=  '&business_name=' +$('#business_name').val();
-      if($('#end_date').val()!='' && $('#end_date').val()!=undefined)
+	if($('#end_date').val()!='' && $('#end_date').val()!=undefined)
 		filter_str +=  '&end_date=' +$('#end_date').val();
-      if($('#start_date').val()!='' && $('#start_date').val()!=undefined)
+    if($('#start_date').val()!='' && $('#start_date').val()!=undefined)
 		filter_str +=  '&start_date=' +$('#start_date').val();
     
 	//alert($('#role_id').val());
@@ -110,6 +93,7 @@ $('.clear').click(function(){
 	
 	var id = $(this).data('id');
 	var confirm_message = $(this).data('confirm_message');
+	var confirm_message_1 = $(this).data('confirm_message_1');
 	var leftButtonId = $(this).data('left_button_id');
 	var leftButtonName = $(this).data('left_button_name');
 	var leftButtonCls = $(this).data('left_button_cls');
@@ -118,7 +102,7 @@ $('.clear').click(function(){
     $.ajax({
         type: "POST",
         url: base_url+'/confirmModal',
-        data:{id:id,confirm_message:confirm_message,leftButtonId:leftButtonId,leftButtonName:leftButtonName,leftButtonCls:leftButtonCls,_token:csrf_token},
+        data:{id:id,confirm_message:confirm_message,confirm_message_1:confirm_message_1,leftButtonId:leftButtonId,leftButtonName:leftButtonName,leftButtonCls:leftButtonCls,_token:csrf_token},
         success: function(data) {
 			 $('.confirmBoxCompleteModal').html(data)
 			 $('.confirmBoxCompleteModal').modal('show')

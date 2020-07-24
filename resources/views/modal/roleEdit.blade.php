@@ -18,21 +18,25 @@
 		</div>
 		
 		<div class="form-group form-row-parent">
-			<label class="col-form-label">Manage Permissions<em>*</em> </label>
+			<label class="col-form-label">Manage Permissions<em>*</em></label>
 			<input type="button" id="checkAll" class="btn btn-primary btn-sm" value="Check All" name="select_all">
+			<div class="clearfix"></div>
 			@foreach($listPermission as $permission)
-				
+				<label class="col-form-label"><strong>{{$permission->name}}</strong></label>
+				@foreach($permission->permissionList as $perm)
+					
 					@php $selected = ''; @endphp
-					@if($roles->permissionArray && in_array($permission->id ,$roles->permissionArray))
+					@if($roles->permissionArray && in_array($perm->id ,$roles->permissionArray))
 						@php	$selected = 'checked=checked' @endphp
 					@endif
 					
-				<div class="form-check">
-				  <input class="form-check-input" type="checkbox" name="permissions" id="permissions" {{$selected}} value="{{$permission->id}}">
-				  <label class="form-check-label" for="gridRadios1">
-					{{$permission->name}}
-				  </label>
-				</div>
+					<div class="form-check">
+					  <input class="form-check-input" type="checkbox" name="permissions" id="permissions" {{$selected}} value="{{$perm->id}}">
+					  <label class="form-check-label" for="gridRadios1">
+						{{$perm->name}}
+					  </label>
+					</div>
+				@endforeach
 				
 			@endforeach
 			<div class="permissions_error errors"></div>	

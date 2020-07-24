@@ -35,6 +35,7 @@ class PaymentsController extends Controller
 	
 	public function withdrawls(Request $request)
     {
+		access_denied_user('withdrawl_listing');
 		$request->role_id = 1;
         $payments = $this->withdrawl_search($request,'');
 		$roles = Role::all();
@@ -48,6 +49,7 @@ class PaymentsController extends Controller
 	}
 	public function payments(Request $request)
     {
+		access_denied_user('payment_listing');
 		$request->role_id = 1;
         $payments = $this->payments_search($request,'');
 		$roles = Role::all();
@@ -96,7 +98,7 @@ class PaymentsController extends Controller
 	
 	public function payment_edit($user_id)
     {
-		
+		access_denied_user('payment_edit');
         $user = User::where('id',$user_id)->get();
 		$roles = Role::all();
 		if(count($user)>0){

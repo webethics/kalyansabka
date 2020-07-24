@@ -34,6 +34,9 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	
 	Route::post('user/edit/{request_id}', 'UsersController@edit'); //Edit User
 	Route::post('update-profile/{user_id}', 'UsersController@profileUpdate');//UPDATE USER
+	Route::post('update-bank-details/{user_id}', 'UsersController@updateBankDetails');//UPDATE USER
+	
+	
 	Route::post('user/roleDropdown', 'UsersController@roleDropdown');
 	
 	Route::get('account', 'UsersController@account');
@@ -56,10 +59,10 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('fetch/logo/{request_id}',array('uses'=>'SettingsController@getLogo'));
 	Route::post('delete/logo/{request_id}',array('uses'=>'SettingsController@deleteLogo'));
 	// Custom  Setting 
-	Route::post('uploads/custom_logo/{request_id}/{request_type}',array('uses'=>'SettingsController@uploadCustomLogo'));
+	Route::post('uploads/documents/{request_id}/{request_type}',array('uses'=>'SettingsController@uploadCustomLogo'));
 	Route::post('fetch/custom_logo/{request_id}/{request_type}',array('uses'=>'SettingsController@getCustomLogo'));
 	Route::post('delete/custom_logo/{request_id}/{request_type}',array('uses'=>'SettingsController@deleteCustomLogo'));
-	Route::post('update/site_settings/{request_id}',array('uses'=>'SettingsController@update_custom_site_settings'));
+	Route::post('update/update_documents/{request_id}',array('uses'=>'SettingsController@update_user_documents'));
 	//EMAIL TEMPLATE 
 	Route::get('emails',array('uses'=>'EmailController@index'));
 	Route::get('email/edit/{template_id}',array('uses'=>'EmailController@email_template_edit'));
@@ -86,8 +89,17 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	
 	// customers
 	Route::get('customers',array('uses'=>'CustomersController@customers'));
+	Route::post('customers',array('uses'=>'CustomersController@customers'));
+	Route::post('update-customer/{request_id}', 'CustomersController@update_customer'); //Edit User
 	Route::post('customer/edit/{request_id}', 'CustomersController@customer_edit'); //Edit User
 	Route::get('customer/create/',array('uses'=>'CustomersController@customer_create')); //Edit User
+	Route::post('create-new-customer', 'CustomersController@customer_create_new'); //Edit User
+	Route::post('customer/delete_customer/{request_id}',array('uses'=>'CustomersController@customer_delete')); //Edit User
+	Route::post('customer/mark_as_district_head/{request_id}',array('uses'=>'CustomersController@mark_as_district_head')); //Edit User
+	Route::post('customer/mark_as_state_head/{request_id}',array('uses'=>'CustomersController@mark_as_state_head')); //Edit User
+	Route::post('export_customers',array('uses'=>'CustomersController@export_customers')); //Edit User
+	Route::get('download-certificate/{request_id}',array('uses'=>'CustomersController@downloadCertificate')); //Edit User
+	Route::get('manage-customer/{id}', 'CustomersController@manageCustomer');
 	
 	//Dashboard
 	Route::get('dashboard',array('uses'=>'DashboardController@index'));
@@ -113,6 +125,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::get('roles',array('uses'=>'RolesController@roles'));
 	Route::post('roles/edit/{request_id}', 'RolesController@roles_edit'); //Edit request
 	Route::get('role/create/',array('uses'=>'RolesController@role_create')); //Edit User
+	Route::post('role/delete_role/{request_id}',array('uses'=>'RolesController@role_delete')); //Edit User
 	Route::post('/create-role-permissions/',array('uses'=>'RolesController@role_permission_create')); //Edit User
 	Route::post('/update-role-permissions/',array('uses'=>'RolesController@role_permission_update')); //Edit User
 	

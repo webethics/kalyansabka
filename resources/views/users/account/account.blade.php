@@ -2,8 +2,10 @@
 @section('content')
 @section('profilepageJsCss')
 
-<script src="{{ asset('js/module/jquery.customer.js')}}"></script>
+
 <script src="{{ asset('js/module/jquery.account.js')}}"></script>
+<script src="{{ asset('js/module/account_form.js')}}"></script>
+<script src="{{ asset('js/module/jquery.customer_1.js')}}"></script>
 @stop
 
 <div class="row">
@@ -37,11 +39,12 @@
 									aria-controls="fourth" aria-selected="true">{{trans('global.bank_details')}}</a>
 							</li>
 							@endif
-							<li class="nav-item">
-								<a class="nav-link" id="fifth-tab" data-toggle="tab" href="#fifth" role="tab"
-									aria-controls="fifth" aria-selected="false">{{trans('global.reset_password')}}</a>
-							</li>
-						
+							@if(check_role_access('account_reset_password'))
+								<li class="nav-item">
+									<a class="nav-link" id="fifth-tab" data-toggle="tab" href="#fifth" role="tab"
+										aria-controls="fifth" aria-selected="false">{{trans('global.reset_password')}}</a>
+								</li>
+							@endif
 						</ul>
 					</div>				  
 				</div>	
@@ -117,7 +120,7 @@
 										</div>
 									</div>
 									
-									@if(current_user_role_id()==3)
+									@if(current_user_role_id()!=1)
 										
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Mobile <em>*</em></label>
@@ -203,7 +206,7 @@
 								</form>
 							</div>	
 
-							
+							@if(current_user_role_id()!=1)
 							<div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
 								<div class="" id="nomminee_pass_info">
 									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="nominee_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
@@ -410,49 +413,67 @@
 									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Front Image</label>
-										<label class="col-lg-9 col-xl-10 col-form-label"><img src="{{asset('img/aadhaar_front.jpg')}}"></label>
+										@if($document_details && $document_details->aadhaar_front)
+											<label class="col-lg-9 col-xl-10 col-form-label"><img id="aadhaar_front_show" src="{{asset('uploads/documents')}}/{{$document_details->aadhaar_front}}"></label>
+										@else
+											<label class="col-lg-9 col-xl-10 col-form-label" id="empty_aadhaar_front">No Document Uploaded</label>
+										@endif
 									</div>
 									
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Back Image</label>
-										<label class="col-lg-9 col-xl-10 col-form-label"><img src="{{asset('img/aadhaar_front.jpg')}}"></label>
+										@if($document_details && $document_details->aadhaar_back)
+											<label class="col-lg-9 col-xl-10 col-form-label"><img id="aadhaar_back_show" src="{{asset('uploads/documents')}}/{{$document_details->aadhaar_back}}"></label>
+										@else
+											<label class="col-lg-9 col-xl-10 col-form-label" id="empty_aadhaar_back">No Document Uploaded</label>
+										@endif
 									</div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Pan Card Image</label>
-										<label class="col-lg-9 col-xl-10 col-form-label"><img src="{{asset('img/pancard.jpg')}}"></label>
+										@if($document_details && $document_details->pan_card)
+											<label class="col-lg-9 col-xl-10 col-form-label"><img id="pan_card_show" src="{{asset('uploads/documents')}}/{{$document_details->pan_card}}"></label>
+										@else
+											<label class="col-lg-9 col-xl-10 col-form-label" id="empty_pan_card">No Document Uploaded</label>
+										@endif
 									</div>
 								</div>
 							
-								<form name="reset_pass" id="site_customer_settings" data-id="{{$user->id}}" style="display:none">
+								<form name="documents_upload" id="site_customer_settings" data-id="{{$user->id}}" style="display:none">
+									
+									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="document_info_cancel" href="javascript:void(0)"><i class="simple-icon-close"></i></a></div>
+									
+									<div class="clearfix"></div>
+									
+									
 									<div class="form-group">
 										<label class="col-form-label">Upload Aadhaar Front Image</label>
 									
-										<div id="drop_here_header" data-type="header" class="dropzone drop_here_logo"></div>
+										<div id="image-1-10-1" dropzone_Required = "true" data-type="aadhaar_front" data_id = "126" class="dropzone drop_here_logo"></div>
 										<div class="dropzoneError errors"></div>
 									</div>
 									
 									<div class="form-group">
 										<label class="col-form-label">Upload Aadhaar Back Image</label>
 									
-										<div id="drop_here_footer" data-type="footer" class="dropzone drop_here_logo"></div>
+										<div id="image-2-20-2" dropzone_Required = "true"  data-type="aadhaar_back"  data_id = "126"  class="dropzone drop_here_logo"></div>
 										<div class="dropzoneError errors"></div>
 									</div>
 									
 									<div class="form-group">
 										<label class="col-form-label">Upload Pan Card</label>
 									
-										<div id="drop_here_pan_card" data-type="pan_card" class="dropzone drop_here_logo"></div>
+										<div id="image-3-30-3" dropzone_Required = "false"  data-type="pan_card"  data_id = "126"  class="dropzone drop_here_logo"></div>
 										<div class="dropzoneError errors"></div>
 									</div>
 									
-									
-									<div class="form-row mt-4">
-										<label class="col-lg-3 col-xl-2 col-form-label"></label>
-										<div class="col-lg-9 col-xl-10">
-											<button type="button" id="reset" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
-											<button type="button" id="document_info_cancel" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.cancel')}}</button>
+									<!--div class="form-row mt-4">
+										<div class="col-lg-12 col-xl-12">
+											<button type="button" id="uploadDocuments" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
+											
 										</div>
-									</div>
+									</div--->
+									
+									
 								</form>
 							</div>
 							<div class="tab-pane fade" id="fourth" role="tabpanel" aria-labelledby="fourth-tab">
@@ -461,28 +482,31 @@
 									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Account Number</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">10008526XXXXX25</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="account_number_show">{{$bank_detais && $bank_detais->account_number?$bank_detais->account_number:'Not Added Yet'}}</label>
 									</div>
 									
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Account Name</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">Test XXXXX</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="account_name_show">{{$bank_detais && $bank_detais->account_name?$bank_detais->account_name:'Not Added Yet'}}</label>
 									</div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">IFSC Code</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">SBINXXX</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="ifsc_code_show">{{$bank_detais && $bank_detais->ifsc_code?$bank_detais->ifsc_code:'Not Added Yet'}}</label>
 									</div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Branch Name</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">India</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="branch_name_show">{{$bank_detais && $bank_detais->bank_name?$bank_detais->bank_name:'Not Added Yet'}}</label>
 									</div>
 								</div>
-								<form name="reset_pass" id="bank_info_edit" data-id="{{$user->id}}" style="display:none">
+								<form name="bank_info_edit" id="bank_info_edit" data-id="{{$user->id}}" style="display:none">
+									{{ csrf_field() }}
+										<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="bank_info_cancel" href="javascript:void(0)"><i class="simple-icon-close"></i></a></div>
+									<div class="clearfix"></div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.account_number')}}</label>
 										<div class="col-lg-9 col-xl-10">
 										<div class="d-flex control-group">
-											<input type="text" name="account_number" id="account_number" class="form-control">
+											<input type="text" name="account_number" id="account_number" value="{{$bank_detais && $bank_detais->account_number?$bank_detais->account_number:''}}" class="form-control">
 										</div>
 										<div class="account_number_error errors"></div>
 										</div>
@@ -493,7 +517,7 @@
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.account_name')}}</label>
 										<div class="col-lg-9 col-xl-10">
 										<div class="d-flex control-group">
-											<input type="text" name="account_name" id="account_name" class="form-control">
+											<input type="text" name="account_name" value="{{$bank_detais && $bank_detais->account_name?$bank_detais->account_name:''}}" id="account_name" class="form-control">
 										</div>
 										<div class="account_name_error errors"></div>
 										</div>
@@ -504,7 +528,7 @@
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.ifsc_code')}}</label>
 										<div class="col-lg-9 col-xl-10">
 										<div class="d-flex control-group">
-											<input type="text" name="ifsc_code" id="ifsc_code" class="form-control">
+											<input type="text" name="ifsc_code" value="{{$bank_detais && $bank_detais->ifsc_code?$bank_detais->ifsc_code:''}}" id="ifsc_code" class="form-control">
 										</div>
 										<div class="ifsc_code_error errors"></div>
 										</div>
@@ -514,7 +538,7 @@
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.bank_name')}}</label>
 										<div class="col-lg-9 col-xl-10">
 										<div class="d-flex control-group">
-											<input type="text" name="bank_name" id="bank_name" class="form-control">
+											<input type="text" name="bank_name" value="{{$bank_detais && $bank_detais->bank_name?$bank_detais->bank_name:''}}" id="bank_name" class="form-control">
 										</div>
 										<div class="bank_name_error errors"></div>
 										</div>
@@ -525,13 +549,13 @@
 									<div class="form-row mt-4">
 										<label class="col-lg-3 col-xl-2 col-form-label"></label>
 										<div class="col-lg-9 col-xl-10">
-											<button type="button" id="reset" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
-											<button type="button" id="bank_info_cancel" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.cancel')}}</button>
+											<button type="submit" id="submitBankInfo" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
+											
 										</div>
 									</div>
 								</form>
 							</div>
-							
+							@endif
 							<div class="tab-pane fade" id="fifth" role="tabpanel" aria-labelledby="fifth-tab">
 								<form name="reset_pass" id="reset_pass" data-id="{{$user->id}}">
 									<div class="form-group row">

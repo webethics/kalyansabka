@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
+
+
 class User extends Authenticatable
 {
     use  Notifiable;
@@ -72,6 +74,16 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPassword($token));
     }
+	
+	public function bankDetails()
+    {
+    	//return $this->hasOne('App\Models\UserBankDetails','user_id');
+		return $this->belongsTo(UserBankDetails::class, 'user_id');
+    }
+	public function role() {
+        return $this->belongsTo(App\Models\Role, 'role_id');
+    }
+	
 
     public function getFullNameAttribute()
     {

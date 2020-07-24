@@ -68,6 +68,8 @@ $(document).on('submit','#createUserRolePermission', function(e) {
 			 $('.search_spinloder').css('display','none');
             notification('Success','User Updated Successfully','top-right','success',2000);
 			setTimeout(function(){ $('.roleEditModal').modal('hide'); }, 2000);
+			setTimeout(function(){window.location.href = base_url+'/roles'; }, 2500);
+			
         },
 		error :function( data ) {
 			 if( data.status === 422 ) {
@@ -108,6 +110,7 @@ $(document).on('submit','#editUserRolePermission', function(e) {
 			 $('.search_spinloder').css('display','none');
             notification('Success','User Updated Successfully','top-right','success',2000);
 			setTimeout(function(){ $('.roleEditModal').modal('hide'); }, 2000);
+			setTimeout(function(){window.location.href = base_url+'/roles'; }, 2500);
         },
 		error :function( data ) {
 			 if( data.status === 422 ) {
@@ -134,4 +137,30 @@ $(document).on('click', '#checkAll' , function() {
 $(".form-check-input").prop("checked", !clicked);
   clicked = !clicked;
   this.innerHTML = clicked ? 'Deselect' : 'Select';
+})
+
+
+$(document).on('click', '.delete_role' , function() {
+	var user_id = $(this).data('id');
+	
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	 $.ajax({
+        type: "POST",
+		dataType: 'json',
+        url: base_url+'/role/delete_role/'+user_id,
+        data: {_token:csrf_token,user_id:user_id},
+        success: function(data) {
+			if(data.success){
+				notification('Success','User deleted Successfully','top-right','success',2000);
+				$('.user_row_'+user_id).hide();
+			}else{
+				if(data.message){
+					notification('Error',data.message,'top-right','error',3000);
+				}else{
+					notification('Error','Something went wrong.','top-right','error',3000);
+				}
+				
+			}	
+        },
+    });
 })

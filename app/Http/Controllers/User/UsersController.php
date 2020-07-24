@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 //use App\Http\Requests\MassDestroyUserRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdateUserBankDetailsRequest;
 use App\Http\Requests\UpdateUserPassword;
+use App\Models\UserBankDetails;
+use App\Models\UserDocuments;
 use App\Http\Requests\sendEmailNotification;
 use App\Http\Requests\ResetPassword;
 use Illuminate\Http\Request;
@@ -196,8 +199,9 @@ class UsersController extends Controller
     {
         $user = user_data();
 		$user_id = $user->id;
-		
-		return view('users.account.account', compact('user'));
+		$bank_detais = UserBankDetails::where('user_id',$user_id)->first();
+		$document_details = UserDocuments::where('user_id',$user_id)->first();
+		return view('users.account.account', compact('user','bank_detais','document_details'));
 		//return view('users.account.account');
     }
 	
@@ -256,6 +260,46 @@ class UsersController extends Controller
 		   $result['mobile_number'] = $request->mobile_number;
 		   $result['business_name']= $request->business_name;
 		   $result['business_url']= $request->business_url;
+		   
+		   return Response::json($result, 200);
+		}
+		
+    }
+
+
+	
+/*==================================================
+	  UPDATE BANK DETAIL UNDER PROFILE 
+==================================================*/  
+	public function updateBankDetails(UpdateUserBankDetailsRequest $request,$user_id)
+    {
+		$data=array();
+		 $result =array();
+		//pr($request->all());	
+		 $requestData = UserBankDetails::where('user_id',$user_id);
+		 $stored_data = UserBankDetails::where('user_id',$user_id)->first();
+		 
+		if($request->ajax()){
+			$data =array();
+			$data['account_name']= $request->account_name;
+			$data['bank_name']= $request->bank_name;
+			$data['account_number'] = $request->account_number;
+			$data['ifsc_code'] = $request->ifsc_code;
+			$data['user_id'] = $user_id;
+			
+			if($stored_data){
+				$requestData->update($data);
+			}else{
+				UserBankDetails::create($data);
+			}
+			
+			
+			//UPDATE PROFILE EVENT LOG END  
+		   $result['success'] = true;
+		   $result['account_name'] = $request->account_name;
+		   $result['bank_name'] = $request->bank_name;
+		   $result['account_number']= $request->account_number;
+		   $result['ifsc_code']= $request->ifsc_code;
 		   
 		   return Response::json($result, 200);
 		}
@@ -576,6 +620,14 @@ class UsersController extends Controller
 	  $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
 	  return substr(str_shuffle($data), 0, $chars);
 	}
+	
+	
+	
+	/*----------------------- Document Upload *---------------------------------*/
+	
+	/*----------------------- Document Upload *---------------------------------*/
+	
+	
 
   
 }

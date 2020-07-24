@@ -124,7 +124,7 @@
 						</a>
 					</li>
 					@endif
-					@if(check_role_access('customer_listing'))
+					@if(check_role_access('edit_request_listing'))
 					<li class="{{$editactive}}">
 						<a href="{{url('/requests')}}">
 							<i class="iconsminds-digital-drawing"></i>
@@ -199,21 +199,22 @@
 							<span>Account</span>
 						</a>
 					</li>
-					
+					@if(check_role_access('india_head_customers'))
 					<li class="{{$custactive}}">
 						<a href="/customers">
 							<i class="iconsminds-digital-drawing"></i>
 							<span>Customers</span>
 						</a>
 					</li>
-					
-					<li class="{{$custpayactive}}">
-						<a href="{{url('/customer-payments')}}">
-							<i class="simple-icon-paypal"></i>
-							<span>Payments</span>
-						</a>
-					</li>
-					
+					@endif
+					 @if(check_role_access('india_head_payments'))
+						<li class="{{$custpayactive}}">
+							<a href="{{url('/customer-payments')}}">
+								<i class="simple-icon-paypal"></i>
+								<span>Payments</span>
+							</a>
+						</li>
+					@endif
 					
 					
 				

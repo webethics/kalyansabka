@@ -6,7 +6,7 @@
 		</button>
 	</div>
 	<div class="modal-body">
-	<form action="" method="POST" id="updateUser" >
+	<form action="" method="POST" id="createNewCustomer" >
 	 @csrf
 		
 		<div class="form-group form-row-parent">
@@ -32,10 +32,20 @@
 		<div class="form-group form-row-parent">
 		<label class="col-form-label">{{ trans('global.email') }}</label>
 		<div class="d-flex control-group">
-		<input type="email" name="email" disabled="disabled" value="" class="form-control" placeholder="{{ trans('global.email') }}">								
-		</div>								
+		<input type="email" name="email" value="" class="form-control" placeholder="{{ trans('global.email') }}">								
+		</div>		
+		<div class="email_error errors"></div>		
 		</div>	
-	
+		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">{{ trans('global.password') }}<em>*</em></label>
+		<div class="d-flex control-group">
+		<input type="password" name="password" value="" class="form-control" placeholder="{{ trans('global.password') }}">							
+		</div>
+		 <div class="password_error errors"></div>	
+		</div>	
+		
+		
 		<div class="form-group form-row-parent">
 		<label class="col-form-label">{{ trans('global.address') }}<em>*</em></label>
 		<div class="d-flex control-group">
@@ -61,7 +71,46 @@
 		 <div class="aadhar_number_error errors"></div>	
 		</div>	
 		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">Role<em>*</em></label>
+		<div class="d-flex control-group">
+			<select  id="role_id"  class="form-control select2-single"  name="role_id"  data-width="100%">
+							
+				<option value=" ">Select Role</option>
+				@foreach($roles as $key=>$role)
+				@if($role->id!=1)
+				<option value="{{$role->id}}">{{$role->title}}</option>
+				@endif
+				@endforeach
+			</select>
+		</div>
+		 <div class="role_id_error errors"></div>	
+		</div>	
 		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">{{ trans('global.state') }} <em>*</em></label>
+		<div class="d-flex control-group">
+			<select name="state" id="state" class="form-control">
+				<option value="">Select State</option>
+				@foreach(list_states() as $key=>$value)
+					<option value="{{$value->id}}" @if (old('state') == "$value->id") {{ 'selected' }} @endif >{{$value->state_name}}</option>
+				@endforeach
+			</select>							
+		</div>
+		 <div class="state_error errors"></div>	
+		</div>	
+		
+		
+		
+		<div class="form-group form-row-parent">
+		<label class="col-form-label">{{ trans('global.district') }}<em>*</em></label>
+		<div class="d-flex control-group">
+			<select name="district" id="district" class="form-control" >
+				<option value="">Select District</option>
+			</select>						
+		</div>
+		 <div class="state_error errors"></div>	
+		</div>
 		
 								
 		<div class="form-row mt-4">

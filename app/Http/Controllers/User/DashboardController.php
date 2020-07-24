@@ -33,8 +33,8 @@ class DashboardController extends Controller
         $this->per_page = Config::get('constant.per_page');
     }
 	public function index(){
-		
-		 return view('dashboard.index');	
+		access_denied_user('dashboard_listing');
+		return view('dashboard.index');	
 	}
 }
 ?>

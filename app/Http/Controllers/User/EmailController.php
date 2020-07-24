@@ -23,6 +23,7 @@ class EmailController extends Controller
 	*/
     public function index()
     {
+		access_denied_user('email_listing');
 		$emailTemplate =  EmailTemplate::all();
         return view('email.index',compact('emailTemplate'));
     }
@@ -31,7 +32,7 @@ class EmailController extends Controller
 	* EDIT EMAIL TEMPLATE 
 	*/
 	public function email_template_edit($id){
-		
+		access_denied_user('email_edit');
 		//display edit page of email template
 			$result = EmailTemplate::where('id', '=' , $id)->get();
 			

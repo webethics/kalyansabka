@@ -40,7 +40,7 @@ class RequestsController extends Controller
 
 	public function requests(Request $request)
     {
-		
+		access_denied_user('edit_request_listing');
 		$request->role_id = 1;
         $requests = $this->requests_search($request,'');
 		$roles = Role::all();
@@ -60,7 +60,7 @@ class RequestsController extends Controller
 	}
 	public function request_view($user_id)
     {
-		
+		access_denied_user('request_new_detail');
         $user = User::where('id',$user_id)->get();
 		$roles = Role::all();
 		if(count($user)>0){

@@ -37,6 +37,7 @@
 		}, options)
 		csrf_token = $('meta[name="csrf-token"]').attr('content');
 		id = $(this).data('id');
+	//	console.log(id);
 		form = $(this);
 		loader = $('<div class="spinner-border text-primary"></div>');
 		/* ADDITIONAL REQUIRED EVENT SELECTOR */
@@ -65,11 +66,11 @@
 					
 					allTypes.forEach(value_type=> {
 						
-						if(value_type == 'header'){
-							var newElement = '#drop_here_header';
+						if(value_type == 'aadhaar_front'){
+							var newElement = '#drop_here_aadhaar_front';
 						}
-						if(value_type == 'footer'){
-							var newElement = '#drop_here_footer';
+						if(value_type == 'aadhaar_back'){
+							var newElement = '#drop_here_aadhar_back';
 						}
 						if(value_type == 'pan_card'){
 							var newElement = '#drop_here_pan_card';
@@ -92,11 +93,11 @@
 								img = new Image();
 								var imgwidth = 0;
 								var imgheight = 0;
-								var maxwidth = 2000;
-								var maxheight = 320;
+								/* var maxwidth = 2000;
+								var maxheight = 320; */
 
 								img.src = _URL.createObjectURL(file);
-								img.onload = function() {
+								/* img.onload = function() {
 									imgwidth = this.width;
 									imgheight = this.height;
 									if(imgheight == 320 && imgwidth == 2000){
@@ -106,7 +107,7 @@
 										done(settings.dropzoneSizeMsg); 
 										$(settings.dropzoneErrorClass).text(settings.dropzoneSizeMsg);
 									}
-								};
+								}; */
 								
 								var ext = (file.name).split('.')[1]; // get extension from file name						
 								ext = ext.toUpperCase();
@@ -139,7 +140,7 @@
 									addLoadEvent(function_a);
 								
 									function function_a(){
-										console.log(base_url+'/fetch/custom_logo/'+id+'/'+value_type);
+										//console.log(base_url+'/fetch/custom_logo/'+id+'/'+value_type);
 									
 										$.post(base_url+'/fetch/custom_logo/'+id+'/'+value_type,{'_token': csrf_token}, function(data, textStatus) {
 											if(data.msg !='Error'){
@@ -179,7 +180,25 @@
 									this.options.thumbnail.call(this, mockFile, base_url+settings.dropzoneURL+responseText.name);
 									mockFile.previewElement.classList.add('dz-success');
 									mockFile.previewElement.classList.add('dz-complete');
-									console.log($(settings.logo))
+									
+									if(value_type == 'aadhaar_front'){
+										
+										$('#empty_aadhaar_front').html('<img src="'+base_url+settings.dropzoneURL+responseText.name+'">');
+										$('#aadhaar_front_show').attr('src',base_url+settings.dropzoneURL+responseText.name);
+									}
+									if(value_type == 'aadhaar_back'){
+										$('#empty_aadhaar_back').html('<img src="'+base_url+settings.dropzoneURL+responseText.name+'">');
+										$('#aadhaar_back_show').attr('src',base_url+settings.dropzoneURL+responseText.name);
+									}
+									if(value_type == 'pan_card'){
+										$('#empty_pan_card').html('<img src="'+base_url+settings.dropzoneURL+responseText.name+'">');
+										$('#pan_card_show').attr('src',base_url+settings.dropzoneURL+responseText.name);
+									}
+									
+									
+									
+									
+									
 									$(settings.logo).css('background-image', 'url(' + base_url+settings.dropzoneURL+responseText.name + ')');
 									
 								});
@@ -323,7 +342,11 @@
 								'X-CSRF-Token': csrf_token
 							},
 							success: function(data, config, settings) { 
-								_successMessage(data, config)           
+								//console.log(config);console.log(settings);
+								_successMessage(data, config);
+									$('#site_customer_settings_info').show('slow');
+									$('#site_customer_settings').hide('slow');	
+									
 							},
 							error: function(errors) {
 							  _showErrors(errors);
@@ -346,18 +369,18 @@
 $('form#site_customer_settings').newForm({
 	//eventRequired:'checked',
 //	eventSelector:'switch',/*ID or CLASS of CHECKBOX FIELD TYPE*/
-	handler:'updateCustomerSiteSettings',
+	handler:'uploadDocuments',
 	errorMessageClass:'.errors',
 	commonErrorSeclector:'_error',
-	button: 'button#updateCustomerSiteSettings',
-	requestURL: '/update/site_settings/',
-	successMessage: 'The settings has been updated.',
+	button: 'button#uploadDocuments',
+	requestURL: '/update/update_documents/',
+	successMessage: 'The document has been uploaded successfully.',
 	dropzoneRequired: true,
 	dropzoneSelector: '.drop_here_logo',
 	dropzoneErrorClass: '.dropzoneError',
-	dropzoneURL: '/uploads/custom_logo/',
+	dropzoneURL: '/uploads/documents/',
 	dropzoneFileaccept: ".jpeg,.jpg,.png,.gif",
 	dropzoneExtMsg: "Please select only supported files.",
 	dropzoneSizeMsg: "Image width must be 2000px and height must be 320px.",
-	dropzoneErrorMsg: "Upload logo field is required.",
+	dropzoneErrorMsg: "Upload Document field is required.",
 });

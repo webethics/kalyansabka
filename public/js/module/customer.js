@@ -2,7 +2,7 @@
 /*==============================================
 	ENABLE/DISABLE USER ACCOUNT 
 ============================================*/
-$(document).on('click','input[type="checkbox"]', function(e) {
+$(document).on('click','.switch_status', function(e) {
 	
 	if($(this).is(":checked")){
 		var user_status = 1;
@@ -50,12 +50,16 @@ $(document).on('click', '.editCustomer' , function() {
 			
 				$('.customerEditModal').html(data.data);
 				$('.customerEditModal').modal('show');
-				var selectedVal = $('#selectedVal').val();
-				if(selectedVal){
-					$("#selected_code option[value="+selectedVal+"]").attr("selected","selected");
+				var selectedVal = $('#district_selected').val();
+				var  state = $('#state').val();
+				if(state != ''){
+					getCityDropDown(state);
+					setTimeout(function(){ $("#district option[value="+selectedVal+"]").attr("selected","selected")}, 1000);
 				}
+	
 				$('.errors').html('');
 			}else{
+				
 				notification('Error','Something went wrong.','top-right','error',3000);
 			}	
         },
@@ -93,7 +97,7 @@ $(document).on('submit','#updateUser', function(e) {
     $.ajax({
         type: "POST",
 		dataType: 'json',
-        url: base_url+'/update-profile/'+user_id,
+        url: base_url+'/update-customer/'+user_id,
         data: $(this).serialize(),
         success: function(data) {
 			//alert(data)
@@ -103,11 +107,15 @@ $(document).on('submit','#updateUser', function(e) {
 			 if(data.success){
 				 
 				notification('Success','User Updated Successfully','top-right','success',2000);
-				$('#business_name_'+user_id).text(data.business_name);
-				$('#name_'+user_id).text(data.name);
-				$('#mobile_number_'+user_id).text(data.mobile_number);
-				$('#business_url_'+user_id).text(data.business_url);
-				setTimeout(function(){ $('.userEditModal').modal('hide'); }, 2000);
+				$('#full_name_'+user_id).text(data.full_name);
+				
+				setTimeout(function(){ $('.customerEditModal').modal('hide'); }, 2000);
+				if(data.state_head == 'updated'){
+					setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
+				}
+			}else{
+				$('.mark_as_head_error').show().append(data.message);
+				//notification('Error',data.message,'top-right','error',3000);
 			}	 
         },
 		error :function( data ) {
@@ -133,28 +141,30 @@ $(document).on('submit','#updateUser', function(e) {
 
     });
 });
-	
+
 /*==============================================
-	UPDATE CUSTOMER REQUEST FORM 
+	UPDATE REQUEST FORM 
 ============================================*/
-$(document).on('submit','#updateCustomer', function(e) {
-    e.preventDefault(); 
-	var user_id = $('#user_id').val();
+$(document).on('submit','#createNewCustomer', function(e) {
+	e.preventDefault(); 
 	$('.request_loader').css('display','inline-block');
     $.ajax({
         type: "POST",
 		dataType: 'json',
-        url: base_url+'/update-customer/'+user_id,
+        url: base_url+'/create-new-customer',
         data: $(this).serialize(),
         success: function(data) {
-			
-			$('#name_'+user_id).text(data.name);
-			$('#email_'+user_id).text(data.email);
-			var my_number = data.code+'-'+data.mobile_number;
-			$('#mobile_number_'+user_id).text(my_number);
-			notification('Success','Customer Updated Successfully','top-right','success',2000);
-			setTimeout(function(){ $('.customerEditModal').modal('hide'); }, 2000);
-		},
+			//alert(data)
+			$('.errors').html('');
+			$('.request_loader').css('display','none');
+			// If data inserted into DB
+			 if(data.success){
+				 
+				notification('Success','User Updated Successfully','top-right','success',2000);
+				setTimeout(function(){ $('.userCreateModal').modal('hide'); }, 2000);
+				setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
+			}	 
+        },
 		error :function( data ) {
          if( data.status === 422 ) {
 			$('.request_loader').css('display','none');
@@ -201,3 +211,176 @@ $(document).on('click', '#create_user' , function() {
         },
     });
 })
+
+/*==============================================
+	SEARCH FILTER FORM 
+============================================*/
+$(document).on('submit','#searchForm', function(e) {
+    e.preventDefault(); 
+	$('.search_spinloder').css('display','inline-block');
+    $.ajax({
+        type: "POST",
+		//dataType: 'json',
+        url: base_url+'/customers',
+        data: $(this).serialize(),
+        success: function(data) {
+			 $('.search_spinloder').css('display','none');
+             //start date and end date error 
+			 if(data=='date_error'){
+				notification('Error','Start date not greater than end date.','top-right','error',4000);	
+			}else{
+             // Set search result
+			 $("#tag_container").empty().html(data); 
+			}	
+        },
+		error :function( data ) {}
+    });
+});
+
+
+/*-------------------------------------------
+
+Delete Customer
+-----------------------------------------------------*/
+
+$(document).on('click', '.delete_customer' , function() {
+	var customer_id = $(this).data('id');
+	
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	 $.ajax({
+        type: "POST",
+		dataType: 'json',
+        url: base_url+'/customer/delete_customer/'+customer_id,
+        data: {_token:csrf_token,customer_id:customer_id},
+        success: function(data) {
+			if(data.success){
+				notification('Success','User deleted Successfully','top-right','success',2000);
+				$('.user_row_'+customer_id).hide();
+			}else{
+				
+				notification('Error','Something went wrong.','top-right','error',3000);
+				
+				
+			}	
+        },
+    });
+});
+
+/*-----------------------------------------------
+Export Customer 
+--------------------------------------------------*/
+
+$(document).on('click','#export_customers_right,#export_customers_left', function(e) {
+	 e.preventDefault(); 
+	$('.search_spinloder').css('display','inline-block');
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        type: "POST",
+		//dataType: 'json',
+        url: base_url+'/export_customers',
+        data: {first_name:$('#first_name').val(),last_name:$('#last_name').val(),email:$('#email').val(),role_id:$('#role_id').val(),mobile_number:$('#mobile_number').val(),aadhar_number:$('#aadhar_number').val(),start_date:$('#start_date').val(),end_date:$('#end_date').val(),email:$('#email').val(),_token:csrf_token},
+        success: function(data) {
+			
+			$('.search_spinloder').css('display','none');
+			if(data.success == false){
+				notification('Error','No data found.','top-right','error',4000);	
+			}else{
+				var downloadLink = document.createElement("a");
+				var fileData = ['\ufeff'+data];
+
+				var blobObject = new Blob(fileData,{
+					type: "text/csv;charset=utf-8;"
+				});
+
+				var url = URL.createObjectURL(blobObject);
+				downloadLink.href = url;
+				downloadLink.download = "Customers.csv";
+
+				/*
+					* Actually download CSV
+				*/
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+			
+        },
+		error :function( data ) {}
+    });
+});
+
+$(document).on('click', '.mark_as_district_head' , function() {
+	var customer_id = $(this).data('id');
+	
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	 $.ajax({
+        type: "POST",
+		dataType: 'json',
+        url: base_url+'/customer/mark_as_district_head/'+customer_id,
+        data: {_token:csrf_token,customer_id:customer_id},
+        success: function(data) {
+			if(data.success){
+				notification('Success',data.message,'top-right','success',2000);
+				setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
+			}else{
+				
+				notification('Error',data.message,'top-right','error',3000);
+				
+				
+			}	
+        },
+    });
+});
+
+$(document).on('click', '.mark_as_state_head' , function() {
+	var customer_id = $(this).data('id');
+	
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	 $.ajax({
+        type: "POST",
+		dataType: 'json',
+        url: base_url+'/customer/mark_as_state_head/'+customer_id,
+        data: {_token:csrf_token,customer_id:customer_id},
+        success: function(data) {
+			if(data.success){
+				notification('Success',data.message,'top-right','success',2000);
+				setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
+			}else{
+				
+				notification('Error',data.message,'top-right','error',3000);
+				
+				
+			}	
+        },
+    });
+});
+$(document).on('change','.mark_as_head', function(e) {
+	 $('.mark_as_head').not(this).prop('checked', false);  
+	//$(this).siblings('input:checkbox').prop('checked', false);
+});
+	
+function getCityDropDown(state_id){
+	 
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	$.ajax({
+		type: "POST",
+		//dataType: 'json',
+		url: base_url+'/user/cityDropdown',
+		data: {_token:csrf_token,state_id:state_id},
+		success: function(data) {
+			 $("#district").empty().html(data); 
+		},
+		error :function( data ) {}
+	});
+}
+$(document).on('change','#state', function(e) {
+	var state_id = $(this).val();
+	getCityDropDown(state_id);
+});
+$(document).on('ready', function(e) {
+	var  state = $('#state').val();
+	if(state != ''){
+		getCityDropDown(state);
+	}
+	
+});
