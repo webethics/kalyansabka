@@ -105,6 +105,49 @@ $(document).on('submit','#searchCertificateForm', function(e) {
         },
 		error :function( data ){
 			$('.search_spinloder').hide();
+			notification('Error','Something went wrong.','top-right','error',3000);
+		}
+    });
+});
+
+/*Export certificate request*/
+$(document).on('click','#export_certificate_left,#export_certificate_right', function(e) {
+	 e.preventDefault(); 
+	$('.search_spinloder').show();
+	//var csrf_token = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        type: "POST",
+		//dataType: 'json',
+        url: base_url+'/export_certificate_customers',
+        data: $('#searchCertificateForm').serialize(),
+        success: function(data) {
+			$('.search_spinloder').hide();
+			if(data.success == false){
+				notification('Error','No data found.','top-right','error',4000);	
+			}else{
+				var downloadLink = document.createElement("a");
+				var fileData = ['\ufeff'+data];
+
+				var blobObject = new Blob(fileData,{
+					type: "text/csv;charset=utf-8;"
+				});
+
+				var url = URL.createObjectURL(blobObject);
+				downloadLink.href = url;
+				downloadLink.download = "Certificate_customer.csv";
+
+				/*
+					* Actually download CSV
+				*/
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+			
+        },
+		error :function( data ) {
+			$('.search_spinloder').hide();
+			notification('Error','Something went wrong.','top-right','error',3000);
 		}
     });
 });

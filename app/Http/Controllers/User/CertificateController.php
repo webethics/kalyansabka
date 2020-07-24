@@ -38,17 +38,24 @@ class CertificateController extends Controller
 		
 		$request->role_id = 1;
         $certificates_data = $this->certificate_search($request,$pagination=true);
-        $certificates = $certificates_data['certificates'];
-		$page_number =  $certificates_data['current_page'];
-		if($page_number > 1 )$page_number = $page_number - 1;else $page_number = $page_number;
-        //$roles = Role::all();
-		$statelist = StateList::all();
-		$citylist = CityLists::all();
-        if(!is_object($certificates)) return $certificates;
-        if ($request->ajax()) {
-            return view('certificates.certificatesPagination', compact('certificates','statelist','citylist','page_number'));
-        }
-        return view('certificates.certificates',compact('certificates','roles','statelist','citylist','page_number'));	
+        
+        if(isset($certificates_data['certificates'])){
+	        $certificates = $certificates_data['certificates'];
+			$page_number =  $certificates_data['current_page'];
+			if(empty($page_number))
+				$page_number = 1;
+			//if($page_number > 1 )$page_number = $page_number - 1;else $page_number = $page_number;
+	        //$roles = Role::all();
+			$statelist = StateList::all();
+			$citylist = CityLists::all();
+	        if(!is_object($certificates)) return $certificates;
+	        if ($request->ajax()) {
+	            return view('certificates.certificatesPagination', compact('certificates','statelist','citylist','page_number'));
+	        }
+	        return view('certificates.certificates',compact('certificates','roles','statelist','citylist','page_number'));
+	    }else{
+	    	return $certificates_data;
+	    }	
 	}
 	
 	public function certificate_search($request,$pagination)
@@ -67,9 +74,12 @@ class CertificateController extends Controller
 		$result = User::where('hard_copy_certificate', '=', 'yes');
 			
 		if($first_name!='' || $last_name!='' || $start_date!='' || $end_date!='' || $email!='' || $state_id != '' || $district_id != ''){
+
+			if(empty($end_date))
+				$end_date = date('Y-m-d');
 			
 			if($start_date!= '' || $end_date!=''){
-				if((($start_date!= '' && $end_date=='') || ($start_date== '' && $end_date!='')) || (strtotime($start_date) >= strtotime($end_date))){	
+				if((($start_date== '' && $end_date!='')) || (strtotime($start_date) >= strtotime($end_date))){	
 					return  'date_error'; 
 				}
 			}
@@ -172,6 +182,55 @@ class CertificateController extends Controller
     	}
     	return Response::json($data, 200);
     	
+    }
+
+    /*Export Request*/
+    public function export_certificate_customers(Request $request){
+    	$certificates_data = $this->certificate_search($request,$pagination = false);
+		
+		$certificates = $certificates_data['certificates'];
+		
+		if($certificates && count($certificates) > 0){
+			$records = [];
+			foreach ($certificates as $key => $certificate) {
+				$status_text = 'Pending';
+				if($certificate->certificate_status == 1)
+					$status_text = 'Sent';
+
+				$records[$key]['sl_no'] = ++$key;
+				$records[$key]['name'] = $certificate->full_name;
+				$records[$key]['email'] = $certificate->email;
+				$records[$key]['phone'] = $certificate->mobile_number;
+				$records[$key]['address'] =  $certificate->address;
+				$records[$key]['registraion'] =  date('d-m-Y h:i:s', strtotime($certificate->created_at));
+				$records[$key]['status'] =  $status_text;
+			}
+			$header = ['S.No.', 'Name', 'Email','Mobile', 'Address', 'Registration Date/Time','Certificate Status'];
+		
+
+			//load the CSV document from a string
+			$csv = Writer::createFromString('');
+
+			//insert the header
+			$csv->insertOne($header);
+
+			//insert all the records
+			$csv->insertAll($records);
+			@header("Last-Modified: " . @gmdate("D, d M Y H:i:s",$_GET['timestamp']) . " GMT");
+			@header("Content-type: text/x-csv");
+			// If the file is NOT requested via AJAX, force-download
+			if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+				header("Content-Disposition: attachment; filename=search_results.csv");
+			}
+			//
+			//Generate csv
+			//
+			echo $csv;
+			exit();
+		}else{
+			$result =array('success' => false);	
+		    return Response::json($result, 200);
+		}
     }
 }
 ?>

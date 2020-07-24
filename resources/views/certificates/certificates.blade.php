@@ -13,7 +13,7 @@
 							
 			<div class="card">
 				<div class="card-body">
-				<div class="table-responsive"  id="tag_container">
+				<div class="table-responsive" id="tag_container">
 					 @include('certificates.certificatesPagination')
 				</div>
 				</div>
