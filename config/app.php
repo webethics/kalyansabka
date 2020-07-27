@@ -177,7 +177,6 @@ return [
         App\Providers\RouteServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
 		Intervention\Image\ImageServiceProvider::class,
-		ZanySoft\Zip\ZipServiceProvider::class,
 		SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
 
     ],
@@ -235,7 +234,6 @@ return [
 
       'Html' => Collective\Html\HtmlFacade::class,
 	  'Image' => Intervention\Image\Facades\Image::class,
-	  'Zip' => ZanySoft\Zip\ZipFacade::class,
 	  'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
 
     ],

@@ -21,7 +21,7 @@
 			<a class="action viewDetail"  href="javascript:void(0)" data-user_id="{{ $request->id }}" title="New Details"><i class="simple-icon-eye"></i> </a>
 		@endif
 		@if(check_role_access('request_document_download'))			
-			<a class="action"  href="javascript:void(0)" title="Download Documents"><i class="simple-icon-cloud-download"></i> </a> 
+			<a class="action"  href="{{url('download-user-document')}}/{{ $request->user_id }}" title="Download Documents"><i class="simple-icon-cloud-download"></i> </a> 
 		@endif
 	</td>
 </tr>

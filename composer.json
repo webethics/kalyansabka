@@ -21,8 +21,7 @@
         "maatwebsite/excel": "^3.1",
         "phpmailer/phpmailer": "^6.1",
         "simplesoftwareio/simple-qrcode": "^2.0",
-        "yajra/laravel-datatables-oracle": "~9.0",
-        "zanysoft/laravel-zip": "^1.0"
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
