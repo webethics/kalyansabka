@@ -126,16 +126,19 @@ $('.dropzone').each(function(){
 					
 					$('#empty_aadhaar_front').html('<img src="'+base_url+dropzoneURL+responseText.name+'">').show();
 					$('#aadhaar_front_show img').attr('src',base_url+dropzoneURL+responseText.name).show();
+					$('#aadhaar_front_show').show();
 					$('#empty_aadhaar_front1').html('No Document Uploaded').hide();
 				}
 				if(value_type == 'aadhaar_back'){
 					$('#empty_aadhaar_back').html('<img src="'+base_url+dropzoneURL+responseText.name+'">').show();
 					$('#aadhaar_back_show img').attr('src',base_url+dropzoneURL+responseText.name).show();
+					$('#aadhaar_back_show').show();
 					$('#empty_aadhaar_back1').html('No Document Uploaded').hide();
 				}
 				if(value_type == 'pan_card'){
 					$('#empty_pan_card').html('<img src="'+base_url+dropzoneURL+responseText.name+'">').show();
 					$('#pan_card_show img').attr('src',base_url+dropzoneURL+responseText.name).show();
+					$('#pan_card_show').show();
 					$('#empty_pan_card1').html('No Document Uploaded').hide();
 				}
 				
