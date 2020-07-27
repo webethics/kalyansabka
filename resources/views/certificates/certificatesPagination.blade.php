@@ -12,32 +12,15 @@
 		</tr>
 	</thead>
 	<tbody>
-	 @if(is_object($certificates) && !empty($certificates) && $certificates->count())
-	  @foreach($certificates as $key => $certificate)
-		<tr data-certificate-id="{{ $certificate->id }}" class="user_row_{{$certificate->id}}" >
-			<td id="business_name_{{$certificate->id}}">{{$certificate->id}}</td>
-			<td id="name_{{$certificate->id}}">10 July 2020</td>
-			<td id="mobile_number_{{$certificate->id}}">Path Coder</td>
-			<td id="business_url_{{$certificate->id}}">pathcodertest@gmail.com</td>
-			<td id="business_url_{{$certificate->id}}">Ambala, Haryana</td>
-			<td id="business_url_{{$certificate->id}}">
-				Sent
-			</td>
-			<td id="business_url_{{$certificate->id}}">
-				
-				@if(check_role_access('certificate_request_edit'))
-					<a class="action editCertitificateRequest" href="javascript:void(0)" data-user_id="{{ $certificate->id }}" title="Edit Request"><i class="simple-icon-note"></i> </a>
-				@endif
-				@if(check_role_access('certificate_download'))
-					<a class="action"  href="javascript:void(0)" title="Download Certificate"><i class="simple-icon-cloud-download"></i> </a> 
-				@endif
-			</td>
-		</tr>
-		
-	 @endforeach
- @else
-<tr><td colspan="7" class="error" style="text-align:center">No Data Found.</td></tr>
- @endif	
+		@if(is_object($certificates) && !empty($certificates) && $certificates->count())
+			@php $sno = 1;$sno_new = 0  @endphp
+			@foreach($certificates as $key => $certificate)
+				@include('certificates.certificateSingleRow')
+			@php $sno++ @endphp
+			@endforeach
+		@else
+			<tr><td colspan="7" class="error" style="text-align:center">No Data Found.</td></tr>
+		@endif	
 		
 	</tbody>
 </table> 

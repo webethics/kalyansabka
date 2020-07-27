@@ -9,11 +9,11 @@
 	<div class="row mb-4">
 		<div class="col-12 mb-4">
 		
-			@include('partials.searchCustomerForm')
+			@include('partials.searchCertificateForm')
 							
 			<div class="card">
 				<div class="card-body">
-				<div class="table-responsive"  id="tag_container">
+				<div class="table-responsive" id="tag_container">
 					 @include('certificates.certificatesPagination')
 				</div>
 				</div>

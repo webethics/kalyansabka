@@ -8,5 +8,9 @@ class StateList extends Model
 {
     public $timestamps = false;
     protected $table = 'state_list';
+
+    public function user() {
+        return $this->hasMany('App\Models\User','state_id');
+    }
 }
 ?>

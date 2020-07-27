@@ -9,6 +9,10 @@ class CityLists extends Model
 {
 	public $timestamps = false;
     protected $table = 'city_lists';
+
+    public function user() {
+        return $this->hasMany('App\Models\User','district_id');
+    }
   
 }
 ?>
