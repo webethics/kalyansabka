@@ -414,27 +414,30 @@
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Front Image</label>
 										@if($document_details && $document_details->aadhaar_front)
-											<label class="col-lg-9 col-xl-10 col-form-label"><img id="aadhaar_front_show" src="{{asset('uploads/documents')}}/{{$document_details->aadhaar_front}}"></label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="aadhaar_front_show" ><img src="{{asset('uploads/documents')}}/{{$document_details->aadhaar_front}}"></label>
 										@else
 											<label class="col-lg-9 col-xl-10 col-form-label" id="empty_aadhaar_front">No Document Uploaded</label>
 										@endif
+										<label class="col-lg-9 col-xl-10 col-form-label"  style="display:none" id="empty_aadhaar_front1">No Document Uploaded</label>
 									</div>
 									
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Back Image</label>
 										@if($document_details && $document_details->aadhaar_back)
-											<label class="col-lg-9 col-xl-10 col-form-label"><img id="aadhaar_back_show" src="{{asset('uploads/documents')}}/{{$document_details->aadhaar_back}}"></label>
+											<label class="col-lg-9 col-xl-10 col-form-label"  id="aadhaar_back_show"><img src="{{asset('uploads/documents')}}/{{$document_details->aadhaar_back}}"></label>
 										@else
 											<label class="col-lg-9 col-xl-10 col-form-label" id="empty_aadhaar_back">No Document Uploaded</label>
 										@endif
+										<label class="col-lg-9 col-xl-10 col-form-label" style="display:none" id="empty_aadhaar_back1">No Document Uploaded</label>
 									</div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Pan Card Image</label>
 										@if($document_details && $document_details->pan_card)
-											<label class="col-lg-9 col-xl-10 col-form-label"><img id="pan_card_show" src="{{asset('uploads/documents')}}/{{$document_details->pan_card}}"></label>
+											<label class="col-lg-9 col-xl-10 col-form-label"  id="pan_card_show"><img src="{{asset('uploads/documents')}}/{{$document_details->pan_card}}"></label>
 										@else
-											<label class="col-lg-9 col-xl-10 col-form-label" id="empty_pan_card">No Document Uploaded</label>
+											<label class="col-lg-9 col-xl-10 col-form-label"  id="empty_pan_card">No Document Uploaded</label>
 										@endif
+										<label class="col-lg-9 col-xl-10 col-form-label" style="display:none" id="empty_pan_card1">No Document Uploaded</label>
 									</div>
 								</div>
 							

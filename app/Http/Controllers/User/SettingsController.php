@@ -228,6 +228,7 @@ class SettingsController extends Controller
 				$randomString = sha1(date('YmdHis') . Str::random(30));
 				$save_name = $randomString . '.' . $logo->getClientOriginalExtension();
 				$data['aadhaar_front'] = $save_name;
+				$message  = "Aadhaar Card Front image successfully uploaded.";
 			}
 			
 			if($type == 'aadhaar_back'){
@@ -239,6 +240,7 @@ class SettingsController extends Controller
 				$randomString = sha1(date('YmdHis') . Str::random(30));
 				$save_name = $randomString . '.' . $logo->getClientOriginalExtension();
 				$data['aadhaar_back'] = $save_name;
+				$message  = "Aadhaar Card Back image successfully uploaded.";
 			}
 			if($type == 'pan_card'){
 				$logo = $request->file('file3');
@@ -249,6 +251,7 @@ class SettingsController extends Controller
 				$randomString = sha1(date('YmdHis') . Str::random(30));
 				$save_name = $randomString . '.' . $logo->getClientOriginalExtension();
 				$data['pan_card'] = $save_name;
+				$message  = "Pan Card image successfully uploaded.";
 			}
 			
 			
@@ -259,7 +262,8 @@ class SettingsController extends Controller
 			$result =array(
 				'success' => true,
 				'filePath' => $this->custom_photos_path,
-				'name'=>$save_name
+				'name'=>$save_name,
+				'message'=>$message
 			);	
 			return Response::json($result, 200);
 			
@@ -341,7 +345,7 @@ class SettingsController extends Controller
 					$requestData->update($data);
 					$result =array(
 						'success' => true,
-						'msg'=>'Logo deleted successfully.',
+						'msg'=>'Aadhaar Card front image deleted successfully.',
 					);
 				}else{
 					$result =array(
@@ -359,7 +363,7 @@ class SettingsController extends Controller
 					$requestData->update($data);
 					$result =array(
 						'success' => true,
-						'msg'=>'Logo deleted successfully.',
+						'msg'=>'Aadhaar Card Back image deleted successfully.',
 					);
 				}else{
 					$result =array(
@@ -377,7 +381,7 @@ class SettingsController extends Controller
 					$requestData->update($data);
 					$result =array(
 						'success' => true,
-						'msg'=>'Logo deleted successfully.',
+						'msg'=>'PAN Card deleted successfully.',
 					);
 				}else{
 					$result =array(

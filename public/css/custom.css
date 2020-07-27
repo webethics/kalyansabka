@@ -296,7 +296,7 @@ h3.failure{
 .districtHead .simple-icon-user{
 	color:orange;
 }
-#aadhaar_front_show,#aadhaar_back_show,#pan_card_show{
+#aadhaar_front_show img,#aadhaar_back_show img,#pan_card_show img{
 	height:200px;width:350px;
 }
 #empty_aadhaar_front img,

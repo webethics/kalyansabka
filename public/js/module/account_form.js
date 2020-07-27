@@ -12,7 +12,7 @@ $(document).on('submit','#bank_info_edit', function(e) {
              
 			 if(data.success){
 				$('.search_spinloder').css('display','none');
-				notification('Success','User Updated Successfully','top-right','success',2000);
+				notification('Success','Bank Details Updated Successfully','top-right','success',2000);
 				$('#bank_info_show').show('slow');
 				$('#bank_info_edit').hide('slow');	
 				
