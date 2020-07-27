@@ -4,7 +4,6 @@ $(document).on('submit','#bank_info_edit', function(e) {
 	var user_id = $(this).data('id');
 	$.ajax({
         type: "POST",
-		//dataType: 'json',
         url: base_url+'/update-bank-details/'+user_id,
         data: $(this).serialize(),
         success: function(data) {
@@ -51,4 +50,42 @@ $(document).on('submit','#bank_info_edit', function(e) {
 			  
 		}
     });
+});
+
+/*update basic info request*/
+$(document).on('click','#update-basic-request',function(e){
+	e.preventDefault(); 
+	
+	var user_id = $(this).data('id');
+	var accountForm = $('#accountinfo');
+	var ajax_url = accountForm.attr('action');
+	var method = accountForm.attr('method');
+	/*show loader*/
+	accountForm.find('.request_loader').show();
+
+	$.ajax({
+       type:method,
+       url:ajax_url,
+       data:accountForm.serialize(),
+        success:function(response){
+       		accountForm.find('.request_loader').hide();
+			if(response.success){
+				if(typeof (response.message) != 'undefined' && response.message != null && response.message != "")
+					notification('Success',response.message,'top-right','success',2000);
+				else
+					notification('Success','Please wait your edit request has','top-right','success',2000);
+			}else{
+				if(typeof (response.message) != 'undefined' && response.message != null && response.message != "")
+					notification('Error',response.message,'top-right','error',3000);
+				else
+				notification('Error','Something went wrong.','top-right','error',3000);
+			}
+        },
+        error:function(response){
+	       	accountForm.find('.request_loader').hide();
+	       	notification('Error','Something went wrong.','top-right','error',3000);
+       }
+
+    });
+
 });

@@ -83,7 +83,18 @@ class User extends Authenticatable
 	public function role() {
         return $this->belongsTo(App\Models\Role, 'role_id');
     }
-	
+
+    public function city(){
+        return $this->belongsTo('App\Models\CityLists', 'district_id');
+    }
+
+    public function state(){
+        return $this->belongsTo('App\Models\StateList', 'state_id');
+    }
+
+    public function tempRequestUser() {
+        return $this->hasMany('App\Models\TempRequestUser','user_id');
+    }
 
     public function getFullNameAttribute()
     {

@@ -8,6 +8,7 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdateUserBankDetailsRequest;
 use App\Http\Requests\UpdateUserPassword;
+use App\Http\Requests\UpdateBasicUserRequest;
 use App\Models\UserBankDetails;
 use App\Models\UserDocuments;
 use App\Http\Requests\sendEmailNotification;
@@ -17,7 +18,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\CdrGroup;
 use App\Models\EmailTemplate;
-
+use App\Models\TempRequestUser;
 use App\Models\CityLists;
 use League\Csv\Writer;	
 use Auth;
@@ -264,6 +265,54 @@ class UsersController extends Controller
 		   return Response::json($result, 200);
 		}
 		
+    }
+
+
+    public function updateBasicProfile(UpdateBasicUserRequest $request,$user_id){
+    	$data = [];
+    	$data['success'] = false;
+    	$data['message'] = 'Invalid Request';
+    	if(!empty($user_id)){
+    		//Check if valid user id
+    		$user = User::find($user_id);
+    		if(!is_null($user->count())){
+    			$tempUser = TempRequestUser::where('user_id',$user_id)->where('status',0)->first();
+    			//check if pending request table exist
+    			if(!is_null($tempUser))
+    				$tempRequest = TempRequestUser::find($tempUser->id);
+    			else
+    				$tempRequest = new TempRequestUser();
+
+    			if($request->ajax()){
+    				$tempData = [];
+    				$tempData['user_id'] = $user_id;
+    				$tempData['first_name'] = isset($request->first_name) ? $request->first_name : '';
+    				$tempData['last_name'] = isset($request->last_name) ? $request->last_name : '';
+    				$tempData['email'] = isset($request->email) ? $request->email : '';
+    				$tempData['aadhar_number'] = isset($request->aadhar_number) ? $request->aadhar_number : '';
+    				$tempData['mobile_number'] = isset($request->mobile_number) ? $request->mobile_number : '';
+    				$tempData['address'] = isset($request->address) ? $request->address : '';
+    				$tempData['state_id'] = isset($request->state) ? $request->state : '';
+    				$tempData['district_id'] = isset($request->district) ? $request->district : '';
+    				
+					if(!is_null($tempUser)){
+	    				$tempRequest = TempRequestUser::find($tempUser->id);
+	    				$saveInfo = $tempRequest->update($tempData);
+					}else{
+	    				$saveInfo = TempRequestUser::create($tempData);
+					}
+
+    				$data['success'] = true;
+    				$data['message'] = 'Your request has been sent to admin. After check your document admin will approve your request.';
+    			}
+    		}else{
+    			$data['message'] = 'Invalid User';
+    		}
+
+    	}else{
+    		$data['message'] = 'Something went wrong, please try later';
+    	}
+    	return Response::json($data, 200);
     }
 
 

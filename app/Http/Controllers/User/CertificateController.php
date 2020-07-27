@@ -35,8 +35,9 @@ class CertificateController extends Controller
 	
 	public function certificates(Request $request)
     {
+    	access_denied_user('certificate_listing');
 		
-		$request->role_id = 1;
+		//$request->role_id = 1;
         $certificates_data = $this->certificate_search($request,$pagination=true);
         
         if(isset($certificates_data['certificates'])){
@@ -74,11 +75,13 @@ class CertificateController extends Controller
 		$result = User::where('hard_copy_certificate', '=', 'yes');
 			
 		if($first_name!='' || $last_name!='' || $start_date!='' || $end_date!='' || $email!='' || $state_id != '' || $district_id != ''){
-
-			if(empty($end_date))
-				$end_date = date('Y-m-d');
 			
 			if($start_date!= '' || $end_date!=''){
+
+				//if end date empty
+				if(empty($end_date))
+					$end_date = date('Y-m-d');
+
 				if((($start_date== '' && $end_date!='')) || (strtotime($start_date) >= strtotime($end_date))){	
 					return  'date_error'; 
 				}
@@ -118,7 +121,7 @@ class CertificateController extends Controller
 			}
 		}
 		
-		$result->where('role_id', '!=', 1);
+		//$result->where('role_id', '!=', 1);
 		$result->orderBy('created_at', 'desc')->toSql();
 		
 		if($pagination == true){
@@ -142,6 +145,8 @@ class CertificateController extends Controller
 	
 	public function certificate_request_edit($user_id)
     {
+    	access_denied_user('certificate_request_edit');
+
         $user = User::where('id',$user_id)->get();
 		$roles = Role::all();
 		if(count($user)>0){
@@ -163,6 +168,9 @@ class CertificateController extends Controller
 
     /*Update Certificate*/
     public function update_certificate($user_id,Request $request){
+
+    	access_denied_user('certificate_request_edit');
+
     	$data = [];
     	$data['success'] = false;
     	$data['message'] = 'Invalid Request';

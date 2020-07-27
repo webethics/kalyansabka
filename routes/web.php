@@ -34,6 +34,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	
 	Route::post('user/edit/{request_id}', 'UsersController@edit'); //Edit User
 	Route::post('update-profile/{user_id}', 'UsersController@profileUpdate');//UPDATE USER
+	Route::post('update-basic-profile/{user_id}', 'UsersController@updateBasicProfile');//UPDATE Basic USER
 	Route::post('update-bank-details/{user_id}', 'UsersController@updateBankDetails');//UPDATE USER
 	
 	
@@ -121,6 +122,9 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::get('edit-requests',array('uses'=>'RequestsController@edit_request'));
 	Route::get('requests',array('uses'=>'RequestsController@requests'));
 	Route::post('request/view/{request_id}', 'RequestsController@request_view'); //view request
+	/*Update Edit Request*/
+	Route::post('request-update-profile/{request_id}','RequestsController@request_update');
+	Route::get('download-user-document/{user_id}',array('uses'=>'RequestsController@download_document'));
 	
 	//roles
 	Route::get('roles',array('uses'=>'RolesController@roles'));

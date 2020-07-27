@@ -12,25 +12,11 @@
 	</thead>
 	<tbody>
 	 @if(is_object($requests) && !empty($requests) && $requests->count())
-	  @foreach($requests as $key => $request)
-		<tr data-request-id="{{ $request->id }}" class="user_row_{{$request->id}}" >
-			<td id="business_name_{{$request->id}}">{{$request->id}}</td>
-			<td id="name_{{$request->id}}">10 July 2020</td>
-			<td id="mobile_number_{{$request->id}}">Path Coder</td>
-			<td id="business_url_{{$request->id}}">pathcodertest@gmail.com</td>
-			<td id="business_url_{{$request->id}}">Ambala Haryana</td>
-			<td id="business_url_{{$request->id}}">Approve</td>
-			<td id="business_url_{{$request->id}}">
-				@if(check_role_access('request_new_detail'))
-					<a class="action viewDetail"  href="javascript:void(0)" data-user_id="{{ $request->id }}" title="New Details"><i class="simple-icon-eye"></i> </a>
-				@endif
-				@if(check_role_access('request_document_download'))			
-					<a class="action"  href="javascript:void(0)" title="Download Documents"><i class="simple-icon-cloud-download"></i> </a> 
-				@endif
-			</td>
-		</tr>
-		
-	 @endforeach
+	 	@php $sno = 1;$sno_new = 0  @endphp
+			@foreach($requests as $key => $request)
+				@include('requests.requestSingleRow')
+			@php $sno++ @endphp
+			@endforeach
  @else
 <tr><td colspan="7" class="error" style="text-align:center">No Data Found.</td></tr>
  @endif	

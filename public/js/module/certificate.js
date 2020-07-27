@@ -151,3 +151,22 @@ $(document).on('click','#export_certificate_left,#export_certificate_right', fun
 		}
     });
 });
+
+/*Modify city dropdown on change of state*/
+$(document).on('change','#state_id', function(e) {
+	var state_id = $(this).val();
+	getCityDropDown(state_id);
+});
+
+function getCityDropDown(state_id){
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	$.ajax({
+		type: "POST",
+		url: base_url+'/user/cityDropdown',
+		data: {_token:csrf_token,state_id:state_id},
+		success: function(data) {
+			 $("#district_id").empty().html(data); 
+		},
+		error :function( data ) {}
+	});
+}

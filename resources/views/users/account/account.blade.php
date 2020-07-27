@@ -91,7 +91,8 @@
 										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->district_id}}</label>
 									</div>
 								</div>	
-								<form name="accountinfo" id="accountinfo" data-id="{{$user->id}}" style="display:none">		
+								<form action="{{ url('update-basic-profile') }}/{{ $user->id }}" method="POST" name="accountinfo" id="accountinfo" data-id="{{$user->id}}" style="display:none">
+									{{ csrf_field() }}
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}<em>*</em> </label>
 										<div class="col-lg-9 col-xl-10">
@@ -197,9 +198,9 @@
 										<label class="col-lg-3 col-xl-2 col-form-label"></label>
 										<div class="col-lg-9 col-xl-10">
 											<!--input type="submit" id="update" value="Submit" class="btn btn-primary default btn-lg mb-1 mr-2"-->
-											<button type="button" id="update" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
+											<button type="button" id="update-basic-request" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
 											<button type="button" id="basic_info_cancel" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.cancel')}}</button>
-										
+											<div class="spinner-border text-primary request_loader" style="display:none"></div>
 										</div>
 									</div>
 									
