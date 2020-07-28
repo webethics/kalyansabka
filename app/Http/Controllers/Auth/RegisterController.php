@@ -126,7 +126,7 @@ class RegisterController extends Controller
                 'required','same:login_password',
             ],
 			'email*' => [
-				'email','unique:users'
+				'unique:users'
 			],
             'mobile_number'   => [
                'required','numeric','regex:/[0-9]{9}/','unique:users',
