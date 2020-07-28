@@ -55,6 +55,7 @@ class User extends Authenticatable
 		'insurance_type',
 		'company_id',
 		'plan_id',
+		'nominee_number',
     ];
 
     protected $appends = ['full_name'];
