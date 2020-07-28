@@ -20,10 +20,11 @@
                             <form method="POST" action="{{ route('login') }}" class="frm_class">
 							 {{ csrf_field() }}
                                 <label class="has-float-label 	@if(!\Session::has('errors')) form-group mb-4 @else labelcls @endif">
-                                  <input name="email" type="text" class="form-control">
-                                    <span>{{ trans('global.E-mail') }}</span>
+                                  <input id="login" name="login" type="text" class="form-control" value="{{ old('username') ?: old('email') }}">
+                                    <span>E-mail or Mobile</span>
                                 </label>
-								<div class="error_margin"><span class="error" >  {{ $errors->first('email')  }} </span></div>
+							
+								<div class="error_margin"><span class="error" > {{ $errors->first('email') ?: $errors->first('mobile_number') }} </span></div>
 
                                 <label class="has-float-label @if(!\Session::has('errors')) form-group mb-4 @else labelcls @endif">
                                      <input name="password" type="password" class="form-control">

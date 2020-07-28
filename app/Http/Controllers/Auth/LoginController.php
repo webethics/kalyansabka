@@ -27,7 +27,8 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
+	
+	  
     /**
      * Create a new controller instance.
      *
@@ -37,15 +38,28 @@ class LoginController extends Controller
     {
 		$this->middleware('guest')->except('logout');
 	 //  $this->middleware('auth');
+	
     }
+	
+	
 	
 	public function login(Request $request)
     {   
 		
         $input = $request->all();
-		$rules = array('email' => 'required|email|exists:users,email',
+		$field = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile_number';
+		
+		if($field == 'email'){
+			$rules = array('login' => 'required',
 				   'password' => 'required',
 				   );
+		}
+		if($field == 'mobile_number'){
+			$rules = array('login' => 'required',
+				   'password' => 'required',
+				   );
+		}
+		
 
 		$validator = Validator::make($request->input(), $rules);
 		if ($validator->fails())
@@ -54,7 +68,7 @@ class LoginController extends Controller
 		}else
 		{
 			
-			if(Auth::attempt(array('email' => $input['email'], 'password' => $input['password'])))
+			if(Auth::attempt(array($field=> $request->input('login'), 'password' => $input['password'])))
 			{ 
 		        //IF STATUS IS NOT ACTIVE 
 				if(Auth::check() && Auth::user()->verify_token !=NULL){
