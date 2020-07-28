@@ -12,6 +12,8 @@ use PHPMailer\PHPMailer\Exception;
 use App\Models\Notification;
 use App\Models\EmailTemplate;
 use App\Models\StateList;
+use App\Models\Company;
+use App\Models\Plan;
 
 
 //use Config;
@@ -160,13 +162,6 @@ function access_denied_user_analyst(){
 	
 }
 
-function user_current_plan($stripe_plan){
-	
-		$plan_data = Plan::where('stripe_plan',$stripe_plan)->get();
-		
-		return $plan_data[0];
-	
-}
 
 //EMAIL SEND 
  function send_email($to='',$subject='',$message='',$from='',$fromname=''){
@@ -313,6 +308,16 @@ function list_states(){
 	return $statesData;
 }
 
+function list_companies(){
+	$CompanyData = Company::all();
+	return $CompanyData;
+}
+
+function list_plans(){
+	$planData = Plan::all();
+	return $planData;
+}
+
 function relationsArray(){
 	//$array = array();
 	$array = array(
@@ -325,7 +330,7 @@ function relationsArray(){
 				'brother'=>'BROTHER', 	
 				'sister'=>'SISTER',
 			);
-			print_r($array);die;
+
 	return $array;			
 }
 function birth_years(){

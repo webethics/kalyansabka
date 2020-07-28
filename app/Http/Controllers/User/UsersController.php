@@ -132,58 +132,21 @@ class UsersController extends Controller
 			if($age){
 				$price = '';	
 				$htmldata = '';
-				if($age >= 21 && $age <= 40){
-					$price = 2500;
-					$htmldata = '
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="2500" /> <span>2500(2 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="6000" /> <span>6000(6 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="10000" /> <span>10000(10 Lakh)</span></label>';
+				if($age >= 12 && $age <= 20){
+					$htmldata = '<b>For Age 12-20</b> only 20% of the sum insured amount will be covered. So for instance, if they pay 2500/- then their policy cover up will be under 1 Lakh. But since they are below the age of 21, they will only get 20% of the actual amount i.e. 100000*20% = 20000/-';
 				}
-				if($age >= 41 && $age <= 45){
-					$price = 3000;
-					$htmldata = '
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="3000" /> <span>2500(3 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="7000" /> <span>6000(7 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="11000" /> <span>10000(11 Lakh)</span></label>';
+				if($age >= 21 && $age <= 65){
+					$htmldata = '<b>For Age 21-65</b> You will get 100% covered amount as per the sum insured amount';
 				}
-				if($age >= 46 && $age <= 50){
-					$price = 3500;
-					$htmldata = '
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="3500" /> <span>3500(4 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="8000" /> <span>6000(8 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="12000" /> <span>10000(12 Lakh)</span></label>';
-				}
-				if($age >= 51 && $age <= 55){
-					$price = 4000;
-					$htmldata = '
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="4000" /> <span>4000(5 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="9000" /> <span>6000(9 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="13000" /> <span>10000(13 Lakh)</span></label>';
-				}
-				if($age >= 56 && $age <= 60){
-					$price = 4500;
-					$htmldata = '
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="4500" /> <span>4500(6 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="10000" /> <span>6000(10 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="14000" /> <span>10000(14 Lakh)</span></label>';
-				}
-				if($age >= 61 && $age <= 65){
-					$price = 5000;
-					$htmldata = '
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="5000" /> <span>5000(7 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="11000" /> <span>6000(11 Lakh)</span></label>
-						<label class="radio-inline ml-3"><input type="radio" name="amount" class="" value="15000" /> <span>150000(15 Lakh)</span></label>';
-				}
+				
 				//Print it out.
 				$data = array();
 				$data['success'] = true;
 				$data['age'] = $age;
-				$data['price'] = $price;
 				$data['htmldata'] = $htmldata;
 				return json_encode($data);die;
 			}else{
 				$data = array();
-				
 				$data['age'] =false;
 				return json_encode($data);die;
 			}

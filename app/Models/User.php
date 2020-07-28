@@ -43,12 +43,18 @@ class User extends Authenticatable
 		'price',
 		'state_id',
 		'district_id',
-		'price',
 		'remember_token',
 		'refered_by',
 		'hard_copy_certificate',
         'certificate_status',
-		'verify_token' 
+		'verify_token' ,
+		'qualifications',
+		'gender',
+		'income',
+		'habits',
+		'insurance_type',
+		'company_id',
+		'plan_id',
     ];
 
     protected $appends = ['full_name'];
