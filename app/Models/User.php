@@ -47,9 +47,11 @@ class User extends Authenticatable
 		'remember_token',
 		'refered_by',
 		'hard_copy_certificate',
-		'verify_token'
-		 	 
+        'certificate_status',
+		'verify_token' 
     ];
+
+    protected $appends = ['full_name'];
 
     public function getEmailVerifiedAtAttribute($value)
     {
@@ -75,13 +77,35 @@ class User extends Authenticatable
 	
 	public function bankDetails()
     {
-    	//return $this->hasOne('App\Models\UserBankDetails','user_id');
-		return $this->belongsTo(UserBankDetails::class, 'user_id');
+    	return $this->hasOne('App\Models\UserBankDetails','user_id');
+		//return $this->belongsTo(UserBankDetails::class, 'user_id');
     }
+
+    public function userDocument()
+    {
+        return $this->hasOne('App\Models\UserDocuments','user_id');
+        //return $this->belongsTo(UserBankDetails::class, 'user_id');
+    }
+
 	public function role() {
         return $this->belongsTo(App\Models\Role, 'role_id');
     }
-	
 
+    public function city(){
+        return $this->belongsTo('App\Models\CityLists', 'district_id');
+    }
+
+    public function state(){
+        return $this->belongsTo('App\Models\StateList', 'state_id');
+    }
+
+    public function tempRequestUser() {
+        return $this->hasMany('App\Models\TempRequestUser','user_id');
+    }
+
+    public function getFullNameAttribute()
+    {
+        return ucfirst("{$this->first_name} {$this->last_name}");
+    }
    
 }

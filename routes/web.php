@@ -34,6 +34,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	
 	Route::post('user/edit/{request_id}', 'UsersController@edit'); //Edit User
 	Route::post('update-profile/{user_id}', 'UsersController@profileUpdate');//UPDATE USER
+	Route::post('update-basic-profile/{user_id}', 'UsersController@updateBasicProfile');//UPDATE Basic USER
 	Route::post('update-bank-details/{user_id}', 'UsersController@updateBankDetails');//UPDATE USER
 	
 	
@@ -107,7 +108,9 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	//certificates
 	Route::get('certificates',array('uses'=>'CertificateController@certificates'));
 	Route::get('customer-certificate',array('uses'=>'CertificateController@customer_certificate'));
-	Route::post('request/edit/{request_id}', 'CertificateController@certificate_request_edit'); //Edit request
+	Route::post('certificate/edit/{request_id}', 'CertificateController@certificate_request_edit'); //Edit Certificate request
+	Route::post('update-certificate-request/{request_id}', 'CertificateController@update_certificate'); //Update certificate
+	Route::post('export_certificate_customers',array('uses'=>'CertificateController@export_certificate_customers')); /*Export certificate Customer */
 
 	
 
@@ -119,6 +122,9 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::get('edit-requests',array('uses'=>'RequestsController@edit_request'));
 	Route::get('requests',array('uses'=>'RequestsController@requests'));
 	Route::post('request/view/{request_id}', 'RequestsController@request_view'); //view request
+	/*Update Edit Request*/
+	Route::post('request-update-profile/{request_id}','RequestsController@request_update');
+	Route::get('download-user-document/{user_id}',array('uses'=>'RequestsController@download_document'));
 	
 	//roles
 	Route::get('roles',array('uses'=>'RolesController@roles'));
