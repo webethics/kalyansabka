@@ -1,4 +1,4 @@
-<tr data-request-id="{{ $request->id }}" class="user_row_{{$request->id}}" >
+<tr data-request-id="{{ $request->id }}" class="user_row_{{$request->id}}">
 	<td id="sno_{{$request->id}}">{{(($page_number-1) * 10)+$sno}}
 		<input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$request->id}}"/>
 		<input type="hidden" name="sno" value="{{$sno}}" id="s_number_{{$request->id}}"/>
