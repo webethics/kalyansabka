@@ -3,6 +3,10 @@
 return [
 	'referral_information'					=> 'Rreferral Information',
 	'cancel'                                => 'Cancel',
+	'habbit'                                => 'Habits',
+	'gender'                                => 'Gender',
+	'qualifications'                        => 'Qualifications',
+	'income'                                => 'Income',
 	'add'                                   => 'Add',
 	'day'                                   => 'Day',
 	'month'                              	=> 'Month',
@@ -16,6 +20,7 @@ return [
     'aadhar_number'                         => 'Aadhaar number',
     'nominee_number'                        => 'Number of Nominee you want to add ?',
     'nominee_relation'                      => 'Nominee Relation',
+    'nominee_percentage'                    => 'Nominee Percentage',
     'bank_name'                             => 'Bank Name',
     'account_number'                        => 'Account Number',
     'account_name'                          => 'Account name',

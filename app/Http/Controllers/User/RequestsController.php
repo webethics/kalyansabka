@@ -16,7 +16,7 @@ use App\Models\EmailTemplate;
 use App\Models\TempRequestUser;
 use App\Models\CityLists;
 use App\Models\StateList;
-use League\Csv\Writer;	
+use League\Csv\Writer;
 use Auth;
 use Config;
 use Response;
@@ -24,7 +24,7 @@ use Hash;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-//use Zip;
+use ZipArchive;
 
 class RequestsController extends Controller
 {
@@ -221,20 +221,77 @@ class RequestsController extends Controller
 
     /*Download User document*/
     public function download_document($user_id){
-    	/*$zip = new Zip;
-    	$file_name = 'FullPlan.pdf';
-		$file_path = public_path().'/uploads/certificates';
-		$fileName = 'myNewFile.zip';
-		$zip_name = $file_path.'/'.$fileName;
-    	$zip = Zip::create($zip_name);
-    	
+    	$data = [];
+    	$data['success'] = false;
+    	$data['message'] = 'Invalid Request';
+    	//Check Valid User
+    	$user = User::with('userDocument')->where('id',$user_id)->first();
 
-    	if ($zip === TRUE){
-    		$zip->add( array($file_path.'/'.$file_name));
-    		$zip->close();
-    	}
-    	return response()->download(public_path($zip_name));*/
+    	// Define Dir Folder
+    	$public_dir=public_path();
 
+		if(!is_null($user) && ($user->count())>0){
+			// Zip File Name
+        	$zipFileName = $user->full_name.'.zip';
+        	$zipFileName = str_replace(" ","_",$zipFileName);
+        	$directoryPath = public_path().'/uploads/documents/';
+			//echo $user->bankDetails->count();
+			if(!is_null($user->userDocument) && ($user->userDocument->count())>0){
+
+				$udocument = $user->userDocument;
+				$aadhaar_front = $udocument->aadhaar_front;
+				$aadhaar_back = $udocument->aadhaar_back;
+				$pan_card = $udocument->pan_card;
+
+				$files = [];
+				$files['aadhaar_front'] = $aadhaar_front;
+				$files['aadhaar_back'] = $aadhaar_back;
+				$files['pan_card'] = $pan_card;
+				//array_push($files,$aadhaar_front,$aadhaar_back,$pan_card);
+
+				//check if document exist
+				if(!empty($aadhaar_front) || !empty($aadhaar_back) || !empty($pan_card)){
+					if(!empty($aadhaar_front))
+					// Create ZipArchive Obj
+        			$zip = new ZipArchive;
+        			$zipFullPathName = $directoryPath.$zipFileName;
+
+        			if ($zip->open($zipFullPathName, ZipArchive::CREATE) === TRUE) {
+        				//add the files
+					    foreach($files as $key=>$file) {
+					    	if(!empty($file) && file_exists($directoryPath.$file)){
+					    		//explode file and get extension
+					    		$file_name = explode('.',$file);
+					    		$extension = end($file_name);
+					    		//full file path
+					    		$fullFilePath = $directoryPath.$file;
+					    		//new created file name in zip folder
+					    		$newFileName = $key.'.'.$extension;
+								$zip->addFile($fullFilePath,$user->full_name.'/'.$newFileName);
+					    	}
+					    }
+					    // Close ZipArchive     
+            			$zip->close();
+            			// Set Header
+				        $headers = array(
+				            'Content-Type' => 'application/octet-stream',
+				        );
+				        //$filetopath=$zip_path.'/'.$zipFileName;
+				        // Create Download Response
+				        if(file_exists($zipFullPathName)){
+				            return response()->download($zipFullPathName,$zipFileName,$headers)->deleteFileAfterSend(true);
+				        }
+				        $data['message'] = 'File does not exist';
+        			}else{
+        				$data['message'] = 'Something went wrong';
+        			}
+
+				}else{
+					$data['message'] = 'No document Uploaded by User Yet.';
+				}
+			}
+		}
+    	return Response::json($data, 200);
     }
 
     /*Update User Data*/

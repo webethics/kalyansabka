@@ -296,6 +296,7 @@ h3.failure{
 .districtHead .simple-icon-user{
 	color:orange;
 }
+h6.policy_info{font-size:16px;font-weight:bold}
 #aadhaar_front_show img,#aadhaar_back_show img,#pan_card_show img{
 	height:200px;width:350px;
 }
@@ -303,7 +304,18 @@ h3.failure{
 #empty_aadhaar_back img,#empty_pan_card img{
 		height:200px;width:350px;
 }
-
+.register_title{
+	font-size: 22px;
+    font-weight: bold;
+    border-bottom: 1px solid #616161;
+    display: inline-block;
+}
+.radio{
+	width:100%
+}
+.habbit_checkbox{
+	vertical-align:middle;
+}
 .markStateHead.btn.btn-primary.default{
 	background-color:green;
 	border:none;

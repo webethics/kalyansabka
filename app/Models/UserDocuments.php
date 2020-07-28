@@ -23,6 +23,7 @@ class UserDocuments extends Model
         'updated_at',
     ];
 	public function users() {
-		return $this->HasOne(User::class);
+        return $this->belongsTo('App\Models\User', 'user_id');
+		//return $this->HasOne(User::class);
 	}
 }

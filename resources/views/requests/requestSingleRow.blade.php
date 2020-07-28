@@ -1,4 +1,4 @@
-<tr data-request-id="{{ $request->id }}" class="user_row_{{$request->id}}" >
+<tr data-request-id="{{ $request->id }}" class="user_row_{{$request->id}}">
 	<td id="sno_{{$request->id}}">{{(($page_number-1) * 10)+$sno}}
 		<input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$request->id}}"/>
 		<input type="hidden" name="sno" value="{{$sno}}" id="s_number_{{$request->id}}"/>
@@ -21,7 +21,7 @@
 			<a class="action viewDetail"  href="javascript:void(0)" data-user_id="{{ $request->id }}" title="New Details"><i class="simple-icon-eye"></i> </a>
 		@endif
 		@if(check_role_access('request_document_download'))			
-			<a class="action"  href="javascript:void(0)" title="Download Documents"><i class="simple-icon-cloud-download"></i> </a> 
+			<a class="action"  href="{{url('download-user-document')}}/{{ $request->user_id }}" title="Download Documents"><i class="simple-icon-cloud-download"></i> </a> 
 		@endif
 	</td>
 </tr>

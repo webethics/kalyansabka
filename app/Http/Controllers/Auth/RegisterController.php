@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\EmailTemplate;
 use Auth;
 use App\Models\AuditLog;
+use App\Models\UserNominees;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -110,7 +111,9 @@ class RegisterController extends Controller
     {
 		$data['aadhar_number'] = str_replace('-','',$data['aadhar_number']);
 		
-        return Validator::make($data, [
+		echo '<pre>';print_r($data);die;
+		$return = [];
+		$return = [
             'first_name'     => [
                 'required',
             ],
@@ -124,7 +127,7 @@ class RegisterController extends Controller
                 'required','same:login_password',
             ],
 			'email*' => [
-				'required','email','unique:users'
+				'email','unique:users'
 			],
             'mobile_number'   => [
                'required','numeric','regex:/[0-9]{9}/','unique:users',
@@ -143,15 +146,117 @@ class RegisterController extends Controller
             ],
 			'state'   => [
                'required',
+            ],
+			'gender'   => [
+               'required',
+            ],
+			'income'   => [
+               'required',
+            ],
+			'qualifications'   => [
+               'required',
+            ],
+			'habits'   => [
+               'required',
+            ] ,
+			'plan'   => [
+               'required',
+            ] ,
+			'nominee_number'   => [
+               'required',
             ] ,
 			'terms_and_condtions'   => [
                'required',
             ], 
+			'insurance_type'   => [
+               'required',
+            ], 
+		]; 
+		if($data['insurance_type'] == 'company'){
+			$return['company'] = [
+					'required',
+				];
+		}
+		if($data['nominee_number'] == 1){
+			$return['nominee_name_1'] = [
+					'required',
+				];
+				$return['nominee_relation_1'] = [
+					'required',
+				];
+		}
+		
+		if($data['nominee_number'] == 2){
+			$return['nominee_name_1'] = [
+					'required',
+				];
+				
+			$return['nominee_name_2'] = [
+					'required',
+				];
+				$return['nominee_relation_1'] = [
+					'required',
+				];
+				
+			$return['nominee_relation_2'] = [
+					'required',
+				];
+		}
+		if($data['nominee_number'] == 3){
 			
-			 
-			
-        ], [
+			$return['nominee_name_1'] = [
+					'required',
+				];
+				
+			$return['nominee_name_2'] = [
+					'required',
+				];
+			$return['nominee_name_3'] = [
+					'required',
+				];
+			$return['nominee_relation_1'] = [
+					'required',
+				];
+				
+			$return['nominee_relation_2'] = [
+					'required',
+				];
+			$return['nominee_relation_3'] = [
+					'required',
+				];
+		}
+		if($data['nominee_number'] == 4){
+			$return['nominee_name_1'] = [
+					'required',
+				];
+				
+			$return['nominee_name_2'] = [
+					'required',
+				];
+			$return['nominee_name_3'] = [
+					'required',
+				];
+			$return['nominee_name_4'] = [
+					'required',
+				];
+			$return['nominee_realtion_1'] = [
+					'required',
+				];
+				
+			$return['nominee_realtion_2'] = [
+					'required',
+				];
+			$return['nominee_realtion_3'] = [
+					'required',
+				];
+			$return['nominee_realtion_4'] = [
+					'required',
+				];
+		}
+		 return Validator::make($data,$return , [
 				'aadhar_number.unique' => 'The aadhar number is already registered.',
+				'nominee_name_*.required' => 'The Nominee Name field required.',
+				'nominee_relation_*.required' => 'The Nominee relation field required.',
 				
 			]);
     } 
@@ -165,6 +270,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 		$data['aadhar_number'] = str_replace('-','',$data['aadhar_number']);
+		$data['habits'] = implode(',',$data['habits']);
 		//echo '<pre>';print_r($data);die;
 		$dat =  User::create([
             'first_name' => $data['first_name'],
@@ -176,16 +282,34 @@ class RegisterController extends Controller
 			'date_of_birth' => $data['date_of_birth'],
 			'address' => $data['address'],
 			'age' => $data['age'],
-			'price' => $data['price'],
+			'price' => $data['actual_price'],
 			'state_id' => $data['state'],
+			'plan_id' => $data['plan'],
 			'district_id' => $data['district'],
 			'hard_copy_certificate' => $data['hard_copy_certificate'],
 			'refered_by' => $data['refered_by'],
 			'role_id' => 3,
 			'status' => 1,
+			'company_id' => $data['company'],
+			'gender' => $data['gender'],
+			'qualifications' => $data['qualifications'],
+			'income' => $data['income'],
+			'habits' => $data['habits'],
+			'insurance_type' => $data['insurance_type'],
+			'nominee_number' => $data['nominee_number'],
 		]);
 		
 		if($dat){
+			//$nominee_data = array();
+			$nominees = $data['nominee_number'];
+			for($i=1;$i<=$nominees;$i++){
+				$nominee_data['name'] = $data['nominee_name_'.$i];
+				$nominee_data['relation'] = $data['nominee_relation_'.$i];
+				$nominee_data['user_id'] = $dat->id;
+				//print_r($nominee_data);
+				UserNominees::create($nominee_data);
+			}
+			//die;
 			Session::flash('message', "Welcome to Kalyan Sabka. Please logged into your account and setup your profile.");
 			return $dat;
 		} 

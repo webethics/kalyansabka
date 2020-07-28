@@ -43,12 +43,18 @@ class User extends Authenticatable
 		'price',
 		'state_id',
 		'district_id',
-		'price',
 		'remember_token',
 		'refered_by',
 		'hard_copy_certificate',
         'certificate_status',
-		'verify_token' 
+		'verify_token' ,
+		'qualifications',
+		'gender',
+		'income',
+		'habits',
+		'insurance_type',
+		'company_id',
+		'plan_id',
     ];
 
     protected $appends = ['full_name'];
@@ -77,9 +83,16 @@ class User extends Authenticatable
 	
 	public function bankDetails()
     {
-    	//return $this->hasOne('App\Models\UserBankDetails','user_id');
-		return $this->belongsTo(UserBankDetails::class, 'user_id');
+    	return $this->hasOne('App\Models\UserBankDetails','user_id');
+		//return $this->belongsTo(UserBankDetails::class, 'user_id');
     }
+
+    public function userDocument()
+    {
+        return $this->hasOne('App\Models\UserDocuments','user_id');
+        //return $this->belongsTo(UserBankDetails::class, 'user_id');
+    }
+
 	public function role() {
         return $this->belongsTo(App\Models\Role, 'role_id');
     }
