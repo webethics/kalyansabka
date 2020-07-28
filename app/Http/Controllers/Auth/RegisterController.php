@@ -111,7 +111,6 @@ class RegisterController extends Controller
     {
 		$data['aadhar_number'] = str_replace('-','',$data['aadhar_number']);
 		
-		echo '<pre>';print_r($data);die;
 		$return = [];
 		$return = [
             'first_name'     => [
