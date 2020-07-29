@@ -254,7 +254,7 @@
 													<label class="ml-3"><input type="checkbox" name="habits[2]" class="habbit_checkbox" @if (old('habits.2') == "drinking") {{ 'checked' }} @endif value="drinking" /> <span>Drinking</span></label>
 												</div>
 												<div class="radio">
-													<label class="ml-3"><input type="checkbox" name="habits[3]" class="habbit_checkbox" @if (old('habits.3') == "none") {{ 'checked' }} @endif value="none" /> <span>None of the Above</span></label>
+													<label class="ml-3"><input type="checkbox" id="none" name="habits[3]" class="habbit_checkbox" @if (old('habits.3') == "none") {{ 'checked' }} @endif value="none" /> <span>None of the Above</span></label>
 												</div>
 											</div>
 											<div class="error_margin"><span class="error habits_error" >  {{ $errors->first('habits')  }} </span></div>
@@ -490,8 +490,19 @@ function checkValue(str, max) {
 	this.value = output.join('').substr(0, 10);
 	console.log(this.value);
 }); */
-	
+$(function(){
+ $("#none").on("click",function(){
+    if (this.checked) {
+        $("input.habbit_checkbox").not(this).attr("disabled", true);
+    }else{
+        $("input.habbit_checkbox").attr("disabled", false);
+    }
+ });
+});
+
 $(document).ready(function(){
+	
+
 	$(".box").hide();
 	var ref_val = $('#refered_by').val();
 	valdateReferral(ref_val);
