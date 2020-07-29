@@ -36,7 +36,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('update-profile/{user_id}', 'UsersController@profileUpdate');//UPDATE USER
 	Route::post('update-basic-profile/{user_id}', 'UsersController@updateBasicProfile');//UPDATE Basic USER
 	Route::post('update-bank-details/{user_id}', 'UsersController@updateBankDetails');//UPDATE USER
-	
+	Route::post('update-nominee-details/{user_id}', 'UsersController@updateNomineeDetails');//UPDATE USER
 	
 	Route::post('user/roleDropdown', 'UsersController@roleDropdown');
 	
