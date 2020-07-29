@@ -40,15 +40,21 @@ class CustomersController extends Controller
 		access_denied_user('customer_listing');
 		
         $customers_data = $this->customer_search($request,$pagination=true);
-		$customers = $customers_data['customers'];
-		$page_number =  $customers_data['current_page'];
-		if($page_number > 1 )$page_number = $page_number - 1;else $page_number = $page_number;
-		$roles = Role::all();
-        if(!is_object($customers)) return $customers;
-        if ($request->ajax()) {
-            return view('customers.customersPagination', compact('customers','page_number','roles'));
-        }
-        return view('customers.customers',compact('customers','page_number','roles'));	
+		if($customers_data['success']){
+			$customers = $customers_data['customers'];
+			$page_number =  $customers_data['current_page'];
+			if($page_number > 1 )$page_number = $page_number - 1;else $page_number = $page_number;
+			$roles = Role::all();
+			if(!is_object($customers)) return $customers;
+			if ($request->ajax()) {
+				return view('customers.customersPagination', compact('customers','page_number','roles'));
+			}
+			return view('customers.customers',compact('customers','page_number','roles'));	
+		}else{
+			return $customers_data['message'];
+		}
+		
+		
 	}
 	
 	public function customer_search($request,$pagination)
@@ -76,13 +82,20 @@ class CustomersController extends Controller
 		if($first_name!='' || $last_name!='' || $role_id!='' || $start_date!='' || $end_date!='' || $email!='' || $mobile!='' || $aadhaar!='' || $gender !='' || $habits !='' || $covered_amount!='' || $age_from!='' || $age_to!=''){
 			
 			if($start_date!= '' || $end_date!=''){
+				
 				if((($start_date!= '' && $end_date=='') || ($start_date== '' && $end_date!='')) || (strtotime($start_date) >= strtotime($end_date))){	
-					return  'date_error'; 
+					$data = array();
+					$data['success'] = false;
+					$data['message'] = "date_error";
+					return $data; 
 				}
 			}
 			if($age_from!= '' || $age_to!=''){
 				if((($age_from!= '' && $age_to=='') || ($age_from== '' && $age_to!='')) || ($age_from >= $age_to)){	
-					return  'age_error'; 
+					$data = array();
+					$data['success'] = false;
+					$data['message'] = "age_error";
+					return $data; 
 				}else{
 					$result->whereBetween('age', array($age_from, $age_to));
 				}
@@ -97,6 +110,8 @@ class CustomersController extends Controller
 				$q->whereDate('created_at','<=', $end_date_c );
 			  });
 			} 
+			
+			
 			
 			$email_q = '%' . $request->email .'%';
 			// check email 
@@ -147,6 +162,7 @@ class CustomersController extends Controller
 		
 		
 		$data = array();
+		$data['success'] = true;
 		$data['customers'] = $customers;
 		$data['current_page'] = $page_number;
 		return $data;
