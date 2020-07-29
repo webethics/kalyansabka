@@ -226,8 +226,10 @@ $(document).on('submit','#searchForm', function(e) {
         success: function(data) {
 			 $('.search_spinloder').css('display','none');
              //start date and end date error 
-			 if(data=='date_error'){
+			if(data=='date_error'){
 				notification('Error','Start date not greater than end date.','top-right','error',4000);	
+			}else if(data=='age_error'){
+				notification('Error','Start age not greater than end age.','top-right','error',4000);	
 			}else{
              // Set search result
 			 $("#tag_container").empty().html(data); 
@@ -236,7 +238,6 @@ $(document).on('submit','#searchForm', function(e) {
 		error :function( data ) {}
     });
 });
-
 
 /*-------------------------------------------
 
@@ -278,7 +279,20 @@ $(document).on('click','#export_customers_right,#export_customers_left', functio
         type: "POST",
 		//dataType: 'json',
         url: base_url+'/export_customers',
-        data: {first_name:$('#first_name').val(),last_name:$('#last_name').val(),email:$('#email').val(),role_id:$('#role_id').val(),mobile_number:$('#mobile_number').val(),aadhar_number:$('#aadhar_number').val(),start_date:$('#start_date').val(),end_date:$('#end_date').val(),email:$('#email').val(),_token:csrf_token},
+        data: {first_name:$('#first_name').val(),
+				last_name:$('#last_name').val(),
+				email:$('#email').val(),
+				role_id:$('#role_id').val(),
+				mobile_number:$('#mobile_number').val(),
+				aadhar_number:$('#aadhar_number').val(),
+				start_date:$('#start_date').val(),
+				end_date:$('#end_date').val(),
+				gender:$('#gender').val(),
+				habits:$('#habits').val(),
+				covered_amount:$('#covered_amount').val(),
+				age_from:$('#age_from').val(),
+				age_to:$('#age_to').val(),
+				_token:csrf_token},
         success: function(data) {
 			
 			$('.search_spinloder').css('display','none');
