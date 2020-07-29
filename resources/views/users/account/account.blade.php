@@ -452,21 +452,21 @@
 									<div class="form-group">
 										<label class="col-form-label">Upload Aadhaar Front Image</label>
 									
-										<div id="image-1-10-1" dropzone_Required = "true" data-type="aadhaar_front" data_id = "126" class="dropzone drop_here_logo"></div>
+										<div id="image-1-10-1" dropzone_Required = "true" data-type="aadhaar_front" data_id = "{{$user->id}}" class="dropzone drop_here_logo"></div>
 										<div class="dropzoneError errors"></div>
 									</div>
 									
 									<div class="form-group">
 										<label class="col-form-label">Upload Aadhaar Back Image</label>
 									
-										<div id="image-2-20-2" dropzone_Required = "true"  data-type="aadhaar_back"  data_id = "126"  class="dropzone drop_here_logo"></div>
+										<div id="image-2-20-2" dropzone_Required = "true"  data-type="aadhaar_back"  data_id = "{{$user->id}}"  class="dropzone drop_here_logo"></div>
 										<div class="dropzoneError errors"></div>
 									</div>
 									
 									<div class="form-group">
 										<label class="col-form-label">Upload Pan Card</label>
 									
-										<div id="image-3-30-3" dropzone_Required = "false"  data-type="pan_card"  data_id = "126"  class="dropzone drop_here_logo"></div>
+										<div id="image-3-30-3" dropzone_Required = "false"  data-type="pan_card"  data_id = "{{$user->id}}"  class="dropzone drop_here_logo"></div>
 										<div class="dropzoneError errors"></div>
 									</div>
 									

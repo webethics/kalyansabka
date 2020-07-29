@@ -148,9 +148,9 @@
 											<label class="has-float-label form-group mb-3">
 												<select name="qualifications" id="qualifications" class="form-control">
 													<option value="">Select Qualification</option>
-													<option value="under_matric" @if (old('qualifications') == "under_matric") {{ 'selected' }} @endif >under matric</option>
-													<option value="matric" @if (old('qualifications') == "matric") {{ 'selected' }} @endif >matric</option>
-													<option value="graduate" @if (old('qualifications') == "graduate") {{ 'selected' }} @endif >graduate</option>
+													<option value="under_matric" @if (old('qualifications') == "under_matric") {{ 'selected' }} @endif >Under Matric</option>
+													<option value="matric" @if (old('qualifications') == "matric") {{ 'selected' }} @endif >Matric</option>
+													<option value="graduate" @if (old('qualifications') == "graduate") {{ 'selected' }} @endif >Graduate</option>
 													<option value="postgraduate" @if (old('qualifications') == "postgraduate") {{ 'selected' }} @endif >Postgraduate</option>
 												</select>
 												<span>{{ trans('global.qualifications') }}<span style="color:red;">*</span></span>
@@ -244,17 +244,17 @@
 												<label for="civilite" class=""></label>
 												<div class="radio">
 												
-													<label class=" ml-3"><input type="checkbox" name="habits[]" class="habbit_checkbox" @if (old('habits') == "smocking") {{ 'checked' }} @endif value="smocking" /> <span>Smoking</span></label>
+													<label class=" ml-3"><input type="checkbox" name="habits[0]" class="habbit_checkbox" @if (old('habits.0') == "smocking") {{ 'checked' }} @endif value="smocking" /> <span>Smoking</span></label>
 												</div>
 												<div class="radio">
-													<label class="ml-3"><input type="checkbox" name="habits[]" class="habbit_checkbox" @if (old('habits') == "tabacco") {{ 'checked' }} @endif value="tabacco" /> <span>Tabacco</span></label>
+													<label class="ml-3"><input type="checkbox" name="habits[1]" class="habbit_checkbox" @if (old('habits.1') == "tabacco") {{ 'checked' }} @endif value="tabacco" /> <span>Tabacco</span></label>
 												</div>
 												
 												<div class="radio">
-													<label class="ml-3"><input type="checkbox" name="habits[]" class="habbit_checkbox" @if (old('habits') == "drinking") {{ 'checked' }} @endif value="drinking" /> <span>Drinking</span></label>
+													<label class="ml-3"><input type="checkbox" name="habits[2]" class="habbit_checkbox" @if (old('habits.2') == "drinking") {{ 'checked' }} @endif value="drinking" /> <span>Drinking</span></label>
 												</div>
 												<div class="radio">
-													<label class="ml-3"><input type="checkbox" name="habits[]" class="habbit_checkbox" @if (old('habits') == "none") {{ 'checked' }} @endif value="none" /> <span>None of the Above</span></label>
+													<label class="ml-3"><input type="checkbox" name="habits[3]" class="habbit_checkbox" @if (old('habits.3') == "none") {{ 'checked' }} @endif value="none" /> <span>None of the Above</span></label>
 												</div>
 											</div>
 											<div class="error_margin"><span class="error habits_error" >  {{ $errors->first('habits')  }} </span></div>
@@ -415,6 +415,7 @@
 												<input type="hidden" name="hard_copy_certificate" id = "hard_copy_certificate" value="{{old('hard_copy')}}">
 												<input type="hidden" name="actual_price" id = "actual_price" value="{{old('actual_price')}}">
 											</div>
+											<div class="error_margin"><span class="error" id="select_plan_first" ></span></div>
 										</div>
 									</div>
 									
@@ -636,21 +637,27 @@ function setPriceOnSubmitButton(){
 }
 
 $("input[name='hard_copy']").change(function(){
-	var selected_val = $(this).val();
+	
 	var price_val = $('#actual_price').val();
-	var total_value;
-	if(selected_val == 'yes'){
-		total_value = parseInt(price_val) + 50 ;
-		$('#hard_copy_certificate').val('yes');
-		
-		
+	if(price_val){
+		var selected_val = $(this).val();
+		var total_value;
+		if(selected_val == 'yes'){
+			total_value = parseInt(price_val) + 50 ;
+			$('#hard_copy_certificate').val('yes');
+			
+			
+		}
+		if(selected_val == 'no'){
+			$('#hard_copy_certificate').val('no');
+			total_value = $('#actual_price').val();
+		}
+		//$('#price').val(total_value);
+		$('#buttonCheck').val('Pay INR '+total_value);
+	}else{
+		$('#select_plan_first').html('Please select an insurance plan first.').show("slow").delay(2500).hide("slow");
 	}
-	if(selected_val == 'no'){
-		$('#hard_copy_certificate').val('no');
-		total_value = $('#actual_price').val();
-	}
-	//$('#price').val(total_value);
-	$('#buttonCheck').val('Pay INR '+total_value);
+	
 	
 });
 

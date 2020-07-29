@@ -15,8 +15,8 @@
 $(document).ready(function(){
 	  $(document).on('click', '.pagination a',function(event){
 		event.preventDefault();
-		$('li').removeClass('active');
-		$(this).parent('li').addClass('active');
+		$('li.page-item').removeClass('active');
+		$(this).parent('li.page-item').addClass('active');
 		var myurl = $(this).attr('href');
 		var page=$(this).attr('href').split('page=')[1];
 		getData(page);
@@ -39,8 +39,22 @@ $(document).ready(function(){
 		filter_str +=  '&role_id=' +$('#role_id').val(); 
 	if($('#end_date').val()!='' && $('#end_date').val()!=undefined)
 		filter_str +=  '&end_date=' +$('#end_date').val();
+    if($('#gender').val()!='' && $('#gender').val()!=undefined)
+		filter_str +=  '&gender=' +$('#gender').val();
     if($('#start_date').val()!='' && $('#start_date').val()!=undefined)
 		filter_str +=  '&start_date=' +$('#start_date').val();
+    if($('#habits').val()!='' && $('#habits').val()!=undefined)
+		filter_str +=  '&habits=' +$('#habits').val();
+    if($('#covered_amount').val()!='' && $('#covered_amount').val()!=undefined)
+		filter_str +=  '&covered_amount=' +$('#covered_amount').val();
+    if($('#age_from').val()!='' && $('#age_from').val()!=undefined)
+		filter_str +=  '&age_from=' +$('#age_from').val();
+	if($('#age_to').val()!='' && $('#age_to').val()!=undefined)
+		filter_str +=  '&age_to=' +$('#age_to').val();
+    if($('#mobile_number').val()!='' && $('#mobile_number').val()!=undefined)
+		filter_str +=  '&mobile_number=' +$('#mobile_number').val();
+    if($('#aadhar_number').val()!='' && $('#aadhar_number').val()!=undefined)
+		filter_str +=  '&aadhar_number=' +$('#aadhar_number').val();
     
 	//alert($('#role_id').val());
 	  

@@ -64,15 +64,27 @@ class CustomersController extends Controller
 		$end_date = $request->end_date;
 		$mobile = $request->mobile_number;
 		$aadhaar = $request->aadhar_number;
+		$gender = $request->gender;
+		$habits = $request->habits;
+		$covered_amount = $request->covered_amount;
+		$age_from = $request->age_from;
+		$age_to = $request->age_to;
 			
 		
 		$result = User::where(`1`, '=', `1`);
 			
-		if($first_name!='' || $last_name!='' || $role_id!='' || $start_date!='' || $end_date!='' || $email!='' || $mobile!='' || $aadhaar!=''){
+		if($first_name!='' || $last_name!='' || $role_id!='' || $start_date!='' || $end_date!='' || $email!='' || $mobile!='' || $aadhaar!='' || $gender !='' || $habits !='' || $covered_amount!='' || $age_from!='' || $age_to!=''){
 			
 			if($start_date!= '' || $end_date!=''){
 				if((($start_date!= '' && $end_date=='') || ($start_date== '' && $end_date!='')) || (strtotime($start_date) >= strtotime($end_date))){	
 					return  'date_error'; 
+				}
+			}
+			if($age_from!= '' || $age_to!=''){
+				if((($age_from!= '' && $age_to=='') || ($age_from== '' && $age_to!='')) || ($age_from >= $age_to)){	
+					return  'age_error'; 
+				}else{
+					$result->whereBetween('age', array($age_from, $age_to));
 				}
 			}
 			
@@ -94,6 +106,7 @@ class CustomersController extends Controller
 			
 			$first_name_s = '%' . $first_name . '%';
 			$last_name_s = '%' . $last_name . '%';
+			$habits_s = '%' . $habits . '%';
 			
 			// check name 
 			if(isset($first_name) && !empty($first_name)){
@@ -108,6 +121,15 @@ class CustomersController extends Controller
 		 	if(isset($aadhaar) && !empty($aadhaar)){
 				$result->where('aadhar_number','LIKE',$aadhaar);
 			}
+		 	if(isset($gender) && !empty($gender)){
+				$result->where('gender','=',$gender);
+			}
+		 	if(isset($covered_amount) && !empty($covered_amount)){
+				$result->where('plan_id','=',$covered_amount);
+			}
+		 	if(isset($habits) && !empty($habits)){
+				$result->where('habits','LIKE',$habits_s);
+			}
 		 	if(isset($role_id) && !empty($role_id)){
 				$result->where('role_id',$role_id);
 			} 
@@ -115,7 +137,7 @@ class CustomersController extends Controller
 		
 		
 		$result->where('role_id', '!=', 1);
-		$result->orderBy('created_at', 'desc')->toSql();
+		//echo $result->orderBy('created_at', 'desc')->toSql();die;
 		
 		if($pagination == true){
 			$customers = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
