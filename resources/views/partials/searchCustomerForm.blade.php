@@ -35,8 +35,8 @@
 							<select  id="habits"  class="form-control select2-single"  name="habits"  data-width="100%">
 										
 								<option value=" ">{{trans('global.filter_by_habits')}}</option>
-								<option value="smocking">Smocking</option>
-								<option value="tabacco">Tobacco</option>
+								<option value="smoking">Smoking</option>
+								<option value="tobacco">Tobacco</option>
 								<option value="drinking">Drinking</option>
 								<option value="none">None of the Above</option>
 							</select>
