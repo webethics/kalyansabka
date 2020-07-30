@@ -275,7 +275,7 @@
 											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
 											<div class="col-lg-9 col-xl-10">
 											<div class="d-flex control-group">
-												<input type="text" name="nominee_name_1" id="nominee_name_1" class="form-control" value="{{old('nominee_name_1')??$nominee_details[0]['name']??'Not Added yet'}}">
+												<input type="text" name="nominee_name_1" id="nominee_name_1" class="form-control" value="{{old('nominee_name_1')??$nominee_details[0]['name']??''}}">
 											</div>
 											<div class="nominee_name_1_error errors"></div>
 											</div>
@@ -303,7 +303,7 @@
 											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
 											<div class="col-lg-9 col-xl-10">
 											<div class="d-flex control-group">
-												<input type="text" name="nominee_name_2" id="nominee_name_2" class="form-control" value="{{old('nominee_name_2')??$nominee_details[1]['name']??'Not Added yet'}}">
+												<input type="text" name="nominee_name_2" id="nominee_name_2" class="form-control" value="{{old('nominee_name_2')??$nominee_details[1]['name']??''}}">
 											</div>
 											<div class="nominee_name_2_error errors"></div>
 											</div>
@@ -331,7 +331,7 @@
 											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
 											<div class="col-lg-9 col-xl-10">
 											<div class="d-flex control-group">
-												<input type="text" name="nominee_name_3" id="nominee_name_3" class="form-control" value="{{old('nominee_name_3')??$nominee_details[2]['name']??'Not Added yet'}}">
+												<input type="text" name="nominee_name_3" id="nominee_name_3" class="form-control" value="{{old('nominee_name_3')??$nominee_details[2]['name']??''}}">
 											</div>
 											<div class="nominee_name_3_error errors"></div>
 											</div>
@@ -359,7 +359,7 @@
 											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
 											<div class="col-lg-9 col-xl-10">
 											<div class="d-flex control-group">
-												<input type="text" name="nominee_name_4" id="nominee_name_4" class="form-control" value="{{old('nominee_name_4')??$nominee_details[3]['name']??'Not Added yet'}}">
+												<input type="text" name="nominee_name_4" id="nominee_name_4" class="form-control" value="{{old('nominee_name_4')??$nominee_details[3]['name']??''}}">
 											</div>
 											<div class="nominee_name_4_error errors"></div>
 											</div>
