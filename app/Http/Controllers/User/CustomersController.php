@@ -43,7 +43,9 @@ class CustomersController extends Controller
 		if($customers_data['success']){
 			$customers = $customers_data['customers'];
 			$page_number =  $customers_data['current_page'];
-			if($page_number > 1 )$page_number = $page_number - 1;else $page_number = $page_number;
+			if(empty($page_number))
+				$page_number = 1;
+			//if($page_number > 1 )$page_number = $page_number - 1;else $page_number = $page_number;
 			$roles = Role::all();
 			if(!is_object($customers)) return $customers;
 			if ($request->ajax()) {
@@ -82,8 +84,11 @@ class CustomersController extends Controller
 		if($first_name!='' || $last_name!='' || $role_id!='' || $start_date!='' || $end_date!='' || $email!='' || $mobile!='' || $aadhaar!='' || $gender !='' || $habits !='' || $covered_amount!='' || $age_from!='' || $age_to!=''){
 			
 			if($start_date!= '' || $end_date!=''){
+				if(empty($end_date))
+					$end_date = date('Y-m-d');
 				
 				if((($start_date!= '' && $end_date=='') || ($start_date== '' && $end_date!='')) || (strtotime($start_date) >= strtotime($end_date))){	
+					
 					$data = array();
 					$data['success'] = false;
 					$data['message'] = "date_error";
