@@ -18,7 +18,7 @@
 	  @foreach($customers as $key => $customer)
 		<tr data-customer-id="{{ $customer->id }}" class="user_row_{{$customer->id}}" >
 			
-			<td id="sno_{{$customer->id}}">{{($page_number * 10)+$sno}}</td>
+			<td id="sno_{{$customer->id}}">{{(($page_number-1) * 10)+$sno}} <input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$customer->id}}"/></td>
 			<td id="registation_{{$customer->id}}">{{ date('d-m-Y', strtotime($customer->created_at))  ?? '' }}</td>
 			<td id="full_name_{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}}</td>
 			<td id="email_{{$customer->id}}">{{$customer->email}}</td>
