@@ -101,7 +101,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('export_customers',array('uses'=>'CustomersController@export_customers')); //Edit User
 	Route::get('download-certificate/{request_id}',array('uses'=>'CustomersController@downloadCertificate')); //Edit User
 	Route::get('manage-customer/{id}', 'CustomersController@manageCustomer');
-	
+	Route::post('customer/view/{request_id}', 'CustomersController@customer_view'); //Edit User
 	//Dashboard
 	Route::get('dashboard',array('uses'=>'DashboardController@index'));
 	

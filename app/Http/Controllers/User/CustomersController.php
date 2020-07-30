@@ -58,6 +58,28 @@ class CustomersController extends Controller
 		
 		
 	}
+	public function customer_view($user_id)
+    {
+		access_denied_user('customer_certificate_download');
+        $user = User::where('id',$user_id)->with('plan')->get();
+		
+		$roles = Role::all();
+		if(count($user)>0){
+			$user =$user[0];
+			$view = view("modal.customerView",compact('user','roles'))->render();
+			$success = true;
+		}else{
+			$view = '';
+			$success = false;
+		}
+		
+        //abort_unless(\Gate::allows('request_edit'), 403);
+		
+		return Response::json(array(
+		  'success'=>$success,
+		  'data'=>$view
+		 ), 200);
+    }
 	
 	public function customer_search($request,$pagination)
 	{
