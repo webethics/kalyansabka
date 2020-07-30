@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdateUserBankDetailsRequest;
+use App\Http\Requests\UpdateUserNomineeDetailsRequest;
 use App\Http\Requests\UpdateUserPassword;
 use App\Http\Requests\UpdateBasicUserRequest;
 use App\Models\UserBankDetails;
 use App\Models\UserDocuments;
+use App\Models\UserNominees;
 use App\Http\Requests\sendEmailNotification;
 use App\Http\Requests\ResetPassword;
 use Illuminate\Http\Request;
@@ -165,7 +167,10 @@ class UsersController extends Controller
 		$user_id = $user->id;
 		$bank_detais = UserBankDetails::where('user_id',$user_id)->first();
 		$document_details = UserDocuments::where('user_id',$user_id)->first();
-		return view('users.account.account', compact('user','bank_detais','document_details'));
+		$nominee_details = UserNominees::where('user_id',$user_id)->get();
+		$nominee_details =  $nominee_details->toArray();
+		//echo '<pre>';print_r($nominee_details->toArray());die;
+		return view('users.account.account', compact('user','bank_detais','document_details','nominee_details'));
 		//return view('users.account.account');
     }
 	
@@ -314,6 +319,45 @@ class UsersController extends Controller
 		   $result['ifsc_code']= $request->ifsc_code;
 		   
 		   return Response::json($result, 200);
+		}
+		
+    }
+
+/*==================================================
+	  UPDATE NOMINEE DETAIL UNDER PROFILE 
+==================================================*/  
+	public function updateNomineeDetails(UpdateUserNomineeDetailsRequest $request,$user_id)
+    {
+		$data=array();
+		 $result =array();
+		//pr($request->all());	
+		 $userrequestData = User::where('id',$user_id);
+		 $requestData = UserNominees::where('user_id',$user_id);
+		 $stored_data = UserNominees::where('user_id',$user_id)->get();
+		 
+		if($request->ajax()){
+			if($stored_data){
+				$user_data['nominee_number'] = $request->nominee_number;
+				$userrequestData->update($user_data);
+				UserNominees::where('user_id',$user_id)->delete();
+			}
+			$nominees = $request->nominee_number;
+			for($i=1;$i<=$nominees;$i++){
+				
+				$nominee_data['name'] = $request->input('nominee_name_'.$i); 
+				$nominee_data['relation'] = $request->input('nominee_relation_'.$i);  
+				$nominee_data['user_id'] = $user_id;
+				UserNominees::create($nominee_data);
+			}
+			//UPDATE PROFILE EVENT LOG END  
+			$result['success'] = true;
+			$result['nominee_number'] = $nominees;
+			
+			for($i=1;$i<=$nominees;$i++){
+				$result['name_'.$i] = $request->input('nominee_name_'.$i); 
+				$result['relation_'.$i] = $request->input('nominee_relation_'.$i); 
+			}
+			return Response::json($result, 200);
 		}
 		
     }

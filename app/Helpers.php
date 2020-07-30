@@ -321,14 +321,14 @@ function list_plans(){
 function relationsArray(){
 	//$array = array();
 	$array = array(
-				'wife'=>'WIFE',
-				'husband'=>'HUSBAND',
-				'daughter'=>'DAUGHTER',
-				'son'=>'SON',
-				'mother'=>'MOTHER',
-				'father'=>'FATHER',
-				'brother'=>'BROTHER', 	
-				'sister'=>'SISTER',
+				'wife'=>'Wife',
+				'husband'=>'Husband',
+				'daughter'=>'Daughter',
+				'son'=>'Son',
+				'mother'=>'Mother',
+				'father'=>'Father',
+				'brother'=>'Brother', 	
+				'sister'=>'Sister',
 			);
 
 	return $array;			
