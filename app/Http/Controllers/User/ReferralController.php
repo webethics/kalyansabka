@@ -1,44 +1,89 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-//use App\Http\Requests\MassDestroyUserRequest;
-use App\Http\Requests\CreateUserRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Requests\UpdateUserPassword;
-use App\Http\Requests\sendEmailNotification;
-use App\Http\Requests\ResetPassword;
 use Illuminate\Http\Request;
-use App\Models\Role;
+use App\Models\UserReferral;
 use App\Models\User;
-use App\Models\CdrGroup;
-use App\Models\EmailTemplate;
-
-use App\Models\CityLists;
-use League\Csv\Writer;	
-use Auth;
 use Config;
-use Response;
-use Hash;
-use DB;
-use DateTime;
-use Carbon\Carbon;
 
 class ReferralController extends Controller
 {
-	protected $per_page;
-	public function __construct()
+    public function index(Request $request)
     {
-	    
-        $this->per_page = Config::get('constant.per_page');
+    	if($request->ajax()){
+    		$response = [];
+    		$data = $request->all();
+    		$user_id = $data['member_id'];
+    		$userData = User::where('id',$user_id)->first();
+
+    		$response['status'] = Config::get('constant.ERROR');
+        	$response['msg'] = 'Something went wrong,please try later!!';
+    	}else{
+    		$user_id = user_id();
+    		$userData = user_data();
+    	}
+    	$memberInfo = [];$member_counter = 0; $userInfo = [];
+
+    	/*check if user id not empty*/
+    	if(!empty($user_id)){
+	    	
+	    	$userReferral = UserReferral::with('user')->where('ref_user_id1',$user_id)->orWhere('ref_user_id2',$user_id)->get();
+	    	$userInfo['user_id'] = $user_id;
+	    	$userInfo['email'] = $userData->email;
+
+	    	$memberInfo[$member_counter]['memberId'] = $user_id;
+	    	$memberInfo[$member_counter]['parentId'] = null;
+	    	$memberInfo[$member_counter]['counter'] = $userData->referral_count;
+	    	$memberInfo[$member_counter]['name'] = ucfirst("{$userData->first_name} {$userData->last_name}");;
+	    	$memberInfo[$member_counter]['email'] = $userData->email;
+	    	$memberInfo[$member_counter]['level'] = 0;
+
+
+	    	if($userReferral && count($userReferral) > 0){
+	    		foreach($userReferral as $key => $ref) {
+	    			$member_counter++;
+	    			//checl is level 1 then push into level1 array
+		    		if($ref['ref_user_id1'] == $user_id){
+		    			$level = 1;
+		    			/*$level1[$level1_counter]['user_id'] = $ref['user_id'];
+		    			$level1[$level1_counter]['email'] = $ref->user['email'];
+		    			$level1_counter++;*/
+		    		}
+		    		if($ref['ref_user_id2'] == $user_id){
+		    			$level = 2;
+		    			//check if ref_user1 key exist
+		    			/*$level2_counter = 0;
+		    			if (array_key_exists($ref['ref_user_id1'],$level2)){
+		    				$level2_counter = count($level2[$ref['ref_user_id1']]);
+		    			}
+		    			$level2[$ref['ref_user_id1']][$level2_counter]['user_id'] = $ref['user_id'];
+		    			$level2[$ref['ref_user_id1']][$level2_counter]['email'] = $ref->user['email'];*/
+		    		}
+
+		    		$memberInfo[$member_counter]['memberId'] = $ref['user_id'];
+			    	$memberInfo[$member_counter]['parentId'] = $ref['ref_user_id1'];
+			    	$memberInfo[$member_counter]['counter'] = $ref->user['referral_count'];
+			    	$memberInfo[$member_counter]['name'] = ucfirst("{$ref->user['first_name']} {$ref->user['last_name']}");
+			    	$memberInfo[$member_counter]['email'] = $ref->user['email'];
+			    	$memberInfo[$member_counter]['level'] = $level;
+		    	}
+	    	}
+	    	$response['status'] = Config::get('constant.SUCCESS');
+	        $response['msg'] = trans('message.AJAX_SUCCESS');
+
+	    }
+
+    	if($request->ajax()){
+    		$response['memberInfo'] = $memberInfo;
+    		$response['userInfo'] = $userInfo;
+
+    		return $response;
+    	}else{
+    		return view('referrals.index',compact('userInfo','memberInfo'));
+    	}
+    	
     }
-	
-	public function referrals(Request $request)
-    {
-		
-		$request->role_id = 1;
-        
-        return view('referrals.referrals');	
-	}
 }
 ?>
