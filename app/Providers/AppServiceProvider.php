@@ -3,6 +3,12 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\User;
+use App\Observers\UserObserver;
+use App\Models\UserReferral;
+use App\Observers\UserReferralObserver;
+use App\Models\IncomeHistory;
+use App\Observers\IncomeHistoryObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,7 +29,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->alias('bugsnag.logger', \Illuminate\Contracts\Logging\Log::class);
-        $this->app->alias('bugsnag.logger', \Psr\Log\LoggerInterface::class);
+        User::observe(UserObserver::class);
+        UserReferral::observe(UserReferralObserver::class);
+        IncomeHistory::observe(IncomeHistoryObserver::class);
+        /*$this->app->alias('bugsnag.logger', \Illuminate\Contracts\Logging\Log::class);
+        $this->app->alias('bugsnag.logger', \Psr\Log\LoggerInterface::class);*/
     }
 }

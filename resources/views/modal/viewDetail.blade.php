@@ -87,7 +87,14 @@
 			<label class="col-lg-3 col-xl-4 col-form-label">District</label>
 			<label class="col-lg-9 col-xl-8 col-form-label">{{$requestDistrictName->city_name ?? ''}}</label>
 		</div>
-									
+
+		<div class="form-group form-row-parent">
+			<label class="col-form-label">{{ trans('global.reason') }}</label>
+			<div class="d-flex control-group">
+				<textarea rows="3" cols="50" class="form-control reason_description" name="description" placeholder="Reason for approve or disapprove">{{$tempRequestUser->description}}</textarea>							
+			</div>
+			<div class="description_error errors"></div>									
+		</div>						
 								
 		<div class="form-row mt-4">
 		<div class="col-md-12">

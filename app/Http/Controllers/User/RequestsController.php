@@ -185,7 +185,7 @@ class RequestsController extends Controller
     	$data['success'] = false;
     	$data['message'] = 'Invalid Request';
 
-    	if(!empty($request_id) && isset($request->status) && !empty($request->status)){
+    	if(!empty($request_id) && isset($request->status) && !empty($request->status) && isset($request->description) && !empty($request->description)){
     		$status = 2;
     		if($request->status == 'approve'){
     			$status = 1;
@@ -193,7 +193,10 @@ class RequestsController extends Controller
     		}
 
     		$tempRequestUser = TempRequestUser::find($request_id);
-    		$updateTempRequest = $tempRequestUser->update(['status'=>$status]);
+    		$data =array();
+			$data['status'] =$status;
+			$data['description'] = trim($request->description);
+    		$updateTempRequest = $tempRequestUser->update($data);
     		if($updateTempRequest == true){
 
     			$requests_data = $this->requests_search($request,$pagination=true);

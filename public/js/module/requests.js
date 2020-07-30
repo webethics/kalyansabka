@@ -80,44 +80,51 @@ $(document).on('submit','#searchRequestForm', function(e) {
 
 /*Send Edit request to user*/
 function edit_request_update(ajax_action,method,status){
+	$("#updateRequestUser .description_error").html();
 	var csrf_token = $('meta[name="csrf-token"]').attr('content');
-	/*show loader*/
-	$('#updateRequestUser').find('.request_loader').show();
-	var formData = $('#updateCertificate').serializeArray();
+	//check if description not empty
+	var reason = $.trim($("#updateRequestUser .reason_description").val());
+	if(reason != ""){
+		/*show loader*/
+		$('#updateRequestUser').find('.request_loader').show();
+		var formData = $('#updateRequestUser').serializeArray();
 
-	formData.push({ name: "status", value: status });
-	formData.push({ name: "_token", value: csrf_token });
+		formData.push({ name: "status", value: status });
+		formData.push({ name: "_token", value: csrf_token });
 
-	$.ajax({
-        type: method,
-        url: ajax_action,
-        data:formData,
-        success: function(data) {
-        	$('#updateRequestUser').find('.request_loader').hide();
-        	if(data=='date_error'){
-				notification('Error','Start date not greater than end date.','top-right','error',4000);	
-			}else if(data=='error'){
-				notification('Error','Something went wrong, please try later.','top-right','error',4000);
-			}else{
-             // Set search result
-			 $("#tag_container").empty().html(data); 
-			 notification('Success','Successfully Update Edit Request.','top-right','success',4000);
-			 setTimeout(function(){ $('.viewDetailModal').modal('hide'); }, 500);
-			}
-			/*if(response.success){
-				$("#tag_container").empty().html(data); 
-				setTimeout(function(){ $('.viewDetailModal').modal('hide'); }, 500);
-			}else{
-				if(typeof (response.message) != 'undefined' && response.message != null && response.message != "")
-					notification('Error',response.message,'top-right','error',3000);
-				else
-				notification('Error','Something went wrong.','top-right','error',3000);
-			}*/	
-        },
-        error:function(response){
-	       	$('#updateRequestUser').find('.request_loader').hide();
-	       	console.log('error');
-	    }
-    });
+		$.ajax({
+	        type: method,
+	        url: ajax_action,
+	        data:formData,
+	        success: function(data) {
+	        	$('#updateRequestUser').find('.request_loader').hide();
+	        	if(data=='date_error'){
+					notification('Error','Start date not greater than end date.','top-right','error',4000);	
+				}else if(data=='error'){
+					notification('Error','Something went wrong, please try later.','top-right','error',4000);
+				}else{
+	             // Set search result
+				 $("#tag_container").empty().html(data); 
+				 notification('Success','Successfully Update Edit Request.','top-right','success',4000);
+				 setTimeout(function(){ $('.viewDetailModal').modal('hide'); }, 500);
+				}
+				/*if(response.success){
+					$("#tag_container").empty().html(data); 
+					setTimeout(function(){ $('.viewDetailModal').modal('hide'); }, 500);
+				}else{
+					if(typeof (response.message) != 'undefined' && response.message != null && response.message != "")
+						notification('Error',response.message,'top-right','error',3000);
+					else
+					notification('Error','Something went wrong.','top-right','error',3000);
+				}*/	
+	        },
+	        error:function(response){
+		       	$('#updateRequestUser').find('.request_loader').hide();
+		       	console.log('error');
+		    }
+	    });
+	}else{
+		$("#updateRequestUser .description_error").html('Please mention reason '+status);
+	}
 
 }

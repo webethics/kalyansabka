@@ -404,6 +404,7 @@ return [
 	'search_by_name'           		=> 'Search by name',
 	'search_by_guest'           	=> 'Search by guest name',
 	'search_by_business_name'       => 'Search by business name',
+    'reason'                        => 'Reason',
 	'start_date'           	=> 'Start date',
 	'end_date'           	=> 'End date',
 	

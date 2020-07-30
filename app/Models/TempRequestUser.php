@@ -22,7 +22,8 @@ class TempRequestUser extends Model
 		'aadhar_number',
 		'status',
 		'state_id',
-		'district_id'
+		'district_id',
+		'description'
     ];
 
     protected $appends = ['full_name'];

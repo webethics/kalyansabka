@@ -30,10 +30,10 @@
 		
 		
 		<div class="form-group form-row-parent">
-		<label class="col-form-label">{{ trans('global.email') }}</label>
-		<div class="d-flex control-group">
-		<input type="email" name="email" disabled="disabled" value="{{$user->email}}" readonly="readonly" class="form-control" placeholder="{{ trans('global.email') }}">								
-		</div>								
+			<label class="col-form-label">{{ trans('global.email') }}</label>
+			<div class="d-flex control-group">
+			<input type="email" name="email" disabled="disabled" value="{{$user->email}}" readonly="readonly" class="form-control" placeholder="{{ trans('global.email') }}">								
+			</div>								
 		</div>	
 	
 		<div class="form-group form-row-parent">
