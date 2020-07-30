@@ -53,9 +53,13 @@
 						<div class="tab-content">
 							<div id="msg" class="alert hide"></div>
 							<div class="tab-pane fade show active" id="first" role="tabpanel"  aria-labelledby="first-tab">
+								
 								<div class="" id="first_account_info">
 									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="basic_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
 									<div class="clearfix"></div>
+									<div id="user_response_update" style="display:none"></div>
+									<div id="user_response_update_db" >@if($temp_details && $temp_details->status == 0) {{ "Your request has been sent to admin. After checking your document admin will approve your request."}}@endif
+									@if($temp_details && $temp_details->status == 2) {{$temp_details->description}}@endif</div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}</label>
 										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->first_name}}</label>
@@ -70,6 +74,7 @@
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.email')}}</label>
 										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->email}}</label>
 									</div>
+									@if(current_user_role_id()!=1)
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar</label>
 										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->aadhar_number}}</label>
@@ -90,8 +95,22 @@
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.district')}}</label>
 										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->district_id}}</label>
 									</div>
+									@endif
 								</div>	
-								<form action="{{ url('update-basic-profile') }}/{{ $user->id }}" method="POST" name="accountinfo" id="accountinfo" data-id="{{$user->id}}" style="display:none">
+								@if(current_user_role_id()==1)
+									<form action="{{ url('update-profile') }}/{{ $user->id }}" method="POST" name="accountinfo" id="accountinfo" data-id="{{$user->id}}" style="display:none">
+								@else
+									<form action="{{ url('update-basic-profile') }}/{{ $user->id }}" method="POST" name="accountinfo" id="accountinfo" data-id="{{$user->id}}" style="display:none">
+								@endif
+									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="basic_info_cancel" href="javascript:void(0)"><i class="simple-icon-close"></i></a></div>
+									
+									<div class="clearfix"></div>
+									
+									
+									<div id="user_response_update_1"  style="display:none"></div>
+									<div id="user_response_update_db_1" >@if($temp_details && $temp_details->status == 0) {{ "Your request has been sent to admin. After checking your document admin will approve your request."}}@endif
+									@if($temp_details && $temp_details->status == 2) {{$temp_details->description}}@endif</div>
+									
 									{{ csrf_field() }}
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}<em>*</em> </label>
@@ -199,7 +218,7 @@
 										<div class="col-lg-9 col-xl-10">
 											<!--input type="submit" id="update" value="Submit" class="btn btn-primary default btn-lg mb-1 mr-2"-->
 											<button type="button" id="update-basic-request" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
-											<button type="button" id="basic_info_cancel" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.cancel')}}</button>
+											
 											<div class="spinner-border text-primary request_loader" style="display:none"></div>
 										</div>
 									</div>
