@@ -502,7 +502,13 @@ $(function(){
 
 $(document).ready(function(){
 	
-
+	if ($('#none').is(":checked"))
+	{
+	  $("input.habbit_checkbox").attr("disabled", true);
+	  $('#none').attr("disabled", false);
+    }else{
+        $("input.habbit_checkbox").attr("disabled", false);
+    }
 	$(".box").hide();
 	var ref_val = $('#refered_by').val();
 	valdateReferral(ref_val);
