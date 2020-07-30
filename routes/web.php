@@ -115,7 +115,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	
 
 	//referrals
-	Route::get('referrals',array('uses'=>'ReferralController@referrals'));
+	Route::get('referrals',array('uses'=>'ReferralController@index'));
 	
 	
 	//Requests

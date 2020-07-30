@@ -25,7 +25,7 @@
 	
     <link rel="stylesheet" href="{{ asset('css/main.css')}}" />
 	<link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
-	
+	@yield('additionalCss')
 	<link rel="shortcut icon" href="{{ asset('img/favicon.png')}}">
 	<script> 
 	 base_url ="{{ url('/') }}";

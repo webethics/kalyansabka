@@ -15,6 +15,8 @@ return [
         'STATE_HEAD' => '4',
         'DISTRICT_HEAD' => '5',
     ],
-	'per_page'=>10
+	'per_page'=>10,
+    'SUCCESS'=>'success',
+    'ERROR'=>'error',
 ];
 ?>

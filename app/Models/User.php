@@ -45,6 +45,7 @@ class User extends Authenticatable
 		'district_id',
 		'remember_token',
 		'refered_by',
+        'referral_count',
 		'hard_copy_certificate',
         'certificate_status',
 		'verify_token' ,
@@ -106,6 +107,10 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\StateList', 'state_id');
     }
 
+    public function plan(){
+        return $this->belongsTo('App\Models\Plan', 'plan_id');
+    }
+
     public function tempRequestUser() {
         return $this->hasMany('App\Models\TempRequestUser','user_id');
     }
@@ -113,6 +118,11 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return ucfirst("{$this->first_name} {$this->last_name}");
+    }
+
+    public function userReferral()
+    {
+        return $this->hasMany('App\Models\UserReferral');
     }
    
 }
