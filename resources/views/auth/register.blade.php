@@ -642,16 +642,17 @@ function setPriceOnSubmitButton(){
 			$('#hard_copy_certificate').val('yes');
 			
 			
-		}
-		if(hard_copy == 'no'){
+		}else if(hard_copy == 'no'){
 			$('#hard_copy_certificate').val('no');
 			total_value = $('#actual_price').val();
+		}else{
+			total_value =  $('#actual_price').val();
 		}
 		$('#buttonCheck').val('Pay INR '+total_value);
 	}
-	
 
 }
+
 
 $("input[name='hard_copy']").change(function(){
 	
