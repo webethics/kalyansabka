@@ -105,9 +105,14 @@ $(document).on('submit','#nomminee_pass', function(e) {
 			 if(data.success){
 				$('.search_spinloder').css('display','none');
 				notification('Success','Nominee Details Updated Successfully','top-right','success',2000);
+				for(var i = 1;i<=data.nominee_number;i++){
+					$('#show_'+i).show();
+				} 
 				$('#nomminee_pass_info').show('slow');
+				$('#showNomineeDetails').show();
+				$('#showOnLoadOnly').hide();
 				$('#nomminee_pass').hide('slow');	
-				showDiv('showDiv',data.$nominee_number);
+				showDiv('div',data.nominee_number);
 				
 				if(data.name_1){
 					$('#nominee_name_1').val(data.name_1);
@@ -131,27 +136,12 @@ $(document).on('submit','#nomminee_pass', function(e) {
 					$('#nom_relation_3').html(data.relation_3);
 				}
 				if(data.name_4){
-					$('#nominee_name_4').val(data.name_1);
+					$('#nominee_name_4').val(data.name_4);
 					$('#nominee_relation_4').val(data.relation_4);
 					
 					$('#nom_name_4').html(data.name_4);
 					$('#nom_relation_4').html(data.relation_4);
 				}
-				
-				
-				
-				
-				/* for(var i = 1;i<=data.nominee_number;i++){
-					
-					var nawname = 'name_{i}';
-					var nawrealtion = 'relation_'+i;
-					console.log(data.nawname);
-					$('#nominee_name_'+i).val(data.nawname);
-					$('#nominee_relation_'+i).val(data.nawrealtion);
-					
-					$('#nom_name_'+i).html(data.nawname);
-					$('#nom_relation_'+i).html(data.nawrealtion);
-				} */
 				
 			}
         },

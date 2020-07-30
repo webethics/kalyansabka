@@ -212,39 +212,88 @@
 								<div class="" id="nomminee_pass_info">
 									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="nominee_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
 									<div class="clearfix"></div>
-									<div class="form-group row">
-										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_1">{{$nominee_details[0]['name']??'Not Added yet'}}</label>
-										
-										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_1">{{$nominee_details[0]['relation']??'Not Added yet'}}</label>
-									</div>
-									<hr>
-									<div class="form-group row">
-										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_2">{{$nominee_details[1]['name']??'Not Added yet'}}</label>
-										
-										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_2">{{$nominee_details[1]['relation']??'Not Added yet'}}</label>
-									</div>
-									<hr>
-									<div class="form-group row">
-										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_3">{{$nominee_details[2]['name']??'Not Added yet'}}</label>
-										
-										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_3">{{$nominee_details[2]['relation']??'Not Added yet'}}</label>
-									</div>
-									<hr>
-									<div class="form-group row">
-										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_4">{{$nominee_details[3]['name']??'Not Added yet'}}</label>
-										
-										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_4">{{$nominee_details[3]['relation']??'Not Added yet'}}</label>
-									</div>
-									<hr>
 									
+									<div id="showNomineeDetails" style="display:none">
+										<div class="form-group row" id="show_1" style="display:none">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_1"></label>
+											
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_1"></label>
+											<hr>
+										</div>
+										
+										<div class="form-group row"id="show_2" style="display:none">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_2"></label>
+											
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_2"></label>
+											<hr>
+										</div>
+										
+										<div class="form-group row" id="show_3" style="display:none">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_3"></label>
+											
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_3"></label>
+											<hr>
+										</div>
+										
+										<div class="form-group row" id="show_4" style="display:none">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_4"></label>
+											
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_4"></label>
+											<hr>
+										</div>
+										
+									</div>
+									<div id="showOnLoadOnly">
+										@if(isset($nominee_details[0]) && $nominee_details[0]['name'] != "")
+										<div class="form-group row">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_11">{{$nominee_details[0]['name']??'Not Added yet'}}</label>
+											
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_11">{{$nominee_details[0]['relation']??'Not Added yet'}}</label>
+											
+										</div>
+										<hr>
+										@endif
+										@if(isset($nominee_details[1]) && $nominee_details[1]['name'] != "")
+										<div class="form-group row">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_21">{{$nominee_details[1]['name']??'Not Added yet'}}</label>
+											
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_21">{{$nominee_details[1]['relation']??'Not Added yet'}}</label>
+										</div>
+										<hr>
+										@endif
+										@if(isset($nominee_details[2]) && $nominee_details[2]['name'] != "")
+										<div class="form-group row">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_31">{{$nominee_details[2]['name']??'Not Added yet'}}</label>
+											
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_31">{{$nominee_details[2]['relation']??'Not Added yet'}}</label>
+										</div>
+										<hr>
+										@endif
+										@if(isset($nominee_details[3]) && $nominee_details[3]['name'] != "")
+										<div class="form-group row">
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_name')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_name_41">{{$nominee_details[3]['name']??'Not Added yet'}}</label>
+											
+											<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.nominee_relation')}}</label>
+											<label class="col-lg-9 col-xl-10 col-form-label" id="nom_relation_41">{{$nominee_details[3]['relation']??'Not Added yet'}}</label>
+										</div>
+										<hr>
+										@endif
+									</div>
 								</div>	
 								
 								<form name="nomminee_pass" id="nomminee_pass" data-id="{{$user->id}}" style="display:none">
@@ -398,7 +447,7 @@
 									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="document_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
 									<div class="clearfix"></div>
 									<div class="form-group row">
-										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Front Image</label>
+										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Front</label>
 										@if($document_details && $document_details->aadhaar_front)
 											<label class="col-lg-9 col-xl-10 col-form-label" id="aadhaar_front_show" ><img src="{{asset('uploads/documents')}}/{{$document_details->aadhaar_front}}"></label>
 										@else
@@ -408,7 +457,7 @@
 									</div>
 									
 									<div class="form-group row">
-										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Back Image</label>
+										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar Back</label>
 										@if($document_details && $document_details->aadhaar_back)
 											<label class="col-lg-9 col-xl-10 col-form-label"  id="aadhaar_back_show"><img src="{{asset('uploads/documents')}}/{{$document_details->aadhaar_back}}"></label>
 										@else
@@ -417,7 +466,7 @@
 										<label class="col-lg-9 col-xl-10 col-form-label" style="display:none" id="empty_aadhaar_back1">No Document Uploaded</label>
 									</div>
 									<div class="form-group row">
-										<label class="col-lg-3 col-xl-2 col-form-label">Pan Card Image</label>
+										<label class="col-lg-3 col-xl-2 col-form-label">Pan Card</label>
 										@if($document_details && $document_details->pan_card)
 											<label class="col-lg-9 col-xl-10 col-form-label"  id="pan_card_show"><img src="{{asset('uploads/documents')}}/{{$document_details->pan_card}}"></label>
 										@else
@@ -435,14 +484,14 @@
 									
 									
 									<div class="form-group">
-										<label class="col-form-label">Upload Aadhaar Front Image</label>
+										<label class="col-form-label">Upload Aadhaar Front</label>
 									
 										<div id="image-1-10-1" dropzone_Required = "true" data-type="aadhaar_front" data_id = "{{$user->id}}" class="dropzone drop_here_logo"></div>
 										<div class="dropzoneError errors"></div>
 									</div>
 									
 									<div class="form-group">
-										<label class="col-form-label">Upload Aadhaar Back Image</label>
+										<label class="col-form-label">Upload Aadhaar Back</label>
 									
 										<div id="image-2-20-2" dropzone_Required = "true"  data-type="aadhaar_back"  data_id = "{{$user->id}}"  class="dropzone drop_here_logo"></div>
 										<div class="dropzoneError errors"></div>
