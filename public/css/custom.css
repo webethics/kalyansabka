@@ -21,6 +21,13 @@
 
 #showNomineeDetails hr{width:100%}
 
+#user_response_update_1,#user_response_update,#user_response_update_db,#user_response_update_db_1{
+	background: darkorange;
+    color: #fff;
+	display: inline-block;
+    padding: 13px;
+	margin-bottom:5px;
+}
 
 .input-icon-right > i {
   right: 0;

@@ -169,8 +169,9 @@ class UsersController extends Controller
 		$document_details = UserDocuments::where('user_id',$user_id)->first();
 		$nominee_details = UserNominees::where('user_id',$user_id)->get();
 		$nominee_details =  $nominee_details->toArray();
+		$temp_details =  TempRequestUser::where('user_id',$user_id)->first();
 		//echo '<pre>';print_r($nominee_details->toArray());die;
-		return view('users.account.account', compact('user','bank_detais','document_details','nominee_details'));
+		return view('users.account.account', compact('user','bank_detais','document_details','nominee_details','	temp_details'));
 		//return view('users.account.account');
     }
 	
@@ -209,26 +210,19 @@ class UsersController extends Controller
     {
 		$data=array();
 		 $result =array();
-		//pr($request->all());
 		 $requestData = User::where('id',$user_id);
 		 $stored_data = User::where('id',$user_id)->first()->toArray();
 		 
 		if($request->ajax()){
 			$data =array();
-			$data['business_name']= $request->business_name;
-			$data['owner_name']= $request->owner_name;
-			$data['mobile_number'] = $request->mobile_number;
-			$data['business_url'] = $request->business_url;
-			$data['address'] = $request->address;
-			
+			$data['first_name']= $request->first_name;
+			$data['last_name']= $request->last_name;
+		
 			$requestData->update($data);
 			
 			//UPDATE PROFILE EVENT LOG END  
-		   $result['success'] = true;
-		   $result['name'] = $request->owner_name;
-		   $result['mobile_number'] = $request->mobile_number;
-		   $result['business_name']= $request->business_name;
-		   $result['business_url']= $request->business_url;
+			$result['success'] = true;
+			$result['message'] = 'Your details has been successfully changed.';
 		   
 		   return Response::json($result, 200);
 		}

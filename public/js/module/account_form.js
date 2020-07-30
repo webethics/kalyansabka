@@ -70,10 +70,20 @@ $(document).on('click','#update-basic-request',function(e){
         success:function(response){
        		accountForm.find('.request_loader').hide();
 			if(response.success){
-				if(typeof (response.message) != 'undefined' && response.message != null && response.message != "")
-					notification('Success',response.message,'top-right','success',2000);
-				else
+				if(typeof (response.message) != 'undefined' && response.message != null && response.message != ""){
+					
+					//notification('Success',response.message,'top-right','success',2000);
+					$('#user_response_update_db').hide();$('#user_response_update_db_1').hide();
+					$('#user_response_update').html(response.message).show();
+					$('#user_response_update_1').html(response.message).show();
+					$('#accountinfo').hide();
+					$('#first_account_info').show();
+				}else{
+					
+					$('#user_response_update').html(response.message);
+					$('#user_response_update_1').html(response.message);
 					notification('Success','Please wait your edit request has','top-right','success',2000);
+				}	
 			}else{
 				if(typeof (response.message) != 'undefined' && response.message != null && response.message != "")
 					notification('Error',response.message,'top-right','error',3000);
@@ -82,13 +92,33 @@ $(document).on('click','#update-basic-request',function(e){
 			}
         },
         error:function(response){
-	       	accountForm.find('.request_loader').hide();
-	       	notification('Error','Something went wrong.','top-right','error',3000);
+			if( response.status === 422 ) {
+			$('.request_loader').css('display','none');
+			$('.errors').html('');
+			//notification('Error','Please fill all the fields.','top-right','error',4000);
+            var errors = $.parseJSON(response.responseText);
+            $.each(errors, function (key, value) {
+                // console.log(key+ " " +value);
+                if($.isPlainObject(value)) {
+                    $.each(value, function (key, value) {                       
+                        //console.log(key+ " " +value);	
+					  var key = key.replace('.','_');
+					  $('.'+key+'_error').show().append(value);
+                    });
+                }else{
+                // $('#response').show().append(value+"<br/>"); //this is my div with messages
+                }
+            }); 
+          }
+	      // 	accountForm.find('.request_loader').hide();
+	       	//notification('Error','Something went wrong.','top-right','error',3000);
        }
 
     });
 
 });
+
+
 
 
 $(document).on('submit','#nomminee_pass', function(e) {

@@ -11,30 +11,14 @@ class UpdateUserRequest extends FormRequest
 
     public function rules()
     {
-		if(current_user_role_id()==2){
-			 return [
-				'owner_name'     => [
-					'required',
-				],
-				'business_name'    => [
-					'required',
-				],
-				'mobile_number'   => [
-				   'required','numeric','regex:/[0-9]{9}/',
-				], 
-				'address'   => [
-				   'required',
-				], 
-				
-			   
-			];
-		}else{
-			 return [
-				'owner_name'     => [
-					'required',
-				],
-			];
-		}
+		return [
+			'first_name'     => [
+				'required',
+			], 
+			'last_name'     => [
+				'required',
+			]
+		];
        
     }
 	
