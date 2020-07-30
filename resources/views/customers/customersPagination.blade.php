@@ -44,7 +44,7 @@
 					<a class="action" target = "_blank" href="{{url('manage-customer')}}/{{$customer->id}}"  data-user_id="{{ $customer->id }}" title="Manage Customer"><i class="simple-icon-login"></i> </a> 
 				@endif
 				@if(check_role_access('customer_certificate_download'))
-					<a class="action markStateHead"  href="{{url('download-certificate')}}/{{ $customer->id }}"  data-user_id="{{ $customer->id }}" title="Download Certificate"><i class="simple-icon-cloud-download"></i> </a>
+					<a class="action viewCustomer" href="javascript:void(0)" data-user_id="{{ $customer->id }}" title="View and Download Certificate"><i class="simple-icon-cloud-download"></i> </a> 
 				@endif	
 				
 				@if(check_role_access('customer_delete'))
