@@ -171,7 +171,7 @@ class UsersController extends Controller
 		$nominee_details =  $nominee_details->toArray();
 		$temp_details =  TempRequestUser::where('user_id',$user_id)->first();
 		//echo '<pre>';print_r($nominee_details->toArray());die;
-		return view('users.account.account', compact('user','bank_detais','document_details','nominee_details','	temp_details'));
+		return view('users.account.account', compact('user','bank_detais','document_details','nominee_details','temp_details'));
 		//return view('users.account.account');
     }
 	
