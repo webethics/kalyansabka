@@ -244,10 +244,10 @@
 												<label for="civilite" class=""></label>
 												<div class="radio">
 												
-													<label class=" ml-3"><input type="checkbox" name="habits[0]" class="habbit_checkbox" @if (old('habits.0') == "smoking") {{ 'checked' }} @endif value="smocking" /> <span>Smoking</span></label>
+													<label class=" ml-3"><input type="checkbox" name="habits[0]" class="habbit_checkbox" @if (old('habits.0') == "smoking") {{ 'checked' }} @endif value="smoking" /> <span>Smoking</span></label>
 												</div>
 												<div class="radio">
-													<label class="ml-3"><input type="checkbox" name="habits[1]" class="habbit_checkbox" @if (old('habits.1') == "tobacco") {{ 'checked' }} @endif value="tabacco" /> <span>Tobacco</span></label>
+													<label class="ml-3"><input type="checkbox" name="habits[1]" class="habbit_checkbox" @if (old('habits.1') == "tobacco") {{ 'checked' }} @endif value="tobacco" /> <span>Tobacco</span></label>
 												</div>
 												
 												<div class="radio">
