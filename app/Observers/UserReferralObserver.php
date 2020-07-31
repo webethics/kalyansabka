@@ -111,7 +111,7 @@ class UserReferralObserver
                             $stateComm = $this->calculatePercentageAmount($head_distribute_commission,$state_head);
 
                             IncomeHistory::create([
-                                'user_id' => $stateUser->id,
+                                'user_id' => $stateUser->user_id,
                                 'referral_id' => $userReferral['user_id'],
                                 'mode' => 1,
                                 'amount' => $stateComm,
@@ -129,7 +129,7 @@ class UserReferralObserver
                             $distictComm = $this->calculatePercentageAmount($head_distribute_commission,$district_head);
 
                             IncomeHistory::create([
-                                'user_id' => $districtUser->id,
+                                'user_id' => $districtUser->user_id,
                                 'referral_id' => $userReferral['user_id'],
                                 'mode' => 1,
                                 'amount' => $distictComm,
