@@ -33,7 +33,6 @@ class UserReferralObserver
             if(!is_null($userData) && ($userData->count()) >0){
                 $state_id = $userData->state_id;
                 $district_id = $userData->district_id;
-                echo 'State Id='.$state_id.' District Id='.$district_id;
                 //fetch plan info
                 if(!is_null($userData->plan) && ($userData->plan->count())>0){
                     $planData = $userData->plan;
@@ -106,11 +105,11 @@ class UserReferralObserver
                     //get state head
                     if(isset($state_id) && !empty($state_id)){
                         $stateUser = StateHeads::where('state_id',$state_id)->orderBy('id','desc')->first();
-                        echo '<pre>'; print_r($stateUser); echo '</pre>';
+
                         if(!is_null($stateUser)){
                             //send commission
                             $stateComm = $this->calculatePercentageAmount($head_distribute_commission,$state_head);
-                            echo 'State Haed='.$stateUser->user_id;
+
                             IncomeHistory::create([
                                 'user_id' => $stateUser->user_id,
                                 'referral_id' => $userReferral['user_id'],
@@ -124,11 +123,11 @@ class UserReferralObserver
                     //get district head
                     if(isset($district_id) && !empty($district_id)){
                         $districtUser = DistrictHeads::where('district_id',$district_id)->orderBy('id','desc')->first();
-                        echo '<pre>'; print_r($districtUser); echo '</pre>';
+
                         if(!is_null($districtUser)){
                             //send commission
                             $distictComm = $this->calculatePercentageAmount($head_distribute_commission,$district_head);
-                            echo 'District Haed='.$districtUser->user_id;
+
                             IncomeHistory::create([
                                 'user_id' => $districtUser->user_id,
                                 'referral_id' => $userReferral['user_id'],
@@ -138,7 +137,6 @@ class UserReferralObserver
                             ]);
                         }
                     }
-                    dd('end');
                 }
             }
         }
