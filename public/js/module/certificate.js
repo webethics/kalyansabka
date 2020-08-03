@@ -98,6 +98,8 @@ $(document).on('submit','#searchCertificateForm', function(e) {
             //start date and end date error 
 			if(data=='date_error'){
 				notification('Error','Start date not greater than end date.','top-right','error',4000);	
+			}else if(data=='age_error'){
+				notification('Error','Start age not greater than end age.','top-right','error',4000);	
 			}else{
              // Set search result
 			 $("#tag_container").empty().html(data); 
@@ -111,7 +113,7 @@ $(document).on('submit','#searchCertificateForm', function(e) {
 });
 
 /*Export certificate request*/
-$(document).on('click','#export_certificate_left,#export_certificate_right', function(e) {
+$(document).on('click','#export_certificate_left', function(e) {
 	 e.preventDefault(); 
 	$('.search_spinloder').show();
 	//var csrf_token = $('meta[name="csrf-token"]').attr('content');

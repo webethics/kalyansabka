@@ -17,6 +17,7 @@ use App\Models\TempRequestUser;
 use App\Models\CityLists;
 use App\Models\StateList;
 use League\Csv\Writer;
+use Illuminate\Database\Eloquent\Builder;
 use Auth;
 use Config;
 use Response;
@@ -73,6 +74,7 @@ class RequestsController extends Controller
 		$end_date = $request->end_date;
 		$state_id = $request->state_id;
 		$district_id = $request->district_id;
+		$gender = $request->gender;
 
 		//$result = TempRequestUser::where(`1`, '=', `1`);
 		$result = TempRequestUser::where('status', 0);
@@ -132,6 +134,12 @@ class RequestsController extends Controller
 			if(isset($district_id) && !empty($district_id)){
 				$result->where('district_id',$district_id );
 			}
+
+			if(isset($gender) && !empty($gender)){
+				$result->whereHas('user', function (Builder $query) use ($gender) {
+				    $query->where('gender', 'like', $gender);
+				});
+			}
 		}
 		
 		//$result->where('role_id', '!=', 1);
@@ -151,6 +159,57 @@ class RequestsController extends Controller
 		return $data;
 	}
 
+	/*Export request*/
+	public function export_request(Request $request){
+		$requests_data = $this->requests_search($request,$pagination=false);
+        $requests = $requests_data['requests'];
+		
+		if($requests && count($requests) > 0){
+			$records = [];
+			foreach ($requests as $key => $request) {
+				$status_text = 'Pending';
+				if($request->status == 1)
+					$status_text = 'Approve';
+				elseif ($request->status == 2)
+					$status_text = 'Disapprove';
+
+				$records[$key]['sl_no'] = ++$key;
+				$records[$key]['name'] = $request->full_name;
+				$records[$key]['email'] = $request->email;
+				$records[$key]['phone'] = $request->mobile_number;
+				$records[$key]['address'] =  $request->address;
+				$records[$key]['created'] =  date('d-m-Y h:i:s', strtotime($request->created_at));
+				$records[$key]['status'] =  $status_text;
+			}
+			$header = ['S.No.', 'Name', 'Email','Mobile', 'Address', 'Created Date/Time','Status'];
+		
+
+			//load the CSV document from a string
+			$csv = Writer::createFromString('');
+
+			//insert the header
+			$csv->insertOne($header);
+
+			//insert all the records
+			$csv->insertAll($records);
+			@header("Last-Modified: " . @gmdate("D, d M Y H:i:s",$_GET['timestamp']) . " GMT");
+			@header("Content-type: text/x-csv");
+			// If the file is NOT requested via AJAX, force-download
+			if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+				header("Content-Disposition: attachment; filename=search_results.csv");
+			}
+			//
+			//Generate csv
+			//
+			echo $csv;
+			exit();
+		}else{
+			$result =array('success' => false);	
+		    return Response::json($result, 200);
+		}
+
+	}
+
 	/*Request View*/
 	public function request_view($request_id)
     {
@@ -162,8 +221,12 @@ class RequestsController extends Controller
         $tempRequestUser = TempRequestUser::with('user')->where('id',$request_id)->first();
         
         if(!is_null($tempRequestUser) && ($tempRequestUser->count())>0){
-        	$currentStateName = StateList::where('id',$tempRequestUser->user->state_id)->first();
-        	$currentDistrictName = CityLists::where('id',$tempRequestUser->user->district_id)->first();
+        	$currentStateName = '';
+        	$currentDistrictName ='';
+        	if(!is_null($tempRequestUser->user) && ($tempRequestUser->user->count())>0){
+	        	$currentStateName = StateList::where('id',$tempRequestUser->user->state_id)->first();
+	        	$currentDistrictName = CityLists::where('id',$tempRequestUser->user->district_id)->first();
+	        }
         	$requestStateName = StateList::where('id',$tempRequestUser->state_id)->first();
         	$requestDistrictName = CityLists::where('id',$tempRequestUser->district_id)->first();
         	$view = view("modal.viewDetail",compact('tempRequestUser','currentStateName','currentDistrictName','requestStateName','requestDistrictName'))->render();
@@ -185,7 +248,7 @@ class RequestsController extends Controller
     	$data['success'] = false;
     	$data['message'] = 'Invalid Request';
 
-    	if(!empty($request_id) && isset($request->status) && !empty($request->status) && isset($request->description) && !empty($request->description)){
+    	if(!empty($request_id) && isset($request->status) && !empty($request->status)){
     		$status = 2;
     		if($request->status == 'approve'){
     			$status = 1;
@@ -195,7 +258,10 @@ class RequestsController extends Controller
     		$tempRequestUser = TempRequestUser::find($request_id);
     		$data =array();
 			$data['status'] =$status;
-			$data['description'] = trim($request->description);
+			//if disapprove request then get description
+			if($status == 2)
+				$data['description'] = trim($request->description);
+
     		$updateTempRequest = $tempRequestUser->update($data);
     		if($updateTempRequest == true){
 
@@ -218,6 +284,8 @@ class RequestsController extends Controller
     			//$data['message'] = 'Something went wrong, please try later';
     			return 'error';
     		}
+    	}else{
+    		return 'error';
     	}
     	//return Response::json($data, 200);
     }
@@ -229,7 +297,7 @@ class RequestsController extends Controller
     	$data['message'] = 'Invalid Request';
     	//Check Valid User
     	$user = User::with('userDocument')->where('id',$user_id)->first();
-
+    	
     	// Define Dir Folder
     	$public_dir=public_path();
 
@@ -292,6 +360,8 @@ class RequestsController extends Controller
 				}else{
 					$data['message'] = 'No document Uploaded by User Yet.';
 				}
+			}else{
+				$data['message'] = 'No document Uploaded by User Yet.';
 			}
 		}
     	return Response::json($data, 200);

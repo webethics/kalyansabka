@@ -46,14 +46,14 @@ class CertificateController extends Controller
 			if(empty($page_number))
 				$page_number = 1;
 			//if($page_number > 1 )$page_number = $page_number - 1;else $page_number = $page_number;
-	        //$roles = Role::all();
+	        $roles = Role::all();
 			$statelist = StateList::all();
 			$citylist = CityLists::all();
 	        if(!is_object($certificates)) return $certificates;
 	        if ($request->ajax()) {
-	            return view('certificates.certificatesPagination', compact('certificates','statelist','citylist','page_number'));
+	            return view('certificates.certificatesPagination', compact('certificates','statelist','citylist','page_number','roles'));
 	        }
-	        return view('certificates.certificates',compact('certificates','roles','statelist','citylist','page_number'));
+	        return view('certificates.certificates',compact('certificates','roles','statelist','citylist','page_number','roles'));
 	    }else{
 	    	return $certificates_data;
 	    }	
@@ -70,11 +70,19 @@ class CertificateController extends Controller
 		$district_id = $request->district_id;
 		$start_date = $request->start_date;
 		$end_date = $request->end_date;
+		$role_id = $request->role_id;
+		$mobile = $request->mobile_number;
+		$aadhaar = $request->aadhar_number;
+		$gender = $request->gender;
+		$habits = $request->habits;
+		$covered_amount = $request->covered_amount;
+		$age_from = $request->age_from;
+		$age_to = $request->age_to;
 
 		//$result = User::where(`1`, '=', `1`);
 		$result = User::where('hard_copy_certificate', '=', 'yes');
 			
-		if($first_name!='' || $last_name!='' || $start_date!='' || $end_date!='' || $email!='' || $state_id != '' || $district_id != ''){
+		if($first_name!='' || $last_name!='' || $start_date!='' || $end_date!='' || $email!='' || $state_id != '' || $district_id != '' || $role_id!='' || $mobile!='' || $aadhaar!='' || $gender !='' || $habits !='' || $covered_amount!='' || $age_from!='' || $age_to!=''){
 			
 			if($start_date!= '' || $end_date!=''){
 
@@ -84,6 +92,17 @@ class CertificateController extends Controller
 
 				if((($start_date== '' && $end_date!='')) || (strtotime($start_date) >= strtotime($end_date))){	
 					return  'date_error'; 
+				}
+			}
+
+			if($age_from!= '' || $age_to!=''){
+				if((($age_from!= '' && $age_to=='') || ($age_from== '' && $age_to!='')) || ($age_from >= $age_to)){	
+					$data = array();
+					$data['success'] = false;
+					$data['message'] = "age_error";
+					return $data; 
+				}else{
+					$result->whereBetween('age', array($age_from, $age_to));
 				}
 			}
 			
@@ -118,6 +137,26 @@ class CertificateController extends Controller
 
 			if(isset($district_id) && !empty($district_id)){
 				$result->where('district_id',$district_id );
+			}
+
+			if(isset($mobile) && !empty($mobile)){
+				$result->where('mobile_number','=',$mobile);
+			}
+		 	if(isset($aadhaar) && !empty($aadhaar)){
+				$result->where('aadhar_number','LIKE',$aadhaar);
+			}
+		 	if(isset($gender) && !empty($gender)){
+				$result->where('gender','=',$gender);
+			}
+		 	if(isset($covered_amount) && !empty($covered_amount)){
+				$result->where('plan_id','=',$covered_amount);
+			}
+		 	if(isset($habits) && !empty($habits)){
+		 		$habits_s = '%' . $habits . '%';
+				$result->where('habits','LIKE',$habits_s);
+			}
+		 	if(isset($role_id) && !empty($role_id)){
+				$result->where('role_id',$role_id);
 			}
 		}
 		

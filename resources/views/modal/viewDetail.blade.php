@@ -9,7 +9,7 @@
 	<form action="{{ url('request-update-profile') }}/{{$tempRequestUser->id}}" method="POST" id="updateRequestUser" >
 	 @csrf
 	 
-		<h2>Current Details</h2>
+		<h2 class="heading-background">Current Details</h2>
 		<div class="form-group row">
 			<label class="col-lg-3 col-xl-4 col-form-label">First Name</label>
 			<label class="col-lg-9 col-xl-8 col-form-label">{{$tempRequestUser->user->first_name}}</label>
@@ -49,7 +49,7 @@
 			<label class="col-lg-9 col-xl-8 col-form-label">{{$currentDistrictName->city_name ?? ''}}</label>
 		</div>
 									
-		<h2>Requested Details</h2>
+		<h2 class="heading-background">Requested Details</h2>
 		<div class="form-group row">
 			<label class="col-lg-3 col-xl-4 col-form-label">First Name</label>
 			<label class="col-lg-9 col-xl-8 col-form-label">{{$tempRequestUser->first_name}}</label>
@@ -88,10 +88,10 @@
 			<label class="col-lg-9 col-xl-8 col-form-label">{{$requestDistrictName->city_name ?? ''}}</label>
 		</div>
 
-		<div class="form-group form-row-parent">
+		<div class="form-group form-row-parent reason-area d-none">
 			<label class="col-form-label">{{ trans('global.reason') }}</label>
 			<div class="d-flex control-group">
-				<textarea rows="3" cols="50" class="form-control reason_description" name="description" placeholder="Reason for approve or disapprove">{{$tempRequestUser->description}}</textarea>							
+				<textarea rows="3" cols="50" class="form-control reason_description" name="description" placeholder="Reason for disapprove">{{$tempRequestUser->description}}</textarea>							
 			</div>
 			<div class="description_error errors"></div>									
 		</div>						
@@ -103,7 +103,7 @@
 		<button type="submit" class="btn btn-danger default btn-lg mb-2 mb-sm-0 mr-2 col-12 col-sm-auto request_disapprove">Disapprove</button>
 		<div class="spinner-border text-primary request_loader" style="display:none"></div>
 		</div>
-		</div>
+ 		</div>
 		</form>
 
 				</div>
