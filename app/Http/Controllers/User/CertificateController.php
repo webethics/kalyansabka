@@ -96,11 +96,17 @@ class CertificateController extends Controller
 			}
 
 			if($age_from!= '' || $age_to!=''){
+
+				//if empty age to then by default select last age
+				if(empty($age_to))
+					$age_to = 65;
+				
 				if((($age_from!= '' && $age_to=='') || ($age_from== '' && $age_to!='')) || ($age_from >= $age_to)){	
-					$data = array();
+					/*$data = array();
 					$data['success'] = false;
 					$data['message'] = "age_error";
-					return $data; 
+					return $data; */
+					return  'age_error';
 				}else{
 					$result->whereBetween('age', array($age_from, $age_to));
 				}
