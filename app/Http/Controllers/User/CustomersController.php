@@ -252,6 +252,7 @@ class CustomersController extends Controller
 			$data['address'] = $request->address;
 			$data['state_id'] = $request->state;
 			$data['district_id'] = $request->district;
+			$data['role_id'] = $stored_data->role_id;
 			
 			if(isset($request->mark_as_head) && $request->mark_as_head != ''){
 				if($request->mark_as_head == 'state_head'){

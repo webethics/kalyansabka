@@ -169,7 +169,7 @@ class UsersController extends Controller
 		$document_details = UserDocuments::where('user_id',$user_id)->first();
 		$nominee_details = UserNominees::where('user_id',$user_id)->get();
 		$nominee_details =  $nominee_details->toArray();
-		$temp_details =  TempRequestUser::where('user_id',$user_id)->first();
+		$temp_details =  TempRequestUser::where('user_id',$user_id)->orderBy('id','desc')->first();
 		//echo '<pre>';print_r($nominee_details->toArray());die;
 		return view('users.account.account', compact('user','bank_detais','document_details','nominee_details','temp_details'));
 		//return view('users.account.account');
