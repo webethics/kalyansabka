@@ -122,6 +122,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::get('edit-requests',array('uses'=>'RequestsController@edit_request'));
 	Route::get('requests',array('uses'=>'RequestsController@requests'));
 	Route::post('request/view/{request_id}', 'RequestsController@request_view'); //view request
+	Route::post('export_request_customers',array('uses'=>'RequestsController@export_request')); /*Export certificate Customer */
 	/*Update Edit Request*/
 	Route::post('request-update-profile/{request_id}','RequestsController@request_update');
 	Route::get('download-user-document/{user_id}',array('uses'=>'RequestsController@download_document'));

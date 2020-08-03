@@ -336,6 +336,17 @@ h6.policy_info{font-size:16px;font-weight:bold}
 	padding:.4rem 1.0rem .4rem 1.0rem
 }
 
+.heading-background{
+    background-color: #145388;
+    border-color: #145388;
+    color: #fff;
+    line-height: 1.5;
+    font-weight: 700;
+    letter-spacing: .05rem;
+    padding: .75rem 2.6rem .6rem 0.6rem;
+    border-radius: .1rem;
+}
+
 @media(min-width:768px) {
 	.termcondition {
     margin-top: 30px;

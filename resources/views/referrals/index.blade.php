@@ -188,7 +188,7 @@ function ajaxRequestCreateTree(parentId){
 
         /*show loader on content div*/
         $("body").addClass("show-spinner");
-        let ajax_url = 'referral';
+        let ajax_url = 'referrals';
         //send ajax call
         $.ajax({
           type: "GET",
