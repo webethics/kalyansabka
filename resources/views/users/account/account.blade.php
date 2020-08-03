@@ -60,11 +60,11 @@
 									<div id="user_response_update" style="display:none"></div>
 									@if($temp_details && $temp_details->status == 0) 
 										<div id="user_response_update_db">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
+									@elseif($temp_details && $temp_details->status == 2) 
+										<div id="user_response_update_db_1" >{{$temp_details->description}}</div>
 									@else
 										<div class="clearfix"></div>
 									@endif
-									
-									@if($temp_details && $temp_details->status == 2) <div id="user_response_update_db_1" >{{$temp_details->description}}</div>@endif
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}</label>
 										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->first_name}}</label>
@@ -114,11 +114,11 @@
 									<div id="user_response_update_1"  style="display:none"></div>
 									@if($temp_details && $temp_details->status == 0) 
 										<div id="user_response_update_db">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
+									@elseif($temp_details && $temp_details->status == 2) 
+										<div id="user_response_update_db_1" >{{$temp_details->description}}</div>
 									@else
 										<div class="clearfix"></div>
 									@endif
-									
-									@if($temp_details && $temp_details->status == 2) <div id="user_response_update_db_1" >{{$temp_details->description}}</div>@endif
 									
 									{{ csrf_field() }}
 									<div class="form-group row">
