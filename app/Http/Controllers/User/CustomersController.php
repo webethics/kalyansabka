@@ -45,7 +45,6 @@ class CustomersController extends Controller
 			$page_number =  $customers_data['current_page'];
 			if(empty($page_number))
 				$page_number = 1;
-			//if($page_number > 1 )$page_number = $page_number - 1;else $page_number = $page_number;
 			$roles = Role::all();
 			if(!is_object($customers)) return $customers;
 			if ($request->ajax()) {

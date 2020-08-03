@@ -124,6 +124,33 @@ $('.clear').click(function(){
     }); 
 });
 
+ $(document).on('click','#openPaymentModel', function(e) {
+    e.preventDefault(); 
+	
+	var id = $(this).data('id');
+	var confirm_message = $(this).data('confirm_message');
+	var confirm_message_1 = $(this).data('confirm_message_1');
+	var confirm_message_2 = $(this).data('confirm_message_2');
+	var confirm_message_3 = $(this).data('confirm_message_3');
+	var leftButtonId = $(this).data('left_button_id');
+	var leftButtonId_1 = $(this).data('left_button_id_1');
+	var leftButtonName = $(this).data('left_button_name');
+	var leftButtonName_1 = $(this).data('left_button_name_1');
+	var leftButtonCls = $(this).data('left_button_cls');
+	var amount_requested = $(this).data('amount_requested');
+
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        type: "POST",
+        url: base_url+'/confirmPaymentModal',
+        data:{id:id,confirm_message:confirm_message,confirm_message_1:confirm_message_1,confirm_message_2:confirm_message_2,confirm_message_3:confirm_message_3,leftButtonId:leftButtonId,leftButtonName:leftButtonName,leftButtonId_1:leftButtonId_1,leftButtonName_1:leftButtonName_1,leftButtonCls:leftButtonCls,amount_requested:amount_requested,_token:csrf_token},
+        success: function(data) {
+			 $('.confirmBoxCompleteModal').html(data)
+			 $('.confirmBoxCompleteModal').modal('show')
+        }
+    }); 
+});
+
 /*--------------------------------------------------------------------
 Notifiaction
 -----------------------------------------------------------*/

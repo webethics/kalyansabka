@@ -233,12 +233,12 @@
 									</div>
 									
 								</form>
-							</div>		
+							</div>	
 
 							@if(current_user_role_id()!=1)
 							<div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
 								<div class="" id="nomminee_pass_info">
-									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="nominee_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
+									<div class="col-xl-1 fl_right"><a class="fl_right edit_link action" title="Edit" id="nominee_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
 									<div class="clearfix"></div>
 									
 									<div id="showNomineeDetails" style="display:none">

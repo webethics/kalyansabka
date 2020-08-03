@@ -83,8 +83,12 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::get('payments',array('uses'=>'PaymentsController@payments'));
 	Route::get('customer-payments',array('uses'=>'PaymentsController@customer_payments'));
 	Route::get('withdrawls',array('uses'=>'PaymentsController@withdrawls'));
+	Route::post('withdrawls',array('uses'=>'PaymentsController@withdrawls'));
 	Route::post('payment/edit/{request_id}', 'PaymentsController@payment_edit'); //Edit User
-	
+	Route::post('update-withdrawl-request/{request_id}', 'PaymentsController@payment_update_request'); //Edit User
+	Route::post('payments/withdrawl_request/{request_id}', 'PaymentsController@withdrawl_request'); //Edit User
+	Route::post('confirmPaymentModal', 'PaymentsController@confirmPaymentModal');
+	Route::post('export_withdrawls',array('uses'=>'PaymentsController@export_withdrawls')); //Edit User
 	
 	
 	
@@ -99,6 +103,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('customer/mark_as_district_head/{request_id}',array('uses'=>'CustomersController@mark_as_district_head')); //Edit User
 	Route::post('customer/mark_as_state_head/{request_id}',array('uses'=>'CustomersController@mark_as_state_head')); //Edit User
 	Route::post('export_customers',array('uses'=>'CustomersController@export_customers')); //Edit User
+	
 	Route::get('download-certificate/{request_id}',array('uses'=>'CustomersController@downloadCertificate')); //Edit User
 	Route::get('manage-customer/{id}', 'CustomersController@manageCustomer');
 	Route::post('customer/view/{request_id}', 'CustomersController@customer_view'); //Edit User
