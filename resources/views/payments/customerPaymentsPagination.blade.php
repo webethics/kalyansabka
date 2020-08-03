@@ -10,15 +10,23 @@
 	</thead>
 	<tbody>
 	 @if(is_object($payments ?? '') && !empty($payments ?? '') && $payments ?? ''->count())
+		  @php $sno = 1;  @endphp
 	  @foreach($payments ?? '' as $key => $payment)
 		<tr data-payment-id="{{ $payment->id }}" class="user_row_{{$payment->id}}" >
-			<td id="business_name_{{$payment->id}}">{{$payment->id}}</td>
-			<td id="name_{{$payment->id}}">10 July 2020</td>
-			<td id="mobile_number_{{$payment->id}}">Narration</td>
-			<td id="business_url_{{$payment->id}}">INR 100</td>
-			<td id="business_url_{{$payment->id}}">INR 2500</td>
+			<td id="business_name_{{$payment->id}}">{{(($page_number-1) * 10)+$sno}} <input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$payment->id}}"/></td>
+			<td id="name_{{$payment->id}}">{{ date('d-m-Y', strtotime($payment->created_at))  ?? '' }}</td>
+			<td id="mobile_number_{{$payment->id}}">
+				@if($payment->mode == 2)
+					Debited
+				@endif
+				@if($payment->mode == 1)
+					Credited
+				@endif
+			</td>
+			<td id="business_url_{{$payment->id}}">@if($payment->mode == 1) INR {{$payment->amount}} @else {{'-'}} @endif</td>
+			<td id="business_url_{{$payment->id}}">@if($payment->mode == 2) INR {{$payment->amount}} @else {{'-'}} @endif</td>
 		</tr>
-		
+		@php $sno++ @endphp
 	 @endforeach
  @else
 <tr><td colspan="7" class="error" style="text-align:center">No Data Found.</td></tr>

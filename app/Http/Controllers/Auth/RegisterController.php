@@ -254,6 +254,7 @@ class RegisterController extends Controller
 		}
 		 return Validator::make($data,$return , [
 				'aadhar_number.unique' => 'The aadhar number is already registered.',
+				'insurance_type.required' => 'The User Type is required field.',
 				'nominee_name_*.required' => 'The Nominee Name field required.',
 				'nominee_relation_*.required' => 'The Nominee relation field required.',
 				
