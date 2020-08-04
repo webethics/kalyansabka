@@ -37,6 +37,8 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('update-basic-profile/{user_id}', 'UsersController@updateBasicProfile');//UPDATE Basic USER
 	Route::post('update-bank-details/{user_id}', 'UsersController@updateBankDetails');//UPDATE USER
 	Route::post('update-nominee-details/{user_id}', 'UsersController@updateNomineeDetails');//UPDATE USER
+	Route::post('calculate-upgrade-amount/{user_id}','UsersController@calculateUpgradeAmount'); /*cal upgrade amount*/
+	Route::post('upgrade_plan_request/{user_id}','UsersController@upgradePlanRequest'); /*upgrade plan request */
 	
 	Route::post('user/roleDropdown', 'UsersController@roleDropdown');
 	

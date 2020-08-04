@@ -199,6 +199,110 @@ $(document).on('submit','#nomminee_pass', function(e) {
 		}
     });
 });
+
+/*Change event on upgrade plan on that basic calculate remaining amount */
+$(document).on("change",".upgrade_plan .plan_checkbox",function(e){
+	//console.log($(this).val());
+	calculateUpgradeAmount();
+});
+
+$(document).on("change",".additional-cost .cost_checkbox",function(e){
+	//console.log($(this).val());
+	calculateUpgradeAmount();
+});
+
+/*calculate upgrade amount to pay*/
+function calculateUpgradeAmount(){
+	//get upgrade plan id
+	var planId = $(".upgrade_plan input[name='plan']:checked").val();
+	var costId = $(".additional-cost input[name='cost']:checked").val();
+	
+	if(typeof planId != 'undefined' && typeof costId != 'undefined' && planId != null && costId != null){
+		var formData = $("#upgrade_plan_form").serialize();
+		var user_id = $("#upgrade_plan_form").data('id');
+		$('.search_amount_spinloder').show();
+		$.ajax({
+	        type: "POST",
+	        url: base_url+'/calculate-upgrade-amount/'+user_id,
+	        data: formData,
+	        success: function(data) {
+	        	$('.search_amount_spinloder').hide();
+	            // Set search result
+				$(".policy-amount").html(data.html);
+				//enable button
+				$('#pay_now').removeAttr("disabled").removeClass('disabled');
+				$('#pay_later').removeAttr("disabled").removeClass('disabled');
+	        },
+			error :function( data ){
+				$('.search_amount_spinloder').hide();
+				notification('Error','Something went wrong.','top-right','error',3000);
+			}
+	    });
+	}else{
+		/*disable button*/
+		$('#pay_now').attr("disabled", true).addClass('disabled');
+		$('#pay_later').attr("disabled", true).addClass('disabled');
+
+	}
+}
+
+/*paid request*/
+$(document).on('click','#upgrade_plan_form #pay_now',function(e){
+	e.preventDefault();
+	$this = $(this);
+	
+	var ajax_url = $this.parents('#upgrade_plan_form').attr('action');
+	var method = $this.parents('#upgrade_plan_form').attr('method');
+	var status = $this.data('payment');
+	upgrade_request(ajax_url,method,status);
+});
+
+/*later request*/
+$(document).on('click','#upgrade_plan_form #pay_later',function(e){
+	e.preventDefault();
+	$this = $(this);
+	var ajax_url = $this.parents('#upgrade_plan_form').attr('action');
+	var method = $this.parents('#upgrade_plan_form').attr('method');
+	var status = $this.data('payment');
+	upgrade_request(ajax_url,method,status);
+});
+
+/*send upgrade request*/
+function upgrade_request(ajax_url,method,status){
+	var formData = $('#upgrade_plan_form').serializeArray();
+
+	formData.push({ name: "status", value: status });
+
+	$('.search_upgrade_spinloder').show();
+	$.ajax({
+        type: "POST",
+        url: ajax_url,
+        data: formData,
+        success: function(data) {
+        	$('.search_upgrade_spinloder').hide();
+        	if(data.success == true){
+        		// change div
+				$(".policy_plans").html(data.html);
+				if(typeof (data.message) != 'undefined' && data.message != null && data.message != "")
+        			notification('Success',data.message,'top-right','success',4000);
+        	}else{
+        		if(typeof (data.message) != 'undefined' && data.message != null && data.message != "")
+					notification('Error',response.message,'top-right','error',3000);
+				else
+					notification('Error','Something went wrong.','top-right','error',3000);
+        	}
+        },
+		error :function( data ){
+			$('.search_upgrade_spinloder').hide();
+			notification('Error','Something went wrong.','top-right','error',3000);
+		}
+    });
+}
+
+
+
+
+
 function showDiv(prefix,chooser) 
 	{
 		

@@ -9,7 +9,7 @@
 	<form action="{{ url('request-update-profile') }}/{{$tempRequestUser->id}}" method="POST" id="updateRequestUser" >
 	 @csrf
 	 
-		<h2 class="heading-background">Current Details</h2>
+		<h6 class="heading-background">Current Details</h6>
 		<div class="form-group row">
 			<label class="col-lg-3 col-xl-4 col-form-label">First Name</label>
 			<label class="col-lg-9 col-xl-8 col-form-label">{{$tempRequestUser->user->first_name}}</label>
@@ -49,7 +49,7 @@
 			<label class="col-lg-9 col-xl-8 col-form-label">{{$currentDistrictName->city_name ?? ''}}</label>
 		</div>
 									
-		<h2 class="heading-background">Requested Details</h2>
+		<h6 class="heading-background">Requested Details</h6>
 		<div class="form-group row">
 			<label class="col-lg-3 col-xl-4 col-form-label">First Name</label>
 			<label class="col-lg-9 col-xl-8 col-form-label">{{$tempRequestUser->first_name}}</label>
