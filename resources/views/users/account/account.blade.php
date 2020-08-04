@@ -758,6 +758,20 @@ jQuery('.nav-link').click(function(){
 	
 	
 $(document).ready(function(){
+	$('#update-basic-request').prop('disabled', true);
+     $('form#accountinfo input[type="text"]').keyup(function() {
+        if($(this).val() != '') {
+           $('#update-basic-request').prop('disabled', false);
+        }
+     });
+	 
+	$('form#accountinfo select').change(function() {
+        if($(this).val() != '') {
+           $('#update-basic-request').prop('disabled', false);
+        }
+     });
+	 
+	 
 	$(".box").hide();
 	var  state = $('#state').val();
 	if(state != ''){
