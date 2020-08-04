@@ -56,6 +56,8 @@ class User extends Authenticatable
 		'insurance_type',
 		'company_id',
 		'plan_id',
+        'locking_period_start',
+        'locking_period_end',
 		'nominee_number',
     ];
 
@@ -113,6 +115,10 @@ class User extends Authenticatable
 
     public function tempRequestUser() {
         return $this->hasMany('App\Models\TempRequestUser','user_id');
+    }
+
+    public function tempUpgradeRequest() {
+        return $this->hasMany('App\Models\TempUpgradeRequest','user_id');
     }
 
     public function getFullNameAttribute()

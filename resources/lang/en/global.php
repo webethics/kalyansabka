@@ -37,6 +37,8 @@ return [
     'nominee'                         		=> 'Nominee',
     'documents'                         	=> 'Documents',
     'bank_details'                         	=> 'Bank Details',
+    'plans'                                 => 'Plans',
+    'active_plan'                           => 'Active Plan',                                  
     'list'                                 	=> 'List',
     'show'                                 	=> 'Show',
     'entries'                              	=> 'Entries',
