@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateUserBankDetailsRequest;
 use App\Http\Requests\UpdateUserNomineeDetailsRequest;
 use App\Http\Requests\UpdateUserPassword;
 use App\Http\Requests\UpdateBasicUserRequest;
+use App\Http\Requests\UpdateUserPlanRequest;
 use App\Models\UserBankDetails;
 use App\Models\UserDocuments;
 use App\Models\UserNominees;
@@ -21,6 +22,9 @@ use App\Models\User;
 use App\Models\CdrGroup;
 use App\Models\EmailTemplate;
 use App\Models\TempRequestUser;
+use App\Models\UpgradeTax;
+use App\Models\TempUpgradeRequest;
+use App\Models\Plan;
 use App\Models\CityLists;
 use League\Csv\Writer;	
 use Auth;
@@ -170,8 +174,30 @@ class UsersController extends Controller
 		$nominee_details = UserNominees::where('user_id',$user_id)->get();
 		$nominee_details =  $nominee_details->toArray();
 		$temp_details =  TempRequestUser::where('user_id',$user_id)->orderBy('id','desc')->first();
+		$current_plan = $user->plan_id;
+		/*check current plan info*/
+		$currentPlanInfo = Plan::where('id',$current_plan)->first();
+		$currentPlanCost = 0;
+		/*If data present*/
+		if(!is_null($currentPlanInfo) && ($currentPlanInfo->count())>0){
+			$currentPlanCost = $currentPlanInfo->cost;
+		}
+		/*fetch all upgrade plan*/
+		$upgradePlan = Plan::where('cost','>' ,$currentPlanCost)->get();
+		$upgradeAdditionalCost = UpgradeTax::get();
+
+		$tempUpgradePendingRequest = TempUpgradeRequest::where('user_id',$user_id)->where('status',0)->orderBy('id','desc')->first();
+
+		$upgradeRequestPolicy = '';
+		$remainingAmount = 0;
+
+		if(!is_null($tempUpgradePendingRequest) && ($tempUpgradePendingRequest->count())>0){
+			$remainingAmount = $tempUpgradePendingRequest->amount;
+			$upgradeRequestPolicy = Plan::where('id',$tempUpgradePendingRequest->plan_id)->first();
+		}
+
 		//echo '<pre>';print_r($nominee_details->toArray());die;
-		return view('users.account.account', compact('user','bank_detais','document_details','nominee_details','temp_details'));
+		return view('users.account.account', compact('user','bank_detais','document_details','nominee_details','temp_details','currentPlanInfo','upgradePlan','current_plan','upgradeAdditionalCost','remainingAmount','upgradeRequestPolicy','tempUpgradePendingRequest'));
 		//return view('users.account.account');
     }
 	
@@ -355,6 +381,163 @@ class UsersController extends Controller
 		}
 		
     }
+
+/*==================================================
+	  CALCULATE UPGRADE POLICY AMOUNT
+==================================================*/  
+	public function calculateUpgradeAmount(UpdateUserPlanRequest $request,$user_id)
+    {
+    	$data = [];
+    	$data['success'] = false;
+    	$data['message'] = 'Invalid Request';
+
+    	if($request->ajax()){
+
+    		$requestData = [];
+    		$requestData['user_id'] = $user_id;
+    		$requestData['plan'] = $request->plan;
+    		$requestData['cost'] = $request->cost;
+
+	    	$policyAmount = $this->calPolicyAmount($requestData);
+
+	    	$view = view('users.account.policy_amount', compact('policyAmount'))->render();
+	    	return response()->json(['html'=>$view]);
+	    }
+    }
+
+
+    function calPolicyAmount($requestData){
+    	//get current plan
+    	$user_data = User::with('plan')->where('id',$requestData['user_id'])->first();
+    	$currentPolicyCost = 0;
+    	$upgradePlanCost = 0;
+    	$additionalCost = 0;
+    	$totalRemaining = 0;
+    	$additionalPercentage = 0;
+
+    	if(!is_null($user_data) && ($user_data->count())>0 && !is_null($user_data->plan) && ($user_data->plan->count())>0){
+    		$currentPlanInfo = $user_data->plan;
+    		$currentPolicyCost = $currentPlanInfo->cost;
+    	}
+
+    	$upgradePlan = Plan::where('id',$requestData['plan'])->first();
+    	$additionalCharge = UpgradeTax::where('id',$requestData['cost'])->first();
+
+    	if(!is_null($upgradePlan) && ($upgradePlan->count())>0)
+    		$upgradePlanCost = $upgradePlan->cost;
+    	
+    	if(!is_null($additionalCharge) && ($additionalCharge->count())>0)
+    		$additionalCost = $additionalCharge->cost;
+
+    	//remaing amount to pay
+    	$totalRemaining = $upgradePlanCost - $currentPolicyCost;
+    	//calculate percentage on remaining amount
+    	if($totalRemaining > 0){
+    		$additionalPercentage = floatval(($totalRemaining * $additionalCost)/100);
+    	}
+
+    	//add additional cost
+    	$policyAmount = floatval($totalRemaining + $additionalPercentage);
+
+    	return $policyAmount;
+    }
+
+    /*==================================================
+	  UPGRADE PLAN REQUEST
+	==================================================*/ 
+
+	public function upgradePlanRequest(UpdateUserPlanRequest $request,$user_id)
+    {
+    	$data = [];
+    	$data['success'] = false;
+    	$data['message'] = 'Invalid Request';
+
+    	if($request->ajax()){
+
+    		$requestData = [];
+    		$requestData['user_id'] = $user_id;
+    		$requestData['plan'] = $request->plan;
+    		$requestData['cost'] = $request->cost;
+
+    		if(isset($request->amount) && !empty($request->amount)){
+    			$requestData['amount'] = $request->amount;
+    		}
+    		else{
+    			$policyAmount = calPolicyAmount($requestData);
+    			$requestData['amount'] = $policyAmount;
+    		}
+
+    		if(isset($request->status) && !empty($request->status)){
+    			if($request->status == 'paid'){
+    				$requestData['status'] = 1;    				
+    			}
+    			elseif($request->status == 'later')
+    				$requestData['status'] = 0;
+    			else
+    				return Response::json($data, 200); /*Invalid request*/
+
+    			//save data to temp table
+    			$tempData = [];
+				$tempData['user_id'] = $user_id;
+				$tempData['plan_id'] = $requestData['plan'];
+				$tempData['upgrade_tax_id'] = $requestData['cost'];
+				$tempData['amount'] = $requestData['amount'];
+				$tempData['status'] = $requestData['status'];
+
+				if(isset($request->upgrade_id) && !empty($request->upgrade_id) && $request->upgrade_id > 0){
+    				$tempRequest = TempUpgradeRequest::find($request->upgrade_id);
+    				$saveInfo = $tempRequest->update($tempData);
+				}else{
+    				$saveInfo = TempUpgradeRequest::create($tempData);
+				}
+
+				$user = User::with('plan')->where('id',$user_id)->first();
+				$tempUpgradePendingRequest = TempUpgradeRequest::where('user_id',$user_id)->where('status',0)->orderBy('id','desc')->first();
+				
+				$current_plan = $user->plan_id;
+				/*check current plan info*/
+				$currentPlanInfo = '';
+				$upgradeRequestPolicy = '';
+				$remainingAmount = $requestData['amount'];
+
+				if(!is_null($user) && ($user->count())>0 && !is_null($user->plan) && ($user->plan->count())>0){
+					$currentPlanInfo = $user->plan;
+				}
+
+				if(!is_null($tempUpgradePendingRequest) && ($tempUpgradePendingRequest->count())>0){
+					$upgradeRequestPolicy = Plan::where('id',$tempUpgradePendingRequest->plan_id)->first();
+				}
+				
+				$currentPlanCost = 0;
+				/*If data present*/
+				if(!is_null($currentPlanInfo) && ($currentPlanInfo->count())>0){
+					$currentPlanCost = $currentPlanInfo->cost;
+				}
+
+				/*fetch all upgrade plan*/
+				$upgradePlan = Plan::where('cost','>' ,$currentPlanCost)->get();
+				$upgradeAdditionalCost = UpgradeTax::get();
+
+				$data['success'] = true;
+				$data['message'] = 'Successfully sent upgrade request';
+
+				$view = view('users.account.policy_plan', compact('user','currentPlanInfo','upgradePlan','current_plan','upgradeAdditionalCost','upgradeRequestPolicy','remainingAmount','tempUpgradePendingRequest'))->render();
+
+				$data['html'] = $view;
+	    		return Response::json($data, 200);
+
+    		}else{
+    			return Response::json($data, 200);
+    		}
+
+
+	    	
+
+	    	$view = view('users.account.policy_amount', compact('policyAmount'))->render();
+	    	return response()->json(['html'=>$view]);
+	    }
+    } 
+
 
 /*==================================================
 	  CHANGE PASSWORD 

@@ -18,7 +18,7 @@
 							</div>
 							@endif
 							@include('flash-message')	
-                             <form method="POST" action="{{ route('register') }}" class="frm_class">
+                            <form method="POST" action="{{ route('register') }}" class="frm_class">
 								{{ csrf_field() }}
 								
 								<h5 class="mb-4 register_title">{{ trans('global.referral_information') }}</h5>

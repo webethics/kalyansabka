@@ -38,6 +38,10 @@
 								<a class="nav-link" id="fourth-tab" data-toggle="tab" href="#fourth" role="tab"
 									aria-controls="fourth" aria-selected="true">{{trans('global.bank_details')}}</a>
 							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="six-tab" data-toggle="tab" href="#six" role="tab"
+									aria-controls="six" aria-selected="true">{{trans('global.plans')}}</a>
+							</li>
 							@endif
 							@if(check_role_access('account_reset_password'))
 								<li class="nav-item">
@@ -621,6 +625,14 @@
 									</div>
 								</form>
 							</div>
+
+							<div class="tab-pane fade" id="six" role="tabpanel" aria-labelledby="six-tab">
+								@include('users.account.policy_plan')
+							</div>
+
+
+							
+
 							@endif
 							<div class="tab-pane fade" id="fifth" role="tabpanel" aria-labelledby="fifth-tab">
 								<form name="reset_pass" id="reset_pass" data-id="{{$user->id}}">

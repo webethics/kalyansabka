@@ -37,6 +37,8 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('update-basic-profile/{user_id}', 'UsersController@updateBasicProfile');//UPDATE Basic USER
 	Route::post('update-bank-details/{user_id}', 'UsersController@updateBankDetails');//UPDATE USER
 	Route::post('update-nominee-details/{user_id}', 'UsersController@updateNomineeDetails');//UPDATE USER
+	Route::post('calculate-upgrade-amount/{user_id}','UsersController@calculateUpgradeAmount'); /*cal upgrade amount*/
+	Route::post('upgrade_plan_request/{user_id}','UsersController@upgradePlanRequest'); /*upgrade plan request */
 	
 	Route::post('user/roleDropdown', 'UsersController@roleDropdown');
 	
@@ -115,6 +117,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	//certificates
 	Route::get('certificates',array('uses'=>'CertificateController@certificates'));
 	Route::get('customer-certificate',array('uses'=>'CertificateController@customer_certificate'));
+	Route::get('upgrade-customer-certificate',array('uses'=>'CertificateController@upgrade_customer_certificate'));
 	Route::post('certificate/edit/{request_id}', 'CertificateController@certificate_request_edit'); //Edit Certificate request
 	Route::post('update-certificate-request/{request_id}', 'CertificateController@update_certificate'); //Update certificate
 	Route::post('export_certificate_customers',array('uses'=>'CertificateController@export_certificate_customers')); /*Export certificate Customer */
