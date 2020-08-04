@@ -269,10 +269,14 @@ class PaymentsController extends Controller
 		$result_of_ids->where('role_id', '!=', 1);
 		
 		$user_ids = $result_of_ids->select('id')->get();
+		$eachids = array();
+		foreach($user_ids as $id){
+			$eachids[] = $id->id;
+		}
 		
-		/* if($user_ids){
-			$result->whereIN('user_id',$user_ids);
-		} */
+		if($user_ids){
+			$result->whereIN('user_id',$eachids);
+		}
 		
 		
 		if($pagination == true){
