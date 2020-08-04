@@ -269,17 +269,19 @@ class PaymentsController extends Controller
 		$result_of_ids->where('role_id', '!=', 1);
 		
 		$user_ids = $result_of_ids->select('id')->get();
+		echo '<pre>';print_r($user_ids->toArray());die;
 		
 		if($user_ids){
 			$result->whereIN('user_id',$user_ids);
 		}
+		
 		
 		if($pagination == true){
 			$withdrawls = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
 		}else{
 			$withdrawls = $result->orderBy('created_at', 'desc')->get();
 		}
-		echo '<pre>';print_r($withdrawls->toArray());die;
+		
 		$data = array();
 		$data['success'] = true;
 		$data['withdrawls'] = $withdrawls;
