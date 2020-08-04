@@ -4,8 +4,12 @@
 		<th scope="col">ID</th>
 		<th scope="col">Date</th>
 		<th scope="col">Narration</th>
-		<th scope="col">Withdrawl</th>
 		<th scope="col">Deposit</th>
+		<th scope="col">Withdrawl</th>
+		<th scope="col">Admin Charges</th>
+		<th scope="col">TDS Deduction</th>
+		<th scope="col">Deposit To Bank</th>
+		
 		</tr>
 	</thead>
 	<tbody>
@@ -23,8 +27,12 @@
 					Credited
 				@endif
 			</td>
-			<td id="business_url_{{$payment->id}}">@if($payment->mode == 1) INR {{$payment->amount}} @else {{'-'}} @endif</td>
-			<td id="business_url_{{$payment->id}}">@if($payment->mode == 2) INR {{$payment->amount}} @else {{'-'}} @endif</td>
+			<td id="payment_mode1_{{$payment->id}}">@if($payment->mode == 1) INR {{$payment->amount}} @else {{'-'}} @endif</td>
+			<td id="payment_mode2_{{$payment->id}}">@if($payment->mode == 2) INR {{$payment->amount}} @else {{'-'}} @endif</td>
+			<td id="admin_charges_{{$payment->id}}">@if($payment->mode == 2 && isset($payment->request_changes->admin_charges)) INR {{$payment->request_changes->admin_charges}} @else {{'-'}} @endif</td>
+			<td id="tds_deduction_{{$payment->id}}">@if($payment->mode == 2 && isset($payment->request_changes->tds_deduction)) INR {{$payment->request_changes->tds_deduction}} @else {{'-'}} @endif</td>
+			<td id="deposit_to_bank_{{$payment->id}}">@if($payment->mode == 2 && isset($payment->request_changes->deposit_to_bank)) INR {{$payment->request_changes->deposit_to_bank}} @else {{'-'}} @endif</td>
+			
 		</tr>
 		@php $sno++ @endphp
 	 @endforeach

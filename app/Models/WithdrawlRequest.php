@@ -18,7 +18,8 @@ class WithdrawlRequest extends Model
         'user_id',
         'amount_requested',
 		'status',
-		'description'
+		'description',
+    	'income_history_id'
     ];
 
     protected $appends = ['full_name'];
@@ -31,4 +32,12 @@ class WithdrawlRequest extends Model
     {
         return ucfirst("{$this->first_name} {$this->last_name}");
     }
+	
+	public function request_changes() {
+		return $this->hasOne('App\Models\WithdrawalRequestCharges','request_id','income_history_id');
+	}
+	
+	
+	
+
 }

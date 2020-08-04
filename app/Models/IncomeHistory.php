@@ -14,4 +14,8 @@ class IncomeHistory extends Model
         'transaction_id',
         'comment'
     ];
+	
+	public function request_changes() {
+		return $this->hasOne('App\Models\WithdrawalRequestCharges','request_id');
+	}
 }
