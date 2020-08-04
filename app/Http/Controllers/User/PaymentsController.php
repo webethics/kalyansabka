@@ -61,6 +61,7 @@ class PaymentsController extends Controller
 	public function payments(Request $request)
     {
 		access_denied_user('payment_listing');
+		$balance = DB::table('users')->sum('price');
 		$customers_data = $this->payments_search($request,$pagination=true);
 		if($customers_data['success']){
 			$payments = $customers_data['customers'];
@@ -70,9 +71,9 @@ class PaymentsController extends Controller
 			$roles = Role::all();
 			if(!is_object($payments)) return $payments;
 			if ($request->ajax()) {
-				return view('payments.paymentsPagination', compact('payments','page_number','roles'));
+				return view('payments.paymentsPagination', compact('payments','page_number','roles','balance'));
 			}
-			return view('payments.payments',compact('payments','page_number','roles'));	
+			return view('payments.payments',compact('payments','page_number','roles','balance'));	
 		}else{
 			return $customers_data['message'];
 		}
