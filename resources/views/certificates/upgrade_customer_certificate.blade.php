@@ -1,4 +1,14 @@
 @extends('layouts.admin')
+@section('additionalCss')
+<style>
+	#iframe #outerContainer #mainContainer div.toolbar {
+	  display: none !important; /* hide PDF viewer toolbar */
+	}
+	#iframe #outerContainer #mainContainer #viewerContainer {
+	  top: 0 !important; /* move doc up into empty bar space */
+	}
+</style>
+@stop
 @section('content')
 	<div class="row">
 		<div class="col-12">
