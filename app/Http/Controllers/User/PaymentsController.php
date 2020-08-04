@@ -187,7 +187,7 @@ class PaymentsController extends Controller
 		$number_of_records =$this->per_page;
 		
 		$result = WithdrawlRequest::where(`1`, '=', `1`)->with('user');	
-		echo '<pre>';print_r($result);die;
+		echo '<pre>';print_r($result->toArray());die;
 		$first_name = $request->first_name;
 		$last_name = $request->last_name;
 		$email = $request->email;
