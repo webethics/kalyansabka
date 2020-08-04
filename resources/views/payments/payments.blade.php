@@ -10,7 +10,7 @@
 	<div class="row mb-4">
 		<div class="col-12 mb-4">
 		
-			<?php /* @include('partials.searchUserForm')		 */ ?>
+			@include('partials.searchPaymentForm')	
 							
 			<div class="card">
 				<div class="card-body">
@@ -26,6 +26,6 @@
 	</div>
 	<div class="modal fade modal-top confirmBoxCompleteModal"  tabindex="-1" role="dialog"  aria-hidden="true"></div>
 @section('userJs')
-<script src="{{ asset('js/module/user.js')}}"></script>	
+<script src="{{ asset('js/module/payment.js')}}"></script>	
 @stop
 @endsection

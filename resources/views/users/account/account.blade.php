@@ -59,14 +59,16 @@
 							<div class="tab-pane fade show active" id="first" role="tabpanel"  aria-labelledby="first-tab">
 								
 								<div class="" id="first_account_info">
-									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="basic_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
-									<div class="clearfix"></div>
+									<div class="col-xl-1 fl_right"><a class="fl_right edit_link action" title="Edit" id="basic_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
+									
 									<div id="user_response_update" style="display:none"></div>
 									@if($temp_details && $temp_details->status == 0) 
 										<div id="user_response_update_db">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
+									@elseif($temp_details && $temp_details->status == 2) 
+										<div id="user_response_update_db_1" >{{$temp_details->description}}</div>
+									@else
+										<div class="clearfix"></div>
 									@endif
-									
-									@if($temp_details && $temp_details->status == 2) <div id="user_response_update_db_1" >{{$temp_details->description}}</div>@endif
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}</label>
 										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->first_name}}</label>
@@ -109,17 +111,18 @@
 								@else
 									<form action="{{ url('update-basic-profile') }}/{{ $user->id }}" method="POST" name="accountinfo" id="accountinfo" data-id="{{$user->id}}" style="display:none">
 								@endif
-									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="basic_info_cancel" href="javascript:void(0)"><i class="simple-icon-close"></i></a></div>
+									<div class="col-xl-1 fl_right"><a class="fl_right edit_link action" title="Edit" id="basic_info_cancel" href="javascript:void(0)"><i class="simple-icon-close"></i></a></div>
 									
-									<div class="clearfix"></div>
 									
 									
 									<div id="user_response_update_1"  style="display:none"></div>
 									@if($temp_details && $temp_details->status == 0) 
 										<div id="user_response_update_db">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
+									@elseif($temp_details && $temp_details->status == 2) 
+										<div id="user_response_update_db_1" >{{$temp_details->description}}</div>
+									@else
+										<div class="clearfix"></div>
 									@endif
-									
-									@if($temp_details && $temp_details->status == 2) <div id="user_response_update_db_1" >{{$temp_details->description}}</div>@endif
 									
 									{{ csrf_field() }}
 									<div class="form-group row">
@@ -239,7 +242,7 @@
 							@if(current_user_role_id()!=1)
 							<div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
 								<div class="" id="nomminee_pass_info">
-									<div class="col-xl-12"><a class="fl_right edit_link action" title="Edit" id="nominee_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
+									<div class="col-xl-1 fl_right"><a class="fl_right edit_link action" title="Edit" id="nominee_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
 									<div class="clearfix"></div>
 									
 									<div id="showNomineeDetails" style="display:none">

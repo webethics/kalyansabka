@@ -36,13 +36,13 @@
 								</div>	
 
 									
-								<h5 class="mb-4 register_title">Insurance Type</h5>
+								<h5 class="mb-4 register_title">User Type</h5>
 								
 								<div class="form-row">
 									<div class="col-md-6">
 										<label class="has-float-label form-group mb-3">
 											<select name="insurance_type" id="insurance_type" class="form-control">
-												<option value="">Select Insurance Type</option>
+												<option value="">Select User Type</option>
 												<option value="individual" @if (old('insurance_type') == "individual") {{ 'selected' }} @endif >Individual</option>
 												<option value="company" @if (old('insurance_type') == "company") {{ 'selected' }} @endif >Company</option>
 											</select>
@@ -410,7 +410,7 @@
 											
 											<div class="input-group mb-3">
 												<label for="civilite" class="">Do you need a hard copy of Certificate ?</label>
-												<label class="radio-inline ml-3"><input type="radio" @if (old('hard_copy') == "yes") {{ 'checked' }} @endif name="hard_copy" class="" value="yes" /> <span>Yes(Post Fee 50INR)</span></label>
+												<label class="radio-inline ml-3"><input type="radio" @if (old('hard_copy') == "yes") {{ 'checked' }} @endif name="hard_copy" class="" value="yes" /> <span>Yes</span></label>
 												<label class="radio-inline ml-3"><input type="radio" @if (old('hard_copy') == "no") {{ 'checked' }} @endif name="hard_copy" class="" value="no" /> <span>No</span></label>
 												<input type="hidden" name="hard_copy_certificate" id = "hard_copy_certificate" value="{{old('hard_copy')}}">
 												<input type="hidden" name="actual_price" id = "actual_price" value="{{old('actual_price')}}">
@@ -617,13 +617,14 @@ $('[data-type="adhaar-number"]').on("change, blur", function() {
 
 
 $("input[name='plan']").change(function(){
+	
 	var selected_val = $(this).data('cost');
 	$('#actual_price').val(selected_val);
 	$('#buttonCheck').val('Pay INR '+selected_val);
 	var hard_copy = $("#hard_copy_certificate").val();
 	var total_value
 	if(hard_copy == 'yes'){
-		total_value = parseInt(selected_val) + 50 ;
+		total_value = parseInt(selected_val) + 100 ;
 	}else{
 		total_value = $('#actual_price').val();
 	}
@@ -638,7 +639,7 @@ function setPriceOnSubmitButton(){
 	
 	if(price_val){
 		if(hard_copy == 'yes'){
-			total_value = parseInt(price_val) + 50 ;
+			total_value = parseInt(price_val) + 100 ;
 			$('#hard_copy_certificate').val('yes');
 			
 			
@@ -657,11 +658,13 @@ function setPriceOnSubmitButton(){
 $("input[name='hard_copy']").change(function(){
 	
 	var price_val = $('#actual_price').val();
+	
 	if(price_val){
+		
 		var selected_val = $(this).val();
 		var total_value;
 		if(selected_val == 'yes'){
-			total_value = parseInt(price_val) + 50 ;
+			total_value = parseInt(price_val) + 100 ;
 			$('#hard_copy_certificate').val('yes');
 			
 			
@@ -673,6 +676,7 @@ $("input[name='hard_copy']").change(function(){
 		//$('#price').val(total_value);
 		$('#buttonCheck').val('Pay INR '+total_value);
 	}else{
+		$(this).prop('checked', false); 
 		$('#select_plan_first').html('Please select an insurance plan first.').show("slow").delay(2500).hide("slow");
 	}
 	
