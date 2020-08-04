@@ -187,7 +187,7 @@ class PaymentsController extends Controller
 		$number_of_records =$this->per_page;
 		
 		$result = WithdrawlRequest::where(`1`, '=', `1`)->with('user');	
-		
+		echo '<pre>';print_r($result);die;
 		$first_name = $request->first_name;
 		$last_name = $request->last_name;
 		$email = $request->email;
@@ -279,7 +279,7 @@ class PaymentsController extends Controller
 		}else{
 			$withdrawls = $result->orderBy('created_at', 'desc')->get();
 		}
-		echo '<pre>';print_r($withdrawls);die;
+		
 		$data = array();
 		$data['success'] = true;
 		$data['withdrawls'] = $withdrawls;
