@@ -2,8 +2,10 @@
 	@if(isset($currentPlanInfo) && $currentPlanInfo['name'] != "")
 	<div class="form-group row">
 		<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.active_plan')}}</label>
-		<label class="col-lg-9 col-xl-10 col-form-label" id="current_plan">INR {{$currentPlanInfo->cost}} - {{$currentPlanInfo->description}}</label>
-		
+		<label class="col-lg-7 col-xl-7 col-form-label" id="current_plan">INR {{$currentPlanInfo->cost}} - {{$currentPlanInfo->description}}</label>
+		<label class="col-lg-2 col-xl-3 col-form-label" id="current_plan_certificate">
+			<a class="action viewCustomer" href="{{ url('customer-certificate') }}" data-user_id="{{ $user->id }}" title="View and Download Certificate"><i class="simple-icon-cloud-download"></i> </a>
+		</label>
 	</div>
 	<hr>
 	@endif
@@ -11,7 +13,10 @@
 	@if(isset($upgradeRequestPolicy) && isset($upgradeRequestPolicy['name']) && $upgradeRequestPolicy['name'] != "")
 	<div class="form-group row">
 		<label class="col-lg-3 col-xl-2 col-form-label">Upgrade plan request</label>
-		<label class="col-lg-9 col-xl-10 col-form-label" id="upgrade_plan">INR {{$upgradeRequestPolicy->cost}} - {{$upgradeRequestPolicy->description}}</label>
+		<label class="col-lg-7 col-xl-7 col-form-label" id="upgrade_plan">INR {{$upgradeRequestPolicy->cost}} - {{$upgradeRequestPolicy->description}}</label>
+		<label class="col-lg-2 col-xl-3 col-form-label" id="upgradet_plan_certificate">
+			<a class="action viewCustomer" href="{{ url('upgrade-customer-certificate') }}" data-user_id="{{ $user->id }}" title="View Certificate"><i class="simple-icon-cloud-download"></i> </a>
+		</label>
 	</div>
 
 	<div class="form-group row">

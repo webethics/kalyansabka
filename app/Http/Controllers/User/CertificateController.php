@@ -187,6 +187,10 @@ class CertificateController extends Controller
 		
 		return view('certificates.customer_certificate');	
 	}
+
+	public function upgrade_customer_certificate(){
+		return view('certificates.upgrade_customer_certificate');
+	}
 	
 	public function certificate_request_edit($user_id)
     {
