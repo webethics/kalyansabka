@@ -47,11 +47,12 @@ class IncomeHistoryObserver
      */
     public function updated(IncomeHistory $incomeHistory)
     {
-        if(!empty($incomeHistory) && !empty($incomeHistory->user_id)){
+		if(!empty($incomeHistory) && !empty($incomeHistory->user_id)){
             $currentBal = 0;
             /*fetch user current income*/
             $income = Income::where('user_id',$incomeHistory->user_id)->first();
-            
+           // $incomedata = Income::where('user_id',$incomeHistory->user_id);
+			
             if(!empty($income) && !is_null($income->count()))
                 $currentBal = $income->current_bal;
 
@@ -63,11 +64,11 @@ class IncomeHistoryObserver
                $currentBal -= $incomeHistory->amount;
 
             /*save data in db*/
-            $incomeResult = Income::update([
-                'user_id' => $incomeHistory->user_id
-            ], [
-                'current_bal' => $currentBal
-            ]);
+			
+			$income->current_bal = $currentBal;
+			
+			$income->save(); 
+          
         }
     }
 
