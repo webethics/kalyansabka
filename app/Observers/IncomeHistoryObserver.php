@@ -26,7 +26,8 @@ class IncomeHistoryObserver
             /*Check mode and do cal. based on that*/
             if($incomeHistory->mode == 1)
                 $currentBal += $incomeHistory->amount;
-            else
+            
+			if($incomeHistory->mode == 2 && $incomeHistory->status == 1)
                $currentBal -= $incomeHistory->amount;
 
             /*save data in db*/
@@ -46,7 +47,28 @@ class IncomeHistoryObserver
      */
     public function updated(IncomeHistory $incomeHistory)
     {
-        //
+        if(!empty($incomeHistory) && !empty($incomeHistory->user_id)){
+            $currentBal = 0;
+            /*fetch user current income*/
+            $income = Income::where('user_id',$incomeHistory->user_id)->first();
+            
+            if(!empty($income) && !is_null($income->count()))
+                $currentBal = $income->current_bal;
+
+            /*Check mode and do cal. based on that*/
+            /* if($incomeHistory->mode == 1)
+                $currentBal += $incomeHistory->amount; */
+            
+			if($incomeHistory->mode == 2 && $incomeHistory->status == 1)
+               $currentBal -= $incomeHistory->amount;
+
+            /*save data in db*/
+            $incomeResult = Income::update([
+                'user_id' => $incomeHistory->user_id
+            ], [
+                'current_bal' => $currentBal
+            ]);
+        }
     }
 
     /**

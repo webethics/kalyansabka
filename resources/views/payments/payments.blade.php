@@ -3,7 +3,7 @@
 	<div class="row">
 		<div class="col-12">
 			<h1>Payments </h1>
-			<span class="fl_right balance">Closing Balance : INR 25845.02</span>
+			<span class="fl_right balance">Closing Balance : INR {{$balance??0}}</span>
 			<div class="separator mb-5"></div>
 		</div>
 	</div>

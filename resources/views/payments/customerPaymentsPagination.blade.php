@@ -6,9 +6,10 @@
 		<th scope="col">Narration</th>
 		<th scope="col">Deposit</th>
 		<th scope="col">Withdrawl</th>
-		<th scope="col">Admin Charges</th>
+		<th scope="col">Status</th>
+		<!--th scope="col">Admin Charges</th>
 		<th scope="col">TDS Deduction</th>
-		<th scope="col">Deposit To Bank</th>
+		<th scope="col">Deposit To Bank</th-->
 		
 		</tr>
 	</thead>
@@ -21,17 +22,19 @@
 			<td id="name_{{$payment->id}}">{{ date('d-m-Y', strtotime($payment->created_at))  ?? '' }}</td>
 			<td id="mobile_number_{{$payment->id}}">
 				@if($payment->mode == 2)
-					Debited
+					{{$payment->comment}}
 				@endif
-				@if($payment->mode == 1)
-					Credited
+				@if($payment->mode == 1 )
+					Credited - Referral Commission for <b>{{$payment->user->full_name }}</b>
 				@endif
 			</td>
 			<td id="payment_mode1_{{$payment->id}}">@if($payment->mode == 1) INR {{$payment->amount}} @else {{'-'}} @endif</td>
 			<td id="payment_mode2_{{$payment->id}}">@if($payment->mode == 2) INR {{$payment->amount}} @else {{'-'}} @endif</td>
-			<td id="admin_charges_{{$payment->id}}">@if($payment->mode == 2 && isset($payment->request_changes->admin_charges)) INR {{$payment->request_changes->admin_charges}} @else {{'-'}} @endif</td>
+			<td id="payment_mode2_{{$payment->id}}">@if($payment->status == 0) Pending @elseif ($payment->status == 1) Completed @endif</td>
+			
+			<?php /* <td id="admin_charges_{{$payment->id}}">@if($payment->mode == 2 && isset($payment->request_changes->admin_charges)) INR {{$payment->request_changes->admin_charges}} @else {{'-'}} @endif</td>
 			<td id="tds_deduction_{{$payment->id}}">@if($payment->mode == 2 && isset($payment->request_changes->tds_deduction)) INR {{$payment->request_changes->tds_deduction}} @else {{'-'}} @endif</td>
-			<td id="deposit_to_bank_{{$payment->id}}">@if($payment->mode == 2 && isset($payment->request_changes->deposit_to_bank)) INR {{$payment->request_changes->deposit_to_bank}} @else {{'-'}} @endif</td>
+			<td id="deposit_to_bank_{{$payment->id}}">@if($payment->mode == 2 && isset($payment->request_changes->deposit_to_bank)) INR {{$payment->request_changes->deposit_to_bank}} @else {{'-'}} @endif</td> */ ?>
 			
 		</tr>
 		@php $sno++ @endphp

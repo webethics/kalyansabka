@@ -12,10 +12,20 @@ class IncomeHistory extends Model
         'mode',
         'amount',
         'transaction_id',
-        'comment'
+        'comment',
+        'status'
     ];
 	
 	public function request_changes() {
 		return $this->hasOne('App\Models\WithdrawalRequestCharges','request_id');
 	}
+	
+	/* public function referred_data() {
+		return $this->hasOne('App\Models\User','id');
+	} */
+	
+	public function user() {
+		return $this->belongsTo('App\Models\User','referral_id');
+	}
+	
 }
