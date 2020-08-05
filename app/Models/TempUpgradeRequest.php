@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class TempUpgradeRequest extends Model
 {
@@ -19,8 +20,11 @@ class TempUpgradeRequest extends Model
         'plan_id',
 		'upgrade_tax_id',
 		'amount',
-		'status'
+		'status',
+        'request_expired'
     ];
+
+    protected $appends = ['expired_view_format'];
 
     public function upgradeTax() {
 		return $this->belongsTo('App\Models\UpgradeTax','upgrade_tax_id');
@@ -28,5 +32,10 @@ class TempUpgradeRequest extends Model
 
     public function user() {
         return $this->belongsTo('App\Models\User','user_id');
+    }
+
+    public function getExpiredViewFormatAttribute()
+    {
+        return Carbon::parse($this->request_expired)->format('d F Y');
     }
 }

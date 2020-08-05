@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\TempUpgradeRequest;
 use App\Models\User;
 use App\Models\Plan;
+use App\Models\UserPayment;
 use Carbon\Carbon;
 
 class TempUpgradeRequestObserver
@@ -18,7 +19,7 @@ class TempUpgradeRequestObserver
     public function created(TempUpgradeRequest $tempUpgradeRequest)
     {
         if(!empty($tempUpgradeRequest) && !empty($tempUpgradeRequest->user_id)){
-            /*Check if status paid i.e status 1, then change user plain id and locking period*/
+            /*Check if status paid i.e status 1, then change user plan id and locking period*/
             if($tempUpgradeRequest->status == 1){
                 $selectedPlan = $tempUpgradeRequest->plan_id;
                 $lockingPeriod = $this->fetchPlanLockingPeriod($selectedPlan);
@@ -32,6 +33,13 @@ class TempUpgradeRequestObserver
                 $userInfo['lockingPeriodStart'] = $lockingPeriodStart;
                 $userInfo['lockingPeriodEnd'] = $lockingPeriodEnd;
                 $updateUserInfo = $this->updateUser($userInfo);
+
+                //when we update user plan at same time go entry for payment in user payment table
+                $userPaymentData = [];
+                $userPaymentData['user_id'] = $tempUpgradeRequest->user_id;
+                $userPaymentData['plan_id'] = $tempUpgradeRequest->plan_id;
+                $userPaymentData['amount'] = $tempUpgradeRequest->amount;
+                UserPayment::create($userPaymentData);
             }
         }
     }
@@ -45,7 +53,7 @@ class TempUpgradeRequestObserver
     public function updated(TempUpgradeRequest $tempUpgradeRequest)
     {
         if(!empty($tempUpgradeRequest) && !empty($tempUpgradeRequest->user_id)){
-            /*Check if status paid i.e status 1, then change user plain id and locking period*/
+            /*Check if status paid i.e status 1, then change user plan id and locking period*/
             if($tempUpgradeRequest->status == 1){
                 $selectedPlan = $tempUpgradeRequest->plan_id;
                 $lockingPeriod = $this->fetchPlanLockingPeriod($selectedPlan);
@@ -59,6 +67,13 @@ class TempUpgradeRequestObserver
                 $userInfo['lockingPeriodStart'] = $lockingPeriodStart;
                 $userInfo['lockingPeriodEnd'] = $lockingPeriodEnd;
                 $updateUserInfo = $this->updateUser($userInfo);
+
+                //when we update user plan at same time go entry for payment in user payment table
+                $userPaymentData = [];
+                $userPaymentData['user_id'] = $tempUpgradeRequest->user_id;
+                $userPaymentData['plan_id'] = $tempUpgradeRequest->plan_id;
+                $userPaymentData['amount'] = $tempUpgradeRequest->amount;
+                UserPayment::create($userPaymentData);
             }
         }
     }

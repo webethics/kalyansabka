@@ -18,5 +18,6 @@ return [
 	'per_page'=>10,
     'SUCCESS'=>'success',
     'ERROR'=>'error',
+    'TREE_LEVEL' => 3
 ];
 ?>

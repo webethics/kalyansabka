@@ -244,6 +244,11 @@ function calculateUpgradeAmount(){
 	//get upgrade plan id
 	var planId = $(".upgrade_plan input[name='plan']:checked").val();
 	var costId = $(".additional-cost input[name='cost']:checked").val();
+	var payStatus = $(".additional-cost input[name='cost']:checked").data('paystatus');
+
+	/*disable button*/
+	$('#pay_now').attr("disabled", true).addClass('disabled');
+	$('#pay_later').attr("disabled", true).addClass('disabled');
 	
 	if(typeof planId != 'undefined' && typeof costId != 'undefined' && planId != null && costId != null){
 		var formData = $("#upgrade_plan_form").serialize();
@@ -258,7 +263,10 @@ function calculateUpgradeAmount(){
 	            // Set search result
 				$(".policy-amount").html(data.html);
 				//enable button
-				$('#pay_now').removeAttr("disabled").removeClass('disabled');
+				if(payStatus == 1){
+					$('#pay_now').removeAttr("disabled").removeClass('disabled');
+				}
+				
 				$('#pay_later').removeAttr("disabled").removeClass('disabled');
 	        },
 			error :function( data ){
@@ -266,11 +274,6 @@ function calculateUpgradeAmount(){
 				notification('Error','Something went wrong.','top-right','error',3000);
 			}
 	    });
-	}else{
-		/*disable button*/
-		$('#pay_now').attr("disabled", true).addClass('disabled');
-		$('#pay_later').attr("disabled", true).addClass('disabled');
-
 	}
 }
 
