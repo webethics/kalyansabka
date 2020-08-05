@@ -4,7 +4,7 @@
 		<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.active_plan')}}</label>
 		<label class="col-lg-7 col-xl-7 col-form-label" id="current_plan">INR {{$currentPlanInfo->cost}} - {{$currentPlanInfo->description}}</label>
 		<label class="col-lg-2 col-xl-3 col-form-label" id="current_plan_certificate">
-			<a class="action viewCustomer" href="{{ url('customer-certificate') }}" data-user_id="{{ $user->id }}" title="View and Download Certificate"><i class="simple-icon-cloud-download"></i> </a>
+			<a class="action viewCustomer" href="{{ url('customer-certificate') }}" data-user_id="{{ $user->id }}" title="View and Download Certificate"><i class="simple-icon-eye"></i> </a>
 		</label>
 	</div>
 	<hr>
@@ -13,10 +13,10 @@
 	@if(isset($upgradeRequestPolicy) && isset($upgradeRequestPolicy['name']) && $upgradeRequestPolicy['name'] != "")
 	<div class="form-group row">
 		<label class="col-lg-3 col-xl-2 col-form-label">Upgrade plan request</label>
-		<label class="col-lg-7 col-xl-7 col-form-label" id="upgrade_plan">INR {{$upgradeRequestPolicy->cost}} - {{$upgradeRequestPolicy->description}}</label>
-		<label class="col-lg-2 col-xl-3 col-form-label" id="upgradet_plan_certificate">
+		<label class="col-lg-9 col-xl-10 col-form-label" id="upgrade_plan">INR {{$upgradeRequestPolicy->cost}} - {{$upgradeRequestPolicy->description}}</label>
+		{{--<label class="col-lg-2 col-xl-3 col-form-label" id="upgradet_plan_certificate">
 			<a class="action viewCustomer" href="{{ url('upgrade-customer-certificate') }}" data-user_id="{{ $user->id }}" title="View Certificate"><i class="simple-icon-cloud-download"></i> </a>
-		</label>
+		</label>--}}
 	</div>
 
 	<div class="form-group row">
@@ -32,7 +32,11 @@
 				<button type="button" id="pay_now" class="btn btn-primary default  btn-lg mb-2 mb-lg-0 col-12 col-lg-auto" data-payment="paid">{{trans('global.pay_now')}}</button>
 			</form>
 		</label>
+	</div>
 
+	<div class="form-group row">
+		<label class="col-lg-3 col-xl-2 col-form-label">Request Expired On</label>
+		<label class="col-lg-9 col-xl-10 col-form-label" id="request_expired">{{$tempUpgradePendingRequest->expired_view_format}}</label>
 	</div>
 	<hr>
 	@endif
@@ -68,9 +72,13 @@
 			<div class="col-md-12">
 				<div class="input-group mb-3">
 					
-					@foreach($upgradeAdditionalCost as $additional)
+					@foreach($upgradeAdditionalCost as $ckey=>$additional)
+						@php $payNowText = ''; $payNowStatus = 0;@endphp
+						@if($ckey == 0)
+							@php $payNowText = 'Pay Now or'; $payNowStatus = 1; @endphp
+						@endif
 						<div class="radio">
-							<label class=" ml-3"><input type="radio" name="cost" id="cost" data-cost="{{$additional->cost}}"  class="cost_checkbox" value="{{$additional->id}}" @if (old('cost') == "$additional->id") {{ 'checked' }} @endif /> <span>Pay within {{$additional->name}} then pay {{$additional->cost}}% of remaining amount</span></label>
+							<label class=" ml-3"><input type="radio" name="cost" id="cost" data-paystatus="{{$payNowStatus}}" data-cost="{{$additional->cost}}"  class="cost_checkbox" value="{{$additional->id}}" @if (old('cost') == "$additional->id") {{ 'checked' }} @endif /> <span>{{$payNowText}} Pay within {{$additional->name}}</span></label>
 						</div>
 					@endforeach
 					

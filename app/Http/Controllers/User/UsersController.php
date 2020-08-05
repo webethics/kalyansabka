@@ -488,6 +488,15 @@ class UsersController extends Controller
     				$tempRequest = TempUpgradeRequest::find($request->upgrade_id);
     				$saveInfo = $tempRequest->update($tempData);
 				}else{
+					$selectedTaxInfo = UpgradeTax::where('id',$requestData['cost'])->first();
+			        $expiredPeriod = 0;
+			        if(!is_null($selectedTaxInfo) && ($selectedTaxInfo->count())>0){
+			            $expiredPeriod = $selectedTaxInfo->no_of_days;
+			        }
+                	$expiredRequest = Carbon::now()->addDays($expiredPeriod)->format('Y-m-d');
+
+                	$tempData['request_expired'] = $expiredRequest;
+					
     				$saveInfo = TempUpgradeRequest::create($tempData);
 				}
 
