@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdateUserPassword;
 use App\Http\Requests\sendEmailNotification;
 use App\Http\Requests\ResetPassword;
+use App\Http\Requests\UpdateWithdawalRequest;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
@@ -226,6 +227,7 @@ class PaymentsController extends Controller
 		$covered_amount = $request->covered_amount;
 		$age_from = $request->age_from;
 		$age_to = $request->age_to;
+		$status = $request->status;
 		
 		$result_of_ids = User::where(`1`, '=', `1`);
 		
@@ -300,9 +302,14 @@ class PaymentsController extends Controller
 			$eachids[] = $id->id;
 		}
 		
+		if($status != ''){
+			$result->where('status',$status);
+		}
+		
 		if($user_ids){
 			$result->whereIN('user_id',$eachids);
 		}
+		//print_r($result);
 		
 		if($pagination == true){
 			$withdrawls = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
@@ -482,7 +489,7 @@ class PaymentsController extends Controller
 		$withdrawldata['mode']  = 2;
 		$withdrawldata['status']  = 0;
 		$withdrawldata['amount']  = $request->amount;
-		$withdrawldata['comment']  = 'Withdrawl Requested By Customer';	
+		$withdrawldata['comment']  = 'Withdrawl Requested By Customer for Amount INR '.$request->amount;	
 		$history_id = IncomeHistory::create($withdrawldata);
 		
 		if($history_id->id){
@@ -527,17 +534,7 @@ class PaymentsController extends Controller
 
 	}
 	
-	function payment_update_request(Request $request,$request_id){
-		
-		/*$incomehistory_data = IncomeHistory::where('id',$request->income_history_id);
-		$income_data['user_id']  = $request->user_id;
-		$income_data['mode']  = 2;
-		$income_data['status']  = 1;
-		//$income_data['amount']  = 1322 - 50 -50;//$withdarawl_amount - $calculated_tds - $calculated_admin_charges;
-		$income_data['comment']  = 'Withdrawl Requested by Customer - completed';	
-		$incomehistory_data->update($income_data);
-		die;*/
-		
+	function payment_update_request(UpdateWithdawalRequest $request,$request_id){
 		$getRequest = WithdrawlRequest::where('id',$request_id)->first();
 		if($getRequest){
 			
@@ -546,8 +543,7 @@ class PaymentsController extends Controller
 			$data['id'] = $request->request_id;
 			if($data['status'] == 1){
 				
-				//$incomehistory_data = IncomeHistory::where('id',$request->income_history_id);
-				$incomehistory_data = IncomeHistory::find($request->income_history_id);
+				$incomehistory_data = IncomeHistory::where('id',$request->income_history_id)->first();
 				$withdarawl_amount = $request->withdrawal_amount;
 				
 				$tds_deduction = $request->tds_dedcution;
@@ -556,7 +552,7 @@ class PaymentsController extends Controller
 				$income1_data['mode']  = 2;
 				$income1_data['status']  = 1;
 				$income1_data['amount']  = $calculated_tds;
-				$income1_data['comment']  = 'TDS Deduction on Withdrawal';	
+				$income1_data['comment']  = 'TDS Deduction on Withdrawal amount INR '.$withdarawl_amount;	
 				IncomeHistory::create($income1_data);
 				$admin_charges = $request->admin_charges;
 				$calculated_admin_charges =  ($withdarawl_amount * $admin_charges )/100;
@@ -564,16 +560,16 @@ class PaymentsController extends Controller
 				$income2_data['mode']  = 2;
 				$income2_data['status']  = 1;
 				$income2_data['amount']  = $calculated_admin_charges;
-				$income2_data['comment']  = 'Admin Charges on Withdrawal';	
+				$income2_data['comment']  = 'Admin Charges on Withdrawal amount INR '.$withdarawl_amount;	
 				IncomeHistory::create($income2_data);
 				
 				
-				$income_data['user_id']  = $request->user_id;
-				$income_data['mode']  = 2;
-				$income_data['status']  = 1;
-				$income_data['amount']  = $withdarawl_amount - $calculated_tds - $calculated_admin_charges;
-				$income_data['comment']  = 'Withdrawl Requested by Customer - completed';	
-				$incomehistory_data->update($income_data);
+				$incomehistory_data->user_id  = $request->user_id;
+				$incomehistory_data->mode  = 2;
+				$incomehistory_data->status  = 1;
+				$incomehistory_data->amount  = $withdarawl_amount - $calculated_tds - $calculated_admin_charges;
+				$incomehistory_data->comment  = 'Withdrawl Requested By Customer for Amount INR '.$withdarawl_amount;
+				$incomehistory_data->save();
 				
 				
 				/* $tds_deduction = $request->tds_dedcution;
