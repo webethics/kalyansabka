@@ -52,7 +52,23 @@ $(document).on('submit','#bank_info_edit', function(e) {
     });
 });
 
-/*update basic info request*/
+/*Remove temp request from user*/
+$(document).on('click','.remove_temp_request',function(e){
+	var user_id = $(this).data('id');
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	$.ajax({
+        type: "POST",
+        url: base_url+'/remove-temp-request',
+        data:{user_id:user_id,_token:csrf_token},
+        success: function(data) {
+			 $('.user_response_update_db_1').hide('slow');
+        }
+    }); 
+});
+	
+	
+	
+	/*update basic info request*/
 $(document).on('click','#update-basic-request',function(e){
 	e.preventDefault(); 
 	
@@ -73,6 +89,18 @@ $(document).on('click','#update-basic-request',function(e){
 				if(typeof (response.message) != 'undefined' && response.message != null && response.message != ""){
 					
 					//notification('Success',response.message,'top-right','success',2000);
+					
+					$('#show_first_name').html($('#first_name').val());
+					$('#show_last_name').html($('#last_name').val());
+					$('#show_email').html($('#email').val());
+					$('#show_aadhaar').html($('#aadhar_number').val());
+					$('#show_mobile_number').html($('#mobile_number').val());
+					$('#show_address').html($('#address').val());
+					$('#show_state_id').html($('#state').val());
+					$('#show_district_id').html($('#district').val());
+					
+					
+					
 					$('#user_response_update_db').hide();$('#user_response_update_db_1').hide();
 					$('#user_response_update').html(response.message).show();
 					$('#user_response_update_1').html(response.message).show();

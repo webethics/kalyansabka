@@ -458,7 +458,7 @@ class PaymentsController extends Controller
 		$withdrawldata['mode']  = 2;
 		$withdrawldata['status']  = 0;
 		$withdrawldata['amount']  = $request->amount;
-		$withdrawldata['comment']  = 'Withdrawl Requested By Customer';	
+		$withdrawldata['comment']  = 'Withdrawl Requested By Customer for Amount INR '.$request->amount;	
 		$history_id = IncomeHistory::create($withdrawldata);
 		
 		if($history_id->id){
@@ -521,7 +521,7 @@ class PaymentsController extends Controller
 				$income1_data['mode']  = 2;
 				$income1_data['status']  = 1;
 				$income1_data['amount']  = $calculated_tds;
-				$income1_data['comment']  = 'TDS Deduction on Withdrawal';	
+				$income1_data['comment']  = 'TDS Deduction on Withdrawal amount INR '.$withdarawl_amount;	
 				IncomeHistory::create($income1_data);
 				$admin_charges = $request->admin_charges;
 				$calculated_admin_charges =  ($withdarawl_amount * $admin_charges )/100;
@@ -529,7 +529,7 @@ class PaymentsController extends Controller
 				$income2_data['mode']  = 2;
 				$income2_data['status']  = 1;
 				$income2_data['amount']  = $calculated_admin_charges;
-				$income2_data['comment']  = 'Admin Charges on Withdrawal';	
+				$income2_data['comment']  = 'Admin Charges on Withdrawal amount INR '.$withdarawl_amount;	
 				IncomeHistory::create($income2_data);
 				
 				
@@ -537,7 +537,7 @@ class PaymentsController extends Controller
 				$incomehistory_data->mode  = 2;
 				$incomehistory_data->status  = 1;
 				$incomehistory_data->amount  = $withdarawl_amount - $calculated_tds - $calculated_admin_charges;
-				$incomehistory_data->comment  = 'Withdrawl Requested by Customer - completed';	
+				$incomehistory_data->comment  = 'Withdrawl Requested By Customer for Amount INR '.$withdarawl_amount;
 				$incomehistory_data->save();
 				
 				

@@ -65,44 +65,44 @@
 									@if($temp_details && $temp_details->status == 0) 
 										<div id="user_response_update_db">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
 									@elseif($temp_details && $temp_details->status == 2) 
-										<div id="user_response_update_db_1" >{{$temp_details->description}}</div>
+										<div  class="user_response_update_db_1" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></div>
 									@else
 										<div class="clearfix"></div>
 									@endif
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->first_name}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="show_first_name">{{$user->first_name}}</label>
 									</div>
 									
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.last_name')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->last_name}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="show_last_name">{{$user->last_name}}</label>
 									</div>
 									
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.email')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->email}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="show_email">{{$user->email}}</label>
 									</div>
 									@if(current_user_role_id()!=1)
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Aadhaar</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->aadhar_number}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="show_aadhaar">{{$user->aadhar_number}}</label>
 									</div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">Mobile</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->mobile_number}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="show_mobile_number">{{$user->mobile_number}}</label>
 									</div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.address')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->address}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="show_address">{{$user->address}}</label>
 									</div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.state')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->state_id}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="show_state_id">{{$user->state_id}}</label>
 									</div>
 									<div class="form-group row">
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.district')}}</label>
-										<label class="col-lg-9 col-xl-10 col-form-label">{{$user->district_id}}</label>
+										<label class="col-lg-9 col-xl-10 col-form-label" id="show_district_id">{{$user->district_id}}</label>
 									</div>
 									@endif
 								</div>	
@@ -119,7 +119,8 @@
 									@if($temp_details && $temp_details->status == 0) 
 										<div id="user_response_update_db">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
 									@elseif($temp_details && $temp_details->status == 2) 
-										<div id="user_response_update_db_1" >{{$temp_details->description}}</div>
+										
+										<div class="user_response_update_db_1" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></div>
 									@else
 										<div class="clearfix"></div>
 									@endif
@@ -188,7 +189,7 @@
 										<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.address')}}<em>*</em></label>
 										<div class="col-lg-9 col-xl-10">
 											<div class="d-flex control-group">
-												<input type="text" name="address" value="{{$user->address}}" class="form-control" placeholder="{{trans('global.address')}}">
+												<input type="text" name="address" id="address" value="{{$user->address}}" class="form-control" placeholder="{{trans('global.address')}}">
 											</div>
 											<div class="address_error errors"></div>
 										</div>								
@@ -226,15 +227,19 @@
 										
 									</div>					
 									@endif
-									<div class="form-row mt-4">
-										<label class="col-lg-3 col-xl-2 col-form-label"></label>
-										<div class="col-lg-9 col-xl-10">
-											<!--input type="submit" id="update" value="Submit" class="btn btn-primary default btn-lg mb-1 mr-2"-->
-											<button type="button" id="update-basic-request" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
-											
-											<div class="spinner-border text-primary request_loader" style="display:none"></div>
+									
+									@if(!$temp_details || $temp_details->status == 1)
+										<div class="form-row mt-4">
+											<label class="col-lg-3 col-xl-2 col-form-label"></label>
+											<div class="col-lg-9 col-xl-10">
+												<!--input type="submit" id="update" value="Submit" class="btn btn-primary default btn-lg mb-1 mr-2"-->
+												<button type="button" id="update-basic-request" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
+												
+												<div class="spinner-border text-primary request_loader" style="display:none"></div>
+											</div>
 										</div>
-									</div>
+									@endif	
+									
 									
 								</form>
 							</div>	
