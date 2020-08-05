@@ -9,15 +9,19 @@ class UserPayment extends Model
 {
     use SoftDeletes;
 
-    protected $dates = [
+    public $timestamps = false;
+
+    /*protected $dates = [
         'updated_at',
         'created_at'
-    ];
+    ];*/
 
     protected $fillable = [
         'user_id',
         'plan_id',
-        'amount'
+        'amount',
+        'updated_at',
+        'created_at'
     ];
 
     public function user()
