@@ -21,8 +21,17 @@
 
 	<div class="form-group row">
 		<label class="col-lg-3 col-xl-2 col-form-label">Amount to pay</label>
-		<label class="col-lg-6 col-xl-6 col-form-label" id="remaing_amount">INR {{$remainingAmount}}</label>
-		<label class="col-lg-3 col-xl-4 col-form-label" id="remaing_amount_button">
+		<label class="col-lg-9 col-xl-10 col-form-label" id="remaing_amount">INR {{$remainingAmount}}</label>
+	</div>
+
+	<div class="form-group row">
+		<label class="col-lg-3 col-xl-2 col-form-label">Request Expired On</label>
+		<label class="col-lg-9 col-xl-10 col-form-label" id="request_expired">{{$tempUpgradePendingRequest->expired_view_format}}</label>
+	</div>
+
+	<div class="form-row mt-4">
+		
+		<div class="col-lg-9 col-xl-10">
 			<form method="POST" action="{{ url('upgrade_plan_request') }}/{{$user->id}}" class="frm_class" id="upgrade_plan_form" data-id="{{$user->id}}">
 				{{ csrf_field() }}
 				<input type="hidden" name="upgrade_id" value="{{$tempUpgradePendingRequest->id}}">
@@ -30,13 +39,10 @@
 				<input type="hidden" name="cost" value="{{$tempUpgradePendingRequest->upgrade_tax_id}}">
 				<input type="hidden" name="amount" value="{{$tempUpgradePendingRequest->amount}}">
 				<button type="button" id="pay_now" class="btn btn-primary default  btn-lg mb-2 mb-lg-0 col-12 col-lg-auto" data-payment="paid">{{trans('global.pay_now')}}</button>
+				<div class="spinner-border text-primary search_upgrade_spinloder" style="display:none"></div>
 			</form>
-		</label>
-	</div>
-
-	<div class="form-group row">
-		<label class="col-lg-3 col-xl-2 col-form-label">Request Expired On</label>
-		<label class="col-lg-9 col-xl-10 col-form-label" id="request_expired">{{$tempUpgradePendingRequest->expired_view_format}}</label>
+		</div>
+		<label class="col-lg-3 col-xl-2 col-form-label"></label>
 	</div>
 	<hr>
 	@endif

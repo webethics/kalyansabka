@@ -25,6 +25,7 @@ use DB;
 use DateTime;
 use App\Models\Plan;
 use App\Http\Requests\CreateUserRequest;
+use App\Models\UserPayment;
 class RegisterController extends Controller
 {
     /*
@@ -282,7 +283,7 @@ class RegisterController extends Controller
 			'date_of_birth' => $data['date_of_birth'],
 			'address' => $data['address'],
 			'age' => $data['age'],
-			'price' => $data['actual_price'],
+			/*'price' => $data['actual_price'],*/
 			'state_id' => $data['state'],
 			'plan_id' => $data['plan'],
 			'district_id' => $data['district'],
@@ -300,6 +301,13 @@ class RegisterController extends Controller
 		]);
 		
 		if($dat){
+			//insert price in user payment
+			$userPaymentData = [];
+			$userPaymentData['user_id'] = $dat->id;
+			$userPaymentData['plan_id'] = $data['plan'];
+			$userPaymentData['amount'] = $data['actual_price'];
+			UserPayment::create($userPaymentData);
+
 			//$nominee_data = array();
 			$nominees = $data['nominee_number'];
 			for($i=1;$i<=$nominees;$i++){
@@ -309,6 +317,7 @@ class RegisterController extends Controller
 				//print_r($nominee_data);
 				UserNominees::create($nominee_data);
 			}
+
 			//die;
 			Session::flash('message', "Welcome to Kalyan Sabka. Please logged into your account and setup your profile.");
 			return $dat;

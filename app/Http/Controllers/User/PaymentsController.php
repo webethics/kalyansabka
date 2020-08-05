@@ -17,6 +17,7 @@ use App\Models\Income;
 use App\Models\EmailTemplate;
 use App\Models\UserBankDetails;
 use App\Models\WithdrawalRequestCharges;
+use App\Models\UserPayment;
 use App\Models\CityLists;
 use League\Csv\Writer;	
 use Auth;
@@ -26,6 +27,7 @@ use Hash;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class PaymentsController extends Controller
 {
@@ -95,7 +97,8 @@ class PaymentsController extends Controller
 		$age_from = $request->age_from;
 		$age_to = $request->age_to;
 		
-		$result = User::where(`1`, '=', `1`);
+		//$result = User::where(`1`, '=', `1`);
+		$result = UserPayment::with('user');
 			
 		if($first_name!='' || $last_name!='' || $start_date!='' || $end_date!='' || $email!='' || $mobile!='' || $aadhaar!='' || $age_from!='' || $age_to!=''){
 			
@@ -118,7 +121,10 @@ class PaymentsController extends Controller
 					$data['message'] = "age_error";
 					return $data; 
 				}else{
-					$result->whereBetween('age', array($age_from, $age_to));
+					//$result->whereBetween('age', array($age_from, $age_to));
+					$result->whereHas('user', function (Builder $query) use ($age_from,$age_to) {
+					    $query->whereBetween('age', array($age_from, $age_to));
+					});
 				}
 			}
 			
@@ -137,7 +143,10 @@ class PaymentsController extends Controller
 			$email_q = '%' . $request->email .'%';
 			// check email 
 			if(isset($email) && !empty($email)){
-				$result->where('email','LIKE',$email_q);
+				//$result->where('email','LIKE',$email_q);
+				$result->whereHas('user', function (Builder $query) use ($email_q) {
+					$query->where('email','LIKE',$email_q);
+				});
 			} 
 			
 			$first_name_s = '%' . $first_name . '%';
@@ -145,28 +154,43 @@ class PaymentsController extends Controller
 			
 			// check name 
 			if(isset($first_name) && !empty($first_name)){
-				$result->where('first_name','LIKE',$first_name_s);
+				//$result->where('first_name','LIKE',$first_name_s);
+				$result->whereHas('user', function (Builder $query) use ($first_name_s) {
+					$query->where('first_name','LIKE',$first_name_s);
+				});
 			}
 			if(isset($last_name) && !empty($last_name)){
-				$result->where('last_name','LIKE',$last_name_s);
+				//$result->where('last_name','LIKE',$last_name_s);
+				$result->whereHas('user', function (Builder $query) use ($last_name_s) {
+					$query->where('last_name','LIKE',$last_name_s);
+				});
 			}
 		 	if(isset($mobile) && !empty($mobile)){
-				$result->where('mobile_number','=',$mobile);
+				//$result->where('mobile_number','=',$mobile);
+				$result->whereHas('user', function (Builder $query) use ($mobile)  {
+					$query->where('mobile_number','=',$mobile);
+				});
 			}
 		 	if(isset($aadhaar) && !empty($aadhaar)){
-				$result->where('aadhar_number','LIKE',$aadhaar);
+				//$result->where('aadhar_number','LIKE',$aadhaar);
+				$result->whereHas('user', function (Builder $query) use ($aadhaar) {
+					$query->where('aadhar_number','LIKE',$aadhaar);
+				});
 			}
 		 	
 		}
 		
 		
-		$result->where('role_id', '!=', 1)->where('role_id', '!=', 2);
+		//$result->where('role_id', '!=', 1)->where('role_id', '!=', 2);
+		$result->whereHas('user', function (Builder $query) {
+			$query->where('role_id', '!=', 1)->where('role_id', '!=', 2);
+		});
 		//echo $result->orderBy('created_at', 'desc')->toSql();die;
 		
 		if($pagination == true){
-			$customers = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
+			$customers = $result->orderBy('id', 'desc')->paginate($number_of_records);
 		}else{
-			$customers = $result->orderBy('created_at', 'desc')->get();
+			$customers = $result->orderBy('id', 'desc')->get();
 		}
 		
 		
@@ -352,14 +376,14 @@ class PaymentsController extends Controller
 			$records = [];
 			foreach ($payments as $key => $payment) {
 				$records[$key]['sl_no'] = ++$key;
-				$records[$key]['first_name'] = $payment->first_name;
-				$records[$key]['last_name'] = $payment->last_name;
-				$records[$key]['email'] = $payment->email;
-				$records[$key]['phone'] = $payment->mobile_number;
-				$records[$key]['aadhar'] = $payment->aadhar_number;
-				$records[$key]['address'] =  $payment->address;
+				$records[$key]['first_name'] = $payment->user->first_name;
+				$records[$key]['last_name'] = $payment->user->last_name;
+				$records[$key]['email'] = $payment->user->email;
+				$records[$key]['phone'] = $payment->user->mobile_number;
+				$records[$key]['aadhar'] = $payment->user->aadhar_number;
+				$records[$key]['address'] =  $payment->user->address;
 				$records[$key]['created'] =  date('d-m-Y h:i:s', strtotime($payment->created_at));
-				$records[$key]['price'] =  $payment->price;
+				$records[$key]['price'] =  $payment->amount;
 			}
 			$header = ['S.No.', 'First Name','Last Name', 'Email','Mobile', 'Aadhar Number', 'Address', 'Registration Date/Time','Amount(INR)'];
 		
@@ -505,14 +529,14 @@ class PaymentsController extends Controller
 	
 	function payment_update_request(Request $request,$request_id){
 		
-		$incomehistory_data = IncomeHistory::where('id',$request->income_history_id);
+		/*$incomehistory_data = IncomeHistory::where('id',$request->income_history_id);
 		$income_data['user_id']  = $request->user_id;
 		$income_data['mode']  = 2;
 		$income_data['status']  = 1;
-		$income_data['amount']  = 1322 - 50 -50;//$withdarawl_amount - $calculated_tds - $calculated_admin_charges;
+		//$income_data['amount']  = 1322 - 50 -50;//$withdarawl_amount - $calculated_tds - $calculated_admin_charges;
 		$income_data['comment']  = 'Withdrawl Requested by Customer - completed';	
 		$incomehistory_data->update($income_data);
-		die;
+		die;*/
 		
 		$getRequest = WithdrawlRequest::where('id',$request_id)->first();
 		if($getRequest){
@@ -522,7 +546,8 @@ class PaymentsController extends Controller
 			$data['id'] = $request->request_id;
 			if($data['status'] == 1){
 				
-				$incomehistory_data = IncomeHistory::where('id',$request->income_history_id);
+				//$incomehistory_data = IncomeHistory::where('id',$request->income_history_id);
+				$incomehistory_data = IncomeHistory::find($request->income_history_id);
 				$withdarawl_amount = $request->withdrawal_amount;
 				
 				$tds_deduction = $request->tds_dedcution;

@@ -26,6 +26,7 @@ use App\Models\UpgradeTax;
 use App\Models\TempUpgradeRequest;
 use App\Models\Plan;
 use App\Models\CityLists;
+use App\Models\UserPayment;
 use League\Csv\Writer;	
 use Auth;
 use Config;
@@ -167,6 +168,19 @@ class UsersController extends Controller
 ==================================================*/ 
 	public function account()
     {
+    	/*Retrieve all entries from user to insert into user payment table*/
+    	/*$users = User::get();
+    	if(count($users) > 0){
+    		foreach ($users as $key => $user) {
+    			if(!empty($user['plan_id']) && !empty($user['price'])){
+    				$userPaymentData = [];
+					$userPaymentData['user_id'] = $user['id'];
+					$userPaymentData['plan_id'] = $user['plan_id'];
+					$userPaymentData['amount'] = $user['price'];
+					UserPayment::create($userPaymentData);
+    			}
+    		}
+    	}*/
         $user = user_data();
 		$user_id = $user->id;
 		$bank_detais = UserBankDetails::where('user_id',$user_id)->first();

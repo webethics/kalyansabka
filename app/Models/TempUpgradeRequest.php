@@ -36,6 +36,6 @@ class TempUpgradeRequest extends Model
 
     public function getExpiredViewFormatAttribute()
     {
-        return Carbon::parse($this->created_at)->format('d F Y');
+        return Carbon::parse($this->request_expired)->format('d F Y');
     }
 }

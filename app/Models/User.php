@@ -130,7 +130,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\UserReferral');
     }
-	
-	
+
+    public function userPayment()
+    {
+        return $this->hasMany('App\Models\userPayment');
+    }
    
 }
