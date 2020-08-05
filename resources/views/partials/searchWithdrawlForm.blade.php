@@ -20,6 +20,14 @@
 						<div class="form-group col-lg-6">
 							<input type="text" name="mobile_number" id="mobile_number" class="form-control" placeholder="Search by Mobile Number">
 						</div>	
+						<div class="form-group col-lg-6">
+							<select id="status"  class="form-control select2-single"  name="status"  data-width="100%">
+										
+								<option value=" ">Filter by Status</option>
+								<option value="0">Pending</option>
+								<option value="1">Approve</option>
+							</select>
+						</div>
 					</div>
 				</div>	
 				
@@ -66,6 +74,7 @@
 								@endfor
 							</select>
 						</div>
+						
 						
 					</div>	
 				</div>

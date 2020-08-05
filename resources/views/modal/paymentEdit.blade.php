@@ -39,22 +39,25 @@
 		<div class="form-group form-row-parent">
 			<label class="col-form-label">Withdrawal Amount</label>
 			<div class="d-flex control-group">
-				<input type="text" name="withdrawal_amount" value="{{$request->amount_requested}}" readonly="readonly" class="form-control" placeholder="TDS Deduction">								
-			</div>								
+				<input type="text" name="withdrawal_amount" value="{{$request->amount_requested}}" readonly="readonly" class="form-control" placeholder="Withdrawal Amount">								
+			</div>	
+					
 		</div>	
 	
 		<div class="form-group form-row-parent">
 			<label class="col-form-label">TDS Deduction(In %)</label>
 			<div class="d-flex control-group">
 				<input type="text" name="tds_dedcution" value="{{$request->request_changes->tds_percent ?? 0}}" class="form-control" placeholder="TDS Deduction">								
-			</div>								
+			</div>	
+			<div class="tds_dedcution_error errors"></div>				
 		</div>	
 		
 		<div class="form-group form-row-parent">
 			<label class="col-form-label">Admin Charges(In %)</label>
 			<div class="d-flex control-group">
 				<input type="text" name="admin_charges" value="{{$request->request_changes->admin_percent ?? 0}}" class="form-control" placeholder="Admin Charges">								
-			</div>								
+			</div>	
+			<div class="admin_charges_error errors"></div>		
 		</div>	
 		
 		<div class="form-group form-row-parent">

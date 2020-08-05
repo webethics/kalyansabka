@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdateUserPassword;
 use App\Http\Requests\sendEmailNotification;
 use App\Http\Requests\ResetPassword;
+use App\Http\Requests\UpdateWithdawalRequest;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
@@ -202,6 +203,7 @@ class PaymentsController extends Controller
 		$covered_amount = $request->covered_amount;
 		$age_from = $request->age_from;
 		$age_to = $request->age_to;
+		$status = $request->status;
 		
 		$result_of_ids = User::where(`1`, '=', `1`);
 		
@@ -276,9 +278,14 @@ class PaymentsController extends Controller
 			$eachids[] = $id->id;
 		}
 		
+		if($status != ''){
+			$result->where('status',$status);
+		}
+		
 		if($user_ids){
 			$result->whereIN('user_id',$eachids);
 		}
+		//print_r($result);
 		
 		if($pagination == true){
 			$withdrawls = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
@@ -503,7 +510,7 @@ class PaymentsController extends Controller
 
 	}
 	
-	function payment_update_request(Request $request,$request_id){
+	function payment_update_request(UpdateWithdawalRequest $request,$request_id){
 		$getRequest = WithdrawlRequest::where('id',$request_id)->first();
 		if($getRequest){
 			

@@ -272,6 +272,7 @@ $(document).on('click','#export_withdrawl_data', function(e) {
 				end_date:$('#end_date').val(),
 				age_from:$('#age_from').val(),
 				age_to:$('#age_to').val(),
+				status:$('#status').val(),
 				_token:csrf_token},
         success: function(data) {
 			

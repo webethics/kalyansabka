@@ -55,6 +55,8 @@ $(document).ready(function(){
 		filter_str +=  '&mobile_number=' +$('#mobile_number').val();
     if($('#aadhar_number').val()!='' && $('#aadhar_number').val()!=undefined)
 		filter_str +=  '&aadhar_number=' +$('#aadhar_number').val();
+    if($('#status').val()!='' && $('#status').val()!=undefined)
+		filter_str +=  '&status=' +$('#status').val();
     
 	//alert($('#role_id').val());
 	  
