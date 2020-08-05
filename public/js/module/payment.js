@@ -289,7 +289,7 @@ $(document).on('click','#export_withdrawl_data', function(e) {
 
 				var url = URL.createObjectURL(blobObject);
 				downloadLink.href = url;
-				downloadLink.download = "Customers.csv";
+				downloadLink.download = "withdrawl_requests.csv";
 
 				/*
 					* Actually download CSV
@@ -339,7 +339,7 @@ $(document).on('click','#export_payment_data', function(e) {
 
 				var url = URL.createObjectURL(blobObject);
 				downloadLink.href = url;
-				downloadLink.download = "Customers.csv";
+				downloadLink.download = "payments.csv";
 
 				/*
 					* Actually download CSV
