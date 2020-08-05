@@ -23,9 +23,9 @@
 		</tr>
 		@php $sno++ @endphp
 	 @endforeach
- 	@else
-		<tr><td colspan="7" class="error" style="text-align:center">No Data Found.</td></tr>
- 	@endif	
+ @else
+<tr><td colspan="7" class="error" style="text-align:center">No Data Found.</td></tr>
+ @endif	
 		
 	</tbody>
 </table> 

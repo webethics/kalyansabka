@@ -758,7 +758,7 @@ jQuery('.nav-link').click(function(){
 	
 	
 $(document).ready(function(){
-	$('#update-basic-request').prop('disabled', true);
+	 $('#update-basic-request').prop('disabled', true);
      $('form#accountinfo input[type="text"]').keyup(function() {
         if($(this).val() != '') {
            $('#update-basic-request').prop('disabled', false);
