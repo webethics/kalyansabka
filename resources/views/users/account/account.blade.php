@@ -65,7 +65,7 @@
 									@if($temp_details && $temp_details->status == 0) 
 										<div id="user_response_update_db">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
 									@elseif($temp_details && $temp_details->status == 2) 
-										<div  class="user_response_update_db_1" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></div>
+										<div  class="user_response_update_db_1" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>
 									@else
 										<div class="clearfix"></div>
 									@endif
@@ -120,7 +120,7 @@
 										<div id="user_response_update_db">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
 									@elseif($temp_details && $temp_details->status == 2) 
 										
-										<div class="user_response_update_db_1" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></div>
+										<div class="user_response_update_db_1" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>
 									@else
 										<div class="clearfix"></div>
 									@endif

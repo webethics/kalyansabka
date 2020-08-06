@@ -17,9 +17,9 @@
 			<td id="sno_{{$payment->id}}">{{(($page_number-1) * 10)+$sno}} <input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$payment->id}}"/></td>
 			<td id="name_{{$payment->id}}">{{$payment->created_at}}</td>
 			<td id="email_{{$payment->id}}">RSDTOKIJEL254</td>
-			<td id="mobile_number_{{$payment->id}}">{{$payment->user->first_name}} {{$payment->user->last_name}}</td>
-			<td id="business_url_{{$payment->id}}">{{$payment->user->email}}</td>
-			<td id="business_url_{{$payment->id}}">INR {{$payment->amount}}</td>
+			<td id="mobile_number_{{$payment->id}}">{{$payment->first_name}} {{$payment->last_name}}</td>
+			<td id="business_url_{{$payment->id}}">{{$payment->email}}</td>
+			<td id="business_url_{{$payment->id}}">INR {{$payment->price}}</td>
 		</tr>
 		@php $sno++ @endphp
 	 @endforeach

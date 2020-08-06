@@ -55,7 +55,8 @@ $(document).on('submit','#bank_info_edit', function(e) {
 /*Remove temp request from user*/
 $(document).on('click','.remove_temp_request',function(e){
 	var user_id = $(this).data('id');
-	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	alert(user_id);
+	/* var csrf_token = $('meta[name="csrf-token"]').attr('content');
 	$.ajax({
         type: "POST",
         url: base_url+'/remove-temp-request',
@@ -63,7 +64,7 @@ $(document).on('click','.remove_temp_request',function(e){
         success: function(data) {
 			 $('.user_response_update_db_1').hide('slow');
         }
-    }); 
+    }); */ 
 });
 	
 	
@@ -244,11 +245,6 @@ function calculateUpgradeAmount(){
 	//get upgrade plan id
 	var planId = $(".upgrade_plan input[name='plan']:checked").val();
 	var costId = $(".additional-cost input[name='cost']:checked").val();
-	var payStatus = $(".additional-cost input[name='cost']:checked").data('paystatus');
-
-	/*disable button*/
-	$('#pay_now').attr("disabled", true).addClass('disabled');
-	$('#pay_later').attr("disabled", true).addClass('disabled');
 	
 	if(typeof planId != 'undefined' && typeof costId != 'undefined' && planId != null && costId != null){
 		var formData = $("#upgrade_plan_form").serialize();
@@ -263,10 +259,7 @@ function calculateUpgradeAmount(){
 	            // Set search result
 				$(".policy-amount").html(data.html);
 				//enable button
-				if(payStatus == 1){
-					$('#pay_now').removeAttr("disabled").removeClass('disabled');
-				}
-				
+				$('#pay_now').removeAttr("disabled").removeClass('disabled');
 				$('#pay_later').removeAttr("disabled").removeClass('disabled');
 	        },
 			error :function( data ){
@@ -274,6 +267,11 @@ function calculateUpgradeAmount(){
 				notification('Error','Something went wrong.','top-right','error',3000);
 			}
 	    });
+	}else{
+		/*disable button*/
+		$('#pay_now').attr("disabled", true).addClass('disabled');
+		$('#pay_later').attr("disabled", true).addClass('disabled');
+
 	}
 }
 
