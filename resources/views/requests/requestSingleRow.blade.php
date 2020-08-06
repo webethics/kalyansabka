@@ -3,7 +3,7 @@
 		<input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$request->id}}"/>
 		<input type="hidden" name="sno" value="{{$sno}}" id="s_number_{{$request->id}}"/>
 	</td>
-	<td id="request_date_{{$request->id}}">{{ \Carbon\Carbon::parse($request->created_at)->format('d F Y') }}</td>
+	<td id="request_date_{{$request->id}}">{{viewDateFormat($request->created_at)}}</td>
 	<td id="name_{{$request->id}}">{{$request->full_name}}</td>
 	<td id="email_{{$request->id}}">{{$request->email}}</td>
 	<td id="address_{{$request->id}}">{{$request->address}}</td>

@@ -21,25 +21,7 @@ class TempUpgradeRequestObserver
         if(!empty($tempUpgradeRequest) && !empty($tempUpgradeRequest->user_id)){
             /*Check if status paid i.e status 1, then change user plan id and locking period*/
             if($tempUpgradeRequest->status == 1){
-                $selectedPlan = $tempUpgradeRequest->plan_id;
-                $lockingPeriod = $this->fetchPlanLockingPeriod($selectedPlan);
-
-                $lockingPeriodStart = Carbon::parse($tempUpgradeRequest->created_at)->format('Y-m-d');
-                $lockingPeriodEnd = Carbon::parse($tempUpgradeRequest->created_at)->addMonths($lockingPeriod)->format('Y-m-d');
-
-                $userInfo = [];
-                $userInfo['user_id'] = $tempUpgradeRequest->user_id;
-                $userInfo['plan_id'] = $tempUpgradeRequest->plan_id;
-                $userInfo['lockingPeriodStart'] = $lockingPeriodStart;
-                $userInfo['lockingPeriodEnd'] = $lockingPeriodEnd;
-                $updateUserInfo = $this->updateUser($userInfo);
-
-                //when we update user plan at same time go entry for payment in user payment table
-                $userPaymentData = [];
-                $userPaymentData['user_id'] = $tempUpgradeRequest->user_id;
-                $userPaymentData['plan_id'] = $tempUpgradeRequest->plan_id;
-                $userPaymentData['amount'] = $tempUpgradeRequest->amount;
-                UserPayment::create($userPaymentData);
+                $this->getUpgradePlanPayment($tempUpgradeRequest);
             }
         }
     }
@@ -55,25 +37,7 @@ class TempUpgradeRequestObserver
         if(!empty($tempUpgradeRequest) && !empty($tempUpgradeRequest->user_id)){
             /*Check if status paid i.e status 1, then change user plan id and locking period*/
             if($tempUpgradeRequest->status == 1){
-                $selectedPlan = $tempUpgradeRequest->plan_id;
-                $lockingPeriod = $this->fetchPlanLockingPeriod($selectedPlan);
-
-                $lockingPeriodStart = Carbon::parse($tempUpgradeRequest->created_at)->format('Y-m-d');
-                $lockingPeriodEnd = Carbon::parse($tempUpgradeRequest->created_at)->addMonths($lockingPeriod)->format('Y-m-d');
-
-                $userInfo = [];
-                $userInfo['user_id'] = $tempUpgradeRequest->user_id;
-                $userInfo['plan_id'] = $tempUpgradeRequest->plan_id;
-                $userInfo['lockingPeriodStart'] = $lockingPeriodStart;
-                $userInfo['lockingPeriodEnd'] = $lockingPeriodEnd;
-                $updateUserInfo = $this->updateUser($userInfo);
-
-                //when we update user plan at same time go entry for payment in user payment table
-                $userPaymentData = [];
-                $userPaymentData['user_id'] = $tempUpgradeRequest->user_id;
-                $userPaymentData['plan_id'] = $tempUpgradeRequest->plan_id;
-                $userPaymentData['amount'] = $tempUpgradeRequest->amount;
-                UserPayment::create($userPaymentData);
+                $this->getUpgradePlanPayment($tempUpgradeRequest);
             }
         }
     }
@@ -109,6 +73,31 @@ class TempUpgradeRequestObserver
     public function forceDeleted(TempUpgradeRequest $tempUpgradeRequest)
     {
         //
+    }
+
+    /*Get upgrade request payment*/
+    public function getUpgradePlanPayment($tempUpgradeRequest){
+        $selectedPlan = $tempUpgradeRequest->plan_id;
+        $lockingPeriod = $this->fetchPlanLockingPeriod($selectedPlan);
+
+        $lockingPeriodStart = Carbon::parse($tempUpgradeRequest->created_at)->format('Y-m-d');
+        $lockingPeriodEnd = Carbon::parse($tempUpgradeRequest->created_at)->addMonths($lockingPeriod)->format('Y-m-d');
+
+        $userInfo = [];
+        $userInfo['user_id'] = $tempUpgradeRequest->user_id;
+        $userInfo['plan_id'] = $tempUpgradeRequest->plan_id;
+        $userInfo['lockingPeriodStart'] = $lockingPeriodStart;
+        $userInfo['lockingPeriodEnd'] = $lockingPeriodEnd;
+        $updateUserInfo = $this->updateUser($userInfo);
+
+        //when we update user plan at same time go entry for payment in user payment table
+        $userPaymentData = [];
+        $userPaymentData['user_id'] = $tempUpgradeRequest->user_id;
+        $userPaymentData['plan_id'] = $tempUpgradeRequest->plan_id;
+        $userPaymentData['amount'] = $tempUpgradeRequest->amount;
+        $userPaymentData['comment'] = 'Plan upgraded';
+        UserPayment::create($userPaymentData);
+
     }
 
     /*fetch plan related info*/

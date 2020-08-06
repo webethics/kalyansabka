@@ -306,6 +306,7 @@ class RegisterController extends Controller
 			$userPaymentData['user_id'] = $dat->id;
 			$userPaymentData['plan_id'] = $data['plan'];
 			$userPaymentData['amount'] = $data['actual_price'];
+			$userPaymentData['comment'] = 'Plan purchased';
 			UserPayment::create($userPaymentData);
 
 			//$nominee_data = array();
