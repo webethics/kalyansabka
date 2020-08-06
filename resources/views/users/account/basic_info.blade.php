@@ -168,17 +168,17 @@
 	</div>					
 	@endif
 	
-	@if(!$temp_details || $temp_details->status == 1)
-		<div class="form-row mt-4">
-			<label class="col-lg-3 col-xl-2 col-form-label"></label>
-			<div class="col-lg-9 col-xl-10">
-				<!--input type="submit" id="update" value="Submit" class="btn btn-primary default btn-lg mb-1 mr-2"-->
-				<button type="button" id="update-basic-request" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
-				
-				<div class="spinner-border text-primary request_loader" style="display:none"></div>
-			</div>
+	
+	<div class="form-row mt-4">
+		<label class="col-lg-3 col-xl-2 col-form-label"></label>
+		<div class="col-lg-9 col-xl-10">
+			<!--input type="submit" id="update" value="Submit" class="btn btn-primary default btn-lg mb-1 mr-2"-->
+			<button type="button" id="update-basic-request" class="btn btn-primary default btn-lg mb-1 mr-2">{{trans('global.submit')}}</button>
+			
+			<div class="spinner-border text-primary request_loader" style="display:none"></div>
 		</div>
-	@endif	
+	</div>
+
 	
 	
 </form>

@@ -3,7 +3,7 @@
 		<input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$certificate->id}}"/>
 		<input type="hidden" name="sno" value="{{$sno}}" id="s_number_{{$certificate->id}}"/>
 	</td>
-	<td id="registration_date_{{$certificate->id}}">{{ \Carbon\Carbon::parse($certificate->created_at)->format('d F Y') }}</td>
+	<td id="registration_date_{{$certificate->id}}">{{viewDateFormat($certificate->created_at)}}</td>
 	<td id="name_{{$certificate->id}}">{{$certificate->full_name}}</td>
 	<td id="email_{{$certificate->id}}">{{$certificate->email}}</td>
 	<td id="address_{{$certificate->id}}">{{$certificate->address}}</td>

@@ -389,10 +389,11 @@ class PaymentsController extends Controller
 				$records[$key]['phone'] = $payment->user->mobile_number;
 				$records[$key]['aadhar'] = $payment->user->aadhar_number;
 				$records[$key]['address'] =  $payment->user->address;
+				$records[$key]['narration'] =  $payment->comment;
 				$records[$key]['created'] =  date('d-m-Y h:i:s', strtotime($payment->created_at));
 				$records[$key]['price'] =  $payment->amount;
 			}
-			$header = ['S.No.', 'First Name','Last Name', 'Email','Mobile', 'Aadhar Number', 'Address', 'Registration Date/Time','Amount(INR)'];
+			$header = ['S.No.', 'First Name','Last Name', 'Email','Mobile', 'Aadhar Number', 'Address', 'Narration','Registration Date/Time','Amount(INR)'];
 		
 
 			//load the CSV document from a string

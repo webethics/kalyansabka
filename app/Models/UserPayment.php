@@ -17,7 +17,8 @@ class UserPayment extends Model
     protected $fillable = [
         'user_id',
         'plan_id',
-        'amount'
+        'amount',
+        'comment'
     ];
 
     public function user()

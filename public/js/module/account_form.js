@@ -71,8 +71,8 @@ $(document).on('click','.remove_temp_request',function(e){
 	
 	/*update basic info request*/
 $(document).on('click','#update-basic-request',function(e){
-	e.preventDefault(); 
-	
+	e.preventDefault();
+	var $this = $(this);
 	var user_id = $(this).data('id');
 	var accountForm = $('#accountinfo');
 	var ajax_url = accountForm.attr('action');
@@ -86,6 +86,8 @@ $(document).on('click','#update-basic-request',function(e){
        data:accountForm.serialize(),
         success:function(response){
        		accountForm.find('.request_loader').hide();
+       		//disable button
+       		$this.prop('disabled', true);
 			if(response.success){
 				if(typeof (response.message) != 'undefined' && response.message != null && response.message != ""){
 					
@@ -121,6 +123,7 @@ $(document).on('click','#update-basic-request',function(e){
 			}
         },
         error:function(response){
+        	$this.prop('disabled', true);
 			if( response.status === 422 ) {
 			$('.request_loader').css('display','none');
 			$('.errors').html('');

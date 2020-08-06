@@ -14,6 +14,7 @@ use App\Models\EmailTemplate;
 use App\Models\StateList;
 use App\Models\Company;
 use App\Models\Plan;
+use Carbon\Carbon;
 
 
 //use Config;
@@ -338,6 +339,10 @@ function birth_years(){
 		return (string) date('Y') - $item;
 	});
 	return $birth_years;
+}
+
+function viewDateFormat($date){
+	return Carbon::parse($date)->format(config('constant.FRONT_DATE_FORMAT'));
 }
 function pr($data){
 
