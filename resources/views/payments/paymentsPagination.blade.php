@@ -19,9 +19,9 @@
 			<td id="name_{{$payment->id}}">{{viewDateFormat($payment->created_at)}}</td>
 			<td id="comment_{{$payment->id}}">{{$payment->comment}}</td>
 			<td id="email_{{$payment->id}}">RSDTOKIJEL254</td>
-			<td id="mobile_number_{{$payment->id}}">{{$payment->first_name}} {{$payment->last_name}}</td>
-			<td id="business_url_{{$payment->id}}">{{$payment->email}}</td>
-			<td id="business_url_{{$payment->id}}">INR {{$payment->price}}</td>
+			<td id="mobile_number_{{$payment->id}}">{{$payment->user->first_name}} {{$payment->user->last_name}}</td>
+			<td id="business_url_{{$payment->id}}">{{$payment->user->email}}</td>
+			<td id="business_url_{{$payment->id}}">INR {{$payment->user->price}}</td>
 		</tr>
 		@php $sno++ @endphp
 	 @endforeach
