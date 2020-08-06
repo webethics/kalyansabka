@@ -490,7 +490,7 @@ class PaymentsController extends Controller
 		$withdrawldata['mode']  = 2;
 		$withdrawldata['status']  = 0;
 		$withdrawldata['amount']  = $request->amount;
-		$withdrawldata['comment']  = 'Withdrawl Requested By Customer for Amount INR '.$request->amount;	
+		$withdrawldata['comment']  = 'Withdrawl Requested for Amount INR '.$request->amount;	
 		$history_id = IncomeHistory::create($withdrawldata);
 		
 		if($history_id->id){
@@ -569,7 +569,7 @@ class PaymentsController extends Controller
 				$incomehistory_data->mode  = 2;
 				$incomehistory_data->status  = 1;
 				$incomehistory_data->amount  = $withdarawl_amount - $calculated_tds - $calculated_admin_charges;
-				$incomehistory_data->comment  = 'Withdrawl Requested By Customer for Amount INR '.$withdarawl_amount;
+				$incomehistory_data->comment  = 'Withdrawl Requested for Amount INR '.$withdarawl_amount;
 				$incomehistory_data->save();
 				
 				

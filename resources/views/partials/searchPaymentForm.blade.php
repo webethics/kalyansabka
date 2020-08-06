@@ -73,7 +73,7 @@
 			<div class="row">
 				<div class="form-group">
 					<button type="submit" class="btn btn-primary default  btn-lg mb-2 mb-lg-0 col-12 col-lg-auto">{{trans('global.submit')}}</button>
-					<button type="button" id="export_payment_data" class="btn btn-primary default  btn-lg mb-2 mb-lg-0 col-12 col-lg-auto">Export Payments</button>
+					<button type="button" id="export_payment_data" class="btn btn-primary default  btn-lg mb-2 mb-lg-0 col-12 col-lg-auto">Export</button>
 					<div class="spinner-border text-primary search_spinloder" style="display:none"></div>
 				</div>	
 			</div>

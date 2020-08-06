@@ -256,13 +256,12 @@ class UsersController extends Controller
 		
     }
 
-	public function remove_temp_request(Request $request)
-    {
-		
+	public function removeTempRequest(Request $request,$user_id)
+    {	
 		$data=array();
-		 $result =array();
-		 $requestData = TempRequestUser::where('user_id',$request->user_id);
-		
+		$result =array();
+		$requestData = TempRequestUser::where('user_id',$user_id);
+
 		if($requestData){
 			$requestData->delete();
 			//UPDATE PROFILE EVENT LOG END  
