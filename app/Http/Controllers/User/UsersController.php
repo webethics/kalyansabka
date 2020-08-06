@@ -256,7 +256,7 @@ class UsersController extends Controller
 		
     }
 
-	public function remove_temp_request(Request $request)
+	public function removeTempRequest(Request $request)
     {	
 		$data=array();
 		$result =array();
