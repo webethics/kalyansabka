@@ -256,11 +256,11 @@ class UsersController extends Controller
 		
     }
 
-	public function removeTempRequest(Request $request)
+	public function removeTempRequest(Request $request,$user_id)
     {	
 		$data=array();
 		$result =array();
-		$requestData = TempRequestUser::where('user_id',$request->user_id);
+		$requestData = TempRequestUser::where('user_id',$user_id);
 
 		if($requestData){
 			$requestData->delete();
