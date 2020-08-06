@@ -55,8 +55,7 @@ $(document).on('submit','#bank_info_edit', function(e) {
 /*Remove temp request from user*/
 $(document).on('click','.remove_temp_request',function(e){
 	var user_id = $(this).data('id');
-	alert(user_id);
-	/* var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
 	$.ajax({
         type: "POST",
         url: base_url+'/remove-temp-request',
@@ -64,7 +63,7 @@ $(document).on('click','.remove_temp_request',function(e){
         success: function(data) {
 			 $('.user_response_update_db_1').hide('slow');
         }
-    }); */ 
+    });
 });
 	
 	
