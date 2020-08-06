@@ -59,7 +59,7 @@ $(document).on('click','.remove_temp_request',function(e){
 	var csrf_token = $('meta[name="csrf-token"]').attr('content');
 	$.ajax({
         type: "POST",
-        url: base_url+'/remove-temp-request',
+		url: base_url+'/remove-temp-request/',
         data:{user_id:user_id,_token:csrf_token},
         success: function(data) {
 			$('.user_response_update_db_1').hide('slow');
