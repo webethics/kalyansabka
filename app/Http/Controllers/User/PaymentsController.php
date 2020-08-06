@@ -599,31 +599,32 @@ class PaymentsController extends Controller
 		access_denied_user('payment_edit');
         $request = WithdrawlRequest::where('id',$payment_id)->with('user','request_changes')->first();
 		$user_id = $request->user_id;
-		$getAllWithdrawls = IncomeHistory::where('user_id',$user_id)->where('mode',2)->sum('amount');
 		
+		// total withdarawl amount till now
+		$getAllWithdrawls = IncomeHistory::where('user_id',$user_id)->where('mode',2)->where('status',1)->sum('amount');
 		$total_amount_withdrawal_till_now = round($getAllWithdrawls);
 		
+		
+		// total withdarawl amount in current finacial year
 		$get_finacial= $this->get_finacial_year_range();
-		
-		
 		$start_date_c = date('Y-m-d',strtotime($get_finacial['start_date']));
 		$end_date_c = date('Y-m-d',strtotime($get_finacial['end_date']));
-		
-		$amountWithdrawlthisfinancialyear = IncomeHistory::where('user_id',$user_id)->where('mode',2);
-		
-		
+		$amountWithdrawlthisfinancialyear = IncomeHistory::where('user_id',$user_id)->where('mode',2)->where('status',1);
 		$amountWithdrawlthisfinancialyear->where(function($q) use ($start_date_c,$end_date_c) {
 			$q->whereDate('created_at','>=' ,$start_date_c);
 			$q->whereDate('created_at','<=', $end_date_c );
 		});
 		$finacial_year_data = $amountWithdrawlthisfinancialyear->sum('amount');
-		
 		$finacial_year_data = round($finacial_year_data);
+		
+		//trasaction Details
+		$transaction_details =  WithdrawlRequest::where('user_id',$user_id)->where('status',1)->get();
+		$allrequestforuser = count($transaction_details);
 		
 		$roles = Role::all();
 		if($request){
 			
-			$view = view("modal.paymentEdit",compact('request','roles','total_amount_withdrawal_till_now','finacial_year_data'))->render();
+			$view = view("modal.paymentEdit",compact('request','roles','total_amount_withdrawal_till_now','finacial_year_data','allrequestforuser','transaction_details'))->render();
 			$success = true;
 		}else{
 			$view = '';
@@ -758,7 +759,7 @@ class PaymentsController extends Controller
 			}else{
 				return Response::json(array(
 					  'success'=>false,
-					  'message'=>"You forgot to change the payment status."
+					  'message'=>"Payment Status Must be Paid."
 					), 200);
 			}
 		}else{

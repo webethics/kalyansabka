@@ -174,10 +174,11 @@ $(document).on('submit','#updateRequest', function(e) {
 			$('.request_loader').css('display','none');
 			// If data inserted into DB
 			 if(data.success){
-				 
 				notification('Success','Request Updated Successfully','top-right','success',2000);
 				setTimeout(function(){ $('.paymentEditModal').modal('hide'); }, 2000);
 				setTimeout(function(){window.location.href = base_url+'/withdrawls'; }, 2500);
+			}else{
+				notification('Error',data.message,'top-right','error',4000);
 			}	 
         },
 		error :function( data ) {
@@ -202,6 +203,11 @@ $(document).on('submit','#updateRequest', function(e) {
 		}
 
     });
+});
+
+$(document).on('click','#click_advance', function(e) {	
+    $('#display_advance').toggle('1000');
+    $("i", this).toggleClass("simple-icon-plus simple-icon-minus");
 });
 
 
