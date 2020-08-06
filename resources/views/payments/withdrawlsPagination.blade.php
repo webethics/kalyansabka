@@ -16,7 +16,7 @@
 	  @foreach($payments as $key => $payment)
 		<tr data-payment-id="{{ $payment->id }}" class="user_row_{{$payment->id}}" >
 			<td id="sno_{{$payment->id}}">{{(($page_number-1) * 10)+$sno}} <input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$payment->id}}"/></td>
-			<td id="name_{{$payment->id}}">{{ date('d-m-Y', strtotime($payment->created_at))  ?? '' }}</td>
+			<td id="name_{{$payment->id}}">{{viewDateFormat($payment->created_at)}}</td>
 			<td id="mobile_number_{{$payment->id}}">{{$payment->user->first_name}} {{$payment->user->last_name}}</td>
 			<td id="business_url_{{$payment->id}}">{{$payment->user->email}}</td>
 			<td id="business_url_{{$payment->id}}">INR {{$payment->amount_requested}}</td>

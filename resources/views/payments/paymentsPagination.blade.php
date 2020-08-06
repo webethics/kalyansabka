@@ -11,7 +11,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	 @if(is_object($payments ?? '') && !empty($payments ?? '') && $payments ?? ''->count())
+	@if(is_object($payments) && !empty($payments) && $payments->count())
 		  @php $sno = 1;$sno_new = 0  @endphp
 	  @foreach($payments ?? '' as $key => $payment)
 		<tr data-payment-id="{{ $payment->id }}" class="user_row_{{$payment->id}}" >
