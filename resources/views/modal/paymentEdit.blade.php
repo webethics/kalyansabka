@@ -6,6 +6,11 @@
 		</button>
 	</div>
 	<div class="modal-body">
+	<h6 class="heading-background">Withdrawal History</h6>
+	<h5 class="withdrawal">Total Withdrawal: INR {{$total_amount_withdrawal_till_now??0}}</h5>
+	<h5 class="withdrawal">Current Year Withdrawal: INR {{$finacial_year_data??0}}</h5>
+	<hr>
+	
 	<form action="{{ url('update-withdrawl-request/') }}/{{ $request->id }}" method="POST" id="updateRequest" >
 	 @csrf
 		

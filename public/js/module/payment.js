@@ -254,6 +254,31 @@ $(document).on('submit','#searchPaymentForm', function(e) {
 });
 
 
+$(document).on('submit','#searchCustomerPaymentForm', function(e) {
+    e.preventDefault(); 
+	$('.search_spinloder').css('display','inline-block');
+    $.ajax({
+        type: "POST",
+		//dataType: 'json',
+        url: base_url+'/customer-payments',
+        data: $(this).serialize(),
+        success: function(data) {
+			 $('.search_spinloder').css('display','none');
+             //start date and end date error 
+			if(data=='date_error'){
+				notification('Error','Start date not greater than end date.','top-right','error',4000);	
+			}else if(data=='age_error'){
+				notification('Error','Start age not greater than end age.','top-right','error',4000);	
+			}else{
+             // Set search result
+			 $("#tag_container").empty().html(data); 
+			}	
+        },
+		error :function( data ) {}
+    });
+});
+
+
 $(document).on('click','#export_withdrawl_data', function(e) {
 	 e.preventDefault(); 
 	$('.search_spinloder').css('display','inline-block');
@@ -290,6 +315,51 @@ $(document).on('click','#export_withdrawl_data', function(e) {
 				var url = URL.createObjectURL(blobObject);
 				downloadLink.href = url;
 				downloadLink.download = "withdrawal_requests.csv";
+
+				/*
+					* Actually download CSV
+				*/
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+			
+        },
+		error :function( data ) {}
+    });
+});
+
+$(document).on('click','#export_customer_payments', function(e) {
+	 e.preventDefault(); 
+	$('.search_spinloder').css('display','inline-block');
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        type: "POST",
+		//dataType: 'json',
+        url: base_url+'/export_customer_payments',
+        data: {
+				
+				start_date:$('#start_date').val(),
+				end_date:$('#end_date').val(),
+				payment_type:$('#payment_type').val(),
+				status:$('#status').val(),
+				_token:csrf_token},
+        success: function(data) {
+			
+			$('.search_spinloder').css('display','none');
+			if(data.success == false){
+				notification('Error','No data found.','top-right','error',4000);	
+			}else{
+				var downloadLink = document.createElement("a");
+				var fileData = ['\ufeff'+data];
+
+				var blobObject = new Blob(fileData,{
+					type: "text/csv;charset=utf-8;"
+				});
+
+				var url = URL.createObjectURL(blobObject);
+				downloadLink.href = url;
+				downloadLink.download = "customer_payments.csv";
 
 				/*
 					* Actually download CSV

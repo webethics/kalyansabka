@@ -86,6 +86,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::get('payments',array('uses'=>'PaymentsController@payments'));
 	Route::post('payments',array('uses'=>'PaymentsController@payments'));
 	Route::get('customer-payments',array('uses'=>'PaymentsController@customer_payments'));
+	Route::post('customer-payments',array('uses'=>'PaymentsController@customer_payments'));
 	Route::get('withdrawls',array('uses'=>'PaymentsController@withdrawls'));
 	Route::post('withdrawls',array('uses'=>'PaymentsController@withdrawls'));
 	Route::post('payment/edit/{request_id}', 'PaymentsController@payment_edit'); //Edit User
@@ -94,6 +95,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('confirmPaymentModal', 'PaymentsController@confirmPaymentModal');
 	Route::post('export_withdrawls',array('uses'=>'PaymentsController@export_withdrawls')); //Edit User
 	Route::post('export_payments',array('uses'=>'PaymentsController@export_payments')); //Edit User
+	Route::post('export_customer_payments',array('uses'=>'PaymentsController@export_customer_payments')); //Edit User
 	
 	
 	

@@ -57,6 +57,8 @@ $(document).ready(function(){
 		filter_str +=  '&aadhar_number=' +$('#aadhar_number').val();
     if($('#status').val()!='' && $('#status').val()!=undefined)
 		filter_str +=  '&status=' +$('#status').val();
+    if($('#payment_type').val()!='' && $('#payment_type').val()!=undefined)
+		filter_str +=  '&payment_type=' +$('#payment_type').val();
     
 	//alert($('#role_id').val());
 	  
