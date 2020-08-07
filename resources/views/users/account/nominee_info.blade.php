@@ -82,6 +82,11 @@
 		</div>
 		<hr>
 		@endif
+		@if(!$nominee_details){
+			<div class="form-group row">
+				Nominees are not added yet. Add them Now!
+			</div>
+		}
 	</div>
 </div>	
 
