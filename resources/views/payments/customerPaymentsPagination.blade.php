@@ -1,16 +1,16 @@
+<div class="fl_right text-right">
+	<span class=" balance">Total Payment Deposit : INR {{$payment_deposited??0}}</span><br>
+	<span class=" balance"> Total Payment Withdrawal: INR {{$payment_withdrawaled??0}}</span>
+</div>
 <table class="table table-hover mb-0">
 	<thead class="bg-primary">
 		<tr>
-		<th scope="col">ID</th>
-		<th scope="col">Date</th>
-		<th scope="col">Narration</th>
-		<th scope="col">Deposit</th>
-		<th scope="col">Withdrawl</th>
-		<th scope="col">Status</th>
-		<!--th scope="col">Admin Charges</th>
-		<th scope="col">TDS Deduction</th>
-		<th scope="col">Deposit To Bank</th-->
-		
+			<th scope="col">ID</th>
+			<th scope="col">Date</th>
+			<th scope="col">Narration</th>
+			<th scope="col">Deposit</th>
+			<th scope="col">Withdrawl</th>
+			<th scope="col">Status</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -31,11 +31,6 @@
 			<td id="payment_mode1_{{$payment->id}}">@if($payment->mode == 1) INR {{$payment->amount}} @else {{'-'}} @endif</td>
 			<td id="payment_mode2_{{$payment->id}}">@if($payment->mode == 2) INR {{$payment->amount}} @else {{'-'}} @endif</td>
 			<td id="payment_mode2_{{$payment->id}}">@if($payment->status == 0) Pending @elseif ($payment->status == 1) Completed @endif</td>
-			
-			<?php /* <td id="admin_charges_{{$payment->id}}">@if($payment->mode == 2 && isset($payment->request_changes->admin_charges)) INR {{$payment->request_changes->admin_charges}} @else {{'-'}} @endif</td>
-			<td id="tds_deduction_{{$payment->id}}">@if($payment->mode == 2 && isset($payment->request_changes->tds_deduction)) INR {{$payment->request_changes->tds_deduction}} @else {{'-'}} @endif</td>
-			<td id="deposit_to_bank_{{$payment->id}}">@if($payment->mode == 2 && isset($payment->request_changes->deposit_to_bank)) INR {{$payment->request_changes->deposit_to_bank}} @else {{'-'}} @endif</td> */ ?>
-			
 		</tr>
 		@php $sno++ @endphp
 	 @endforeach

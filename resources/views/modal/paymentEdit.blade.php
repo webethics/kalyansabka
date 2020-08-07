@@ -6,6 +6,21 @@
 		</button>
 	</div>
 	<div class="modal-body">
+	<h6 class="heading-background">Withdrawal History</h6>
+	<h5 class="withdrawal">Total Withdrawal: INR {{$total_amount_withdrawal_till_now??0}}</h5>
+	<h5 class="withdrawal">Current Year Withdrawal: INR {{$finacial_year_data??0}}</h5>
+	<h5 class="withdrawal">Transactions Completed : {{$allrequestforuser??0}}</h5>
+	<h5 class="withdrawal">Transactions History : <a href="javascript:void(0)" id="click_advance"><i class="simple-icon-plus action"></i></a></h5>
+	<table class="table table-hover mb-0" id="display_advance" style="display:none"> 
+		<tr><th>S.No.</th><th>Amount</th><th>Date</th></tr>
+		@php $sno = 1; @endphp	
+		@foreach($transaction_details as $transaction)
+			<tr><td>{{$sno}}</td><td>INR {{$transaction->amount_requested}}</td><td>{{viewDateFormat($transaction->created_at)}}</td></tr>
+			@php $sno++ @endphp	
+		@endforeach
+	</table>	
+	<hr>
+	
 	<form action="{{ url('update-withdrawl-request/') }}/{{ $request->id }}" method="POST" id="updateRequest" >
 	 @csrf
 		

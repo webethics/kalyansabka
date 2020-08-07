@@ -393,7 +393,56 @@ class PaymentsController extends Controller
 				$records[$key]['created'] =  date('d-m-Y h:i:s', strtotime($payment->created_at));
 				$records[$key]['price'] =  $payment->amount;
 			}
-			$header = ['S.No.', 'First Name','Last Name', 'Email','Mobile', 'Aadhar Number', 'Address', 'Narration','Registration Date/Time','Amount(INR)'];
+			$header = ['S.No.', 'First Name','Last Name', 'Email','Mobile', 'Aadhar Number', 'Address', 'Registration Date/Time','Amount(INR)'];
+		
+
+			//load the CSV document from a string
+			$csv = Writer::createFromString('');
+
+			//insert the header
+			$csv->insertOne($header);
+
+			//insert all the records
+			$csv->insertAll($records);
+			@header("Last-Modified: " . @gmdate("D, d M Y H:i:s",$_GET['timestamp']) . " GMT");
+			@header("Content-type: text/x-csv");
+			// If the file is NOT requested via AJAX, force-download
+			if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+				header("Content-Disposition: attachment; filename=search_results.csv");
+			}
+			//
+			//Generate csv
+			//
+			echo $csv;
+			exit();
+		}else{
+			$result =array('success' => false);	
+		    return Response::json($result, 200);
+		}
+		
+		
+	}
+	
+	public function export_customer_payments(Request $request){
+		$payments_data = $this->customer_payments_search($request,$pagination = false);
+		$payments  = $payments_data['payments'];
+		
+		if($payments && count($payments) > 0){
+			$records = [];
+			foreach ($payments as $key => $payment) {
+				$records[$key]['sl_no'] = ++$key;
+				$records[$key]['Date'] = date('d-m-Y h:i:s', strtotime($payment->created_at));
+				if($payment->mode == 2){
+					$records[$key]['Naration'] = $payment->comment;
+				}elseif($payment->mode == 1){
+					$records[$key]['Naration'] =  'Credited - Referral Commission for <b>'.$payment->user->full_name.'</b>';
+				}
+				$records[$key]['Deposits'] = $payment->mode == 1 ? "INR ".$payment->amount : '';
+				$records[$key]['withdrawals'] =  $payment->mode == 2 ? "INR ".$payment->amount : '';
+				$records[$key]['status'] = $payment->status == 0 ? 'Pending' : 'Completed';
+				
+			}
+			$header = ['S.No.', 'Date','Naration', 'Deposits','Withdrawals', 'Status'];
 		
 
 			//load the CSV document from a string
@@ -429,6 +478,10 @@ class PaymentsController extends Controller
 		$total_amount = Income::where('user_id',$user_id)->first();
 		
         $customer_payment_data = $this->customer_payments_search($request,$pagination=true);
+		$payment_deposited  = IncomeHistory::where('user_id', '=', $user_id)->where('mode',1)->sum('amount');
+		$payment_deposited = round($payment_deposited);
+		$payment_withdrawaled  = IncomeHistory::where('user_id', '=', $user_id)->where('mode',2)->sum('amount');
+		$payment_withdrawaled = round($payment_withdrawaled);
 		if($customer_payment_data['success']){
 			$payments = $customer_payment_data['payments'];
 			$page_number =  $customer_payment_data['current_page'];
@@ -437,9 +490,9 @@ class PaymentsController extends Controller
 			$roles = Role::all();
 			if(!is_object($payments)) return $payments;
 			if ($request->ajax()) {
-				return view('payments.customerPaymentsPagination', compact('payments','page_number','roles','total_amount'));
+				return view('payments.customerPaymentsPagination', compact('payments','page_number','roles','total_amount','payment_deposited','payment_withdrawaled'));
 			}
-			return view('payments.customer-payments',compact('payments','page_number','roles','total_amount'));	
+			return view('payments.customer-payments',compact('payments','page_number','roles','total_amount','payment_deposited','payment_withdrawaled'));	
 		}else{
 			return $customer_payment_data['message'];
 		}
@@ -447,6 +500,75 @@ class PaymentsController extends Controller
 	
 	public function customer_payments_search($request,$pagination)
 	{
+		
+		$page_number = $request->page;
+		$number_of_records =$this->per_page;
+		$user_id = Auth::id();
+			
+		$payment_type = $request->payment_type;
+		$start_date = $request->start_date;
+		$end_date = $request->end_date;
+		$status = $request->status;
+		
+		$result = IncomeHistory::where('user_id', '=', $user_id)->with('user');
+		
+		if($payment_type!='' || $status!='' || $start_date!='' || $end_date!=''){
+			
+			if($start_date!= '' || $end_date!=''){
+				if(empty($end_date))
+					$end_date = date('Y-m-d');
+				
+				if((($start_date!= '' && $end_date=='') || ($start_date== '' && $end_date!='')) || (strtotime($start_date) >= strtotime($end_date))){	
+					
+					$data = array();
+					$data['success'] = false;
+					$data['message'] = "date_error";
+					return $data; 
+				}
+			}
+			
+			
+			$start_date_c = date('Y-m-d',strtotime($start_date));
+			$end_date_c= date('Y-m-d',strtotime($end_date));
+			
+			if(!empty($start_date) &&  !empty($end_date)){
+				$result->where(function($q) use ($start_date_c,$end_date_c) {
+				$q->whereDate('created_at','>=' ,$start_date_c);
+				$q->whereDate('created_at','<=', $end_date_c );
+			  });
+			} 
+			
+			if(isset($payment_type) && !empty($payment_type)){
+				$result->where('mode','=',$payment_type);
+			}
+			
+		 /* 	if(isset($status) && !empty($status)){
+				$result->where('status','=',$status);
+			} */
+			if($status != ''){
+				$result->where('status',$status);
+			}
+		 	
+		 	
+		}
+		
+		//print_r($result);
+		//echo $result->orderBy('created_at', 'desc')->toSql();
+		
+		if($pagination == true){
+			$payments = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
+		}else{
+			$payments = $result->orderBy('created_at', 'desc')->get();
+		}
+		
+		$data = array();
+		$data['success'] = true;
+		$data['payments'] = $payments;
+		$data['current_page'] = $page_number;
+		return $data;
+		
+		/* 
+		
 		$page_number = $request->page;
 		$number_of_records =$this->per_page;
 		$user_id = Auth::id();
@@ -457,19 +579,52 @@ class PaymentsController extends Controller
 		$data['success'] = true;
 		$data['payments'] = $payments;
 		$data['current_page'] = $page_number;
-		return $data;
+		return $data; */
 	}
-	
+	function get_finacial_year_range() {
+		$year = date('Y');
+		$month = date('m');
+		if($month<4){
+			$year = $year-1;
+		}
+		$start_date = date('Y-m-d',strtotime(($year).'-04-01'));
+		$end_date = date('Y-m-d',strtotime(($year+1).'-03-31'));
+		$response = array('start_date' => $start_date, 'end_date' => $end_date);
+		return $response;
+
+	}
 	public function payment_edit($payment_id)
     {
 		
 		access_denied_user('payment_edit');
         $request = WithdrawlRequest::where('id',$payment_id)->with('user','request_changes')->first();
-		//echo '<pre>';print_r($request->toArray());die;
+		$user_id = $request->user_id;
+		
+		// total withdarawl amount till now
+		$getAllWithdrawls = IncomeHistory::where('user_id',$user_id)->where('mode',2)->where('status',1)->sum('amount');
+		$total_amount_withdrawal_till_now = round($getAllWithdrawls);
+		
+		
+		// total withdarawl amount in current finacial year
+		$get_finacial= $this->get_finacial_year_range();
+		$start_date_c = date('Y-m-d',strtotime($get_finacial['start_date']));
+		$end_date_c = date('Y-m-d',strtotime($get_finacial['end_date']));
+		$amountWithdrawlthisfinancialyear = IncomeHistory::where('user_id',$user_id)->where('mode',2)->where('status',1);
+		$amountWithdrawlthisfinancialyear->where(function($q) use ($start_date_c,$end_date_c) {
+			$q->whereDate('created_at','>=' ,$start_date_c);
+			$q->whereDate('created_at','<=', $end_date_c );
+		});
+		$finacial_year_data = $amountWithdrawlthisfinancialyear->sum('amount');
+		$finacial_year_data = round($finacial_year_data);
+		
+		//trasaction Details
+		$transaction_details =  WithdrawlRequest::where('user_id',$user_id)->where('status',1)->get();
+		$allrequestforuser = count($transaction_details);
+		
 		$roles = Role::all();
 		if($request){
 			
-			$view = view("modal.paymentEdit",compact('request','roles'))->render();
+			$view = view("modal.paymentEdit",compact('request','roles','total_amount_withdrawal_till_now','finacial_year_data','allrequestforuser','transaction_details'))->render();
 			$success = true;
 		}else{
 			$view = '';
@@ -604,7 +759,7 @@ class PaymentsController extends Controller
 			}else{
 				return Response::json(array(
 					  'success'=>false,
-					  'message'=>"You forgot to change the payment status."
+					  'message'=>"Payment Status Must be Paid."
 					), 200);
 			}
 		}else{

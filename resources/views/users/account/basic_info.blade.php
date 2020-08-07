@@ -167,8 +167,11 @@
 		
 	</div>					
 	@endif
-	
-	
+	@if(!$temp_details || $temp_details->status == 1)
+		<input type="hidden" name="submit_button" id="submit_button" value="0">
+	@else
+		<input type="hidden" name="submit_button" id="submit_button" value="1">
+	@endif	
 	<div class="form-row mt-4">
 		<label class="col-lg-3 col-xl-2 col-form-label"></label>
 		<div class="col-lg-9 col-xl-10">

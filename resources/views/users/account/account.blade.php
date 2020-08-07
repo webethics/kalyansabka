@@ -201,15 +201,17 @@ jQuery('.nav-link').click(function(){
 	
 	
 $(document).ready(function(){
+	
 	 $('#update-basic-request').prop('disabled', true);
+	 
      $('form#accountinfo input[type="text"]').keyup(function() {
-        if($(this).val() != '') {
+        if($(this).val() != '' && $('#submit_button').val() == 0) {
            $('#update-basic-request').prop('disabled', false);
         }
      });
 	 
 	$('form#accountinfo select').change(function() {
-        if($(this).val() != '') {
+        if($(this).val() != '' && $('#submit_button').val() == 0) {
            $('#update-basic-request').prop('disabled', false);
         }
      });

@@ -19,15 +19,25 @@
 	padding-right: 0;
 }
 
+.withdrawal{
+	    font-size: 16px;
+    line-height: 29px;
+}
 #showNomineeDetails hr{width:100%}
 
 #user_response_update_1,#user_response_update,#user_response_update_db,#user_response_update_db_1{
-	background: #FF0000;
+	
     color: #fff;
 	display: inline-block;
     padding: 12px;
     margin-bottom: 5px;
     border-radius: 4px 4px 0px 0;
+}
+.green{
+	background:#6ACA33;
+}
+.red{
+	background: #FF0000;
 }
 #user_response_update_db_1 i {color:#fff}
 
