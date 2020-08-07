@@ -32,6 +32,6 @@
 	</tbody>
 </table> 
 	<!------------ Pagination -------------->
-		@if(is_object($payments ?? '') && !empty($payments ?? '') && $payments ?? ''->count()) 
-		 {!! $payments ?? ''->render() !!}  
+		@if(is_object($payments) && !empty($payments) && $payments->count()) 
+		 {!! $payments->render() !!}  
 		 @endif	
