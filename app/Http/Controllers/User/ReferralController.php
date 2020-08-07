@@ -24,8 +24,9 @@ class ReferralController extends Controller
     		$user_id = user_id();
     		$userData = user_data();
     	}
+    	
     	$memberInfo = [];$member_counter = 0; $userInfo = [];
-    	$level1 = []; $level1_counter = 0; $level2 = []; $level3 = [];
+    	$level1 = []; $level_counter1 = 0;
 
     	/*check if user id not empty*/
     	if(!empty($user_id)){
@@ -35,13 +36,20 @@ class ReferralController extends Controller
 	    	if(empty($tree_level) || intval($tree_level) == 0)
 	    		$tree_level = 2;
 
+	    	for($i=2;$i<=$tree_level;$i++){
+	    		${"level$i"} = [];
+	    	}
+
 	    	$userInfo['user_id'] = $user_id;
 	    	$userInfo['email'] = $userData->email;
+	    	$userInfo['name'] = ucfirst("{$userData->first_name} {$userData->last_name}");
+	    	$userInfo['counter'] = $userData->referral_count;
+	    	$userInfo['level'] = 0;
 
 	    	$memberInfo[$member_counter]['memberId'] = $user_id;
 	    	$memberInfo[$member_counter]['parentId'] = null;
 	    	$memberInfo[$member_counter]['counter'] = $userData->referral_count;
-	    	$memberInfo[$member_counter]['name'] = ucfirst("{$userData->first_name} {$userData->last_name}");;
+	    	$memberInfo[$member_counter]['name'] = ucfirst("{$userData->first_name} {$userData->last_name}");
 	    	$memberInfo[$member_counter]['email'] = $userData->email;
 	    	$memberInfo[$member_counter]['level'] = 0;
 
@@ -61,20 +69,35 @@ class ReferralController extends Controller
 	    			//checl is level 1 then push into level1 array
 		    		if($ref['ref_user_id1'] == $user_id){
 		    			$level = 1;
-		    			$level1[$level1_counter]['user_id'] = $ref['user_id'];
-		    			$level1[$level1_counter]['email'] = $ref->user['email'];
-		    			$level1_counter++;
+		    			$level1[$level_counter1]['user_id'] = $ref['user_id'];
+		    			$level1[$level_counter1]['email'] = $ref->user['email'];
+		    			$level1[$level_counter1]['name'] = ucfirst("{$ref->user['first_name']} {$ref->user['last_name']}");
+		    			$level1[$level_counter1]['parentId'] = $ref['ref_user_id1'];
+		    			$level1[$level_counter1]['counter'] = $ref->user['referral_count'];
+		    			$level1[$level_counter1]['level'] = $level;
+
+		    			$level_counter1++;
 		    		}
-		    		if($ref['ref_user_id2'] == $user_id){
-		    			$level = 2;
-		    			//check if ref_user1 key exist
-		    			$level2_counter = 0;
-		    			if (array_key_exists($ref['ref_user_id1'],$level2)){
-		    				$level2_counter = count($level2[$ref['ref_user_id1']]);
-		    			}
-		    			$level2[$ref['ref_user_id1']][$level2_counter]['user_id'] = $ref['user_id'];
-		    			$level2[$ref['ref_user_id1']][$level2_counter]['email'] = $ref->user['email'];
+
+		    		for($j=2;$j<=$tree_level;$j++){
+		    			if($ref["ref_user_id$j"] == $user_id){
+			    			$level = $j;
+			    			//check if ref_user1 key exist
+			    			${"level_counter$j"} = 0;
+			    			$k = $j-1;
+			    			if (array_key_exists($ref["ref_user_id$k"],${"level$j"})){
+			    				${"level_counter$j"} = count(${"level$j"}[$ref["ref_user_id$k"]]);
+			    			}
+			    			${"level$j"}[$ref["ref_user_id1"]][${"level_counter$j"}]['user_id'] = $ref['user_id'];
+			    			${"level$j"}[$ref["ref_user_id1"]][${"level_counter$j"}]['email'] = $ref->user['email'];
+			    			${"level$j"}[$ref["ref_user_id1"]][${"level_counter$j"}]['name'] = ucfirst("{$ref->user['first_name']} {$ref->user['last_name']}");
+			    			${"level$j"}[$ref["ref_user_id1"]][${"level_counter$j"}]['parentId'] = $ref['ref_user_id1'];
+			    			${"level$j"}[$ref["ref_user_id1"]][${"level_counter$j"}]['counter'] = $ref->user['referral_count'];
+			    			${"level$j"}[$ref["ref_user_id1"]][${"level_counter$j"}]['level'] = $level;
+			    			break;
+			    		}
 		    		}
+		    		
 
 		    		$memberInfo[$member_counter]['memberId'] = $ref['user_id'];
 			    	$memberInfo[$member_counter]['parentId'] = $ref['ref_user_id1'];
@@ -85,8 +108,11 @@ class ReferralController extends Controller
 		    	}
 	    	}
 
-	    	/*echo '<pre>'; print_r($level1); echo '</pre>';
-	    	dd($level2);*/
+	    	$level = [];
+	    	for($l=1;$l<=$tree_level;$l++) {
+	    		$level["level$l"] = ${"level$l"};
+	    	}
+
 	    	$response['status'] = Config::get('constant.SUCCESS');
 	        $response['msg'] = trans('message.AJAX_SUCCESS');
 
@@ -95,10 +121,12 @@ class ReferralController extends Controller
     	if($request->ajax()){
     		$response['memberInfo'] = $memberInfo;
     		$response['userInfo'] = $userInfo;
+    		$response['level'] = $level;
 
     		return $response;
     	}else{
-    		return view('referrals.index',compact('userInfo','memberInfo'));
+    		//return view('referrals.index',compact('userInfo','memberInfo','level'));
+    		return view('referrals.structure',compact('userInfo','memberInfo','level','tree_level'));
     	}
     	
     }
