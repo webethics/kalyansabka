@@ -4,7 +4,7 @@
 			@php
 			$user = user_data()
 			@endphp 
-			<span class="name">{{ $user->first_name}}{{ $user->last_name}}</span>
+			<span class="name">{{ $user->first_name}} {{ $user->last_name}}</span>
 			<span class="name-circle">
 			{{ substr($user->first_name,0,1) }}
 			<!--img alt="Profile Picture" src="{{ url('img/profile-pic-l.jpg')}}" -->

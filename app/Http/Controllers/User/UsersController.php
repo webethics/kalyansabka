@@ -307,7 +307,7 @@ class UsersController extends Controller
 					}
 
     				$data['success'] = true;
-    				$data['message'] = 'Your request has been sent to admin. After check your document admin will approve your request.';
+    				$data['message'] = 'Your request has been sent to admin. After checking your documents admin will approve your request.';
     			}
     		}else{
     			$data['message'] = 'Invalid User';

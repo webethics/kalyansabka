@@ -4,7 +4,7 @@
 	<div id="user_response_update" class="green" style="display:none"></div>
 	
 	@if($temp_details && $temp_details->status == 0) 
-		<div id="user_response_update_db" class="green">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
+		<div id="user_response_update_db" class="green">{{"Your request has been sent to admin. After checking your documents admin will approve your request."}}</div>
 	@elseif($temp_details && $temp_details->status == 2) 
 		<div  class="user_response_update_db_1 red" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>
 	@elseif($temp_details && $temp_details->status == 1) 
@@ -61,7 +61,7 @@
 	
 	<div id="user_response_update_1"  style="display:none"></div>
 	@if($temp_details && $temp_details->status == 0) 
-		<div id="user_response_update_db" class="green">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
+		<div id="user_response_update_db" class="green">{{"Your request has been sent to admin. After checking your documents admin will approve your request."}}</div>
 	@elseif($temp_details && $temp_details->status == 2) 
 		
 		<div class="user_response_update_db_1 red" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>
