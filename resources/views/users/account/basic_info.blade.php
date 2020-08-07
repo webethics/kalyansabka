@@ -8,7 +8,7 @@
 	@elseif($temp_details && $temp_details->status == 2) 
 		<div  class="user_response_update_db_1 red" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>
 	@elseif($temp_details && $temp_details->status == 1) 
-		<div  class="user_response_update_db_1 darkgreen" id="user_response_update_db_1" ><b>Your request for change of details has been approved by the Admin. <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>
+		<div  class="user_response_update_db_1 darkgreen" id="user_response_update_db_1" >Your request for change of details has been approved by the Admin. <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>
 	@else
 		<div class="clearfix"></div>
 	@endif
@@ -66,7 +66,7 @@
 		
 		<div class="user_response_update_db_1 red" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>
 	@elseif($temp_details && $temp_details->status == 1) 
-		<div  class="user_response_update_db_1 darkgreen" id="user_response_update_db_1" ><b>Your request for change of details has been approved by the Admin. <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>	
+		<div  class="user_response_update_db_1 darkgreen" id="user_response_update_db_1" >Your request for change of details has been approved by the Admin. <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>	
 	@else
 		<div class="clearfix"></div>
 	@endif
