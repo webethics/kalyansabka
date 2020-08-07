@@ -21,7 +21,7 @@
 			<td id="email_{{$payment->id}}">RSDTOKIJEL254</td>
 			<td id="mobile_number_{{$payment->id}}">{{$payment->user->first_name}} {{$payment->user->last_name}}</td>
 			<td id="business_url_{{$payment->id}}">{{$payment->user->email}}</td>
-			<td id="business_url_{{$payment->id}}">INR {{$payment->user->price}}</td>
+			<td id="business_url_{{$payment->id}}">INR {{$payment->amount}}</td>
 		</tr>
 		@php $sno++ @endphp
 	 @endforeach
@@ -32,6 +32,6 @@
 	</tbody>
 </table> 
 	<!------------ Pagination -------------->
-		@if(is_object($payments ?? '') && !empty($payments ?? '') && $payments ?? ''->count()) 
-		 {!! $payments ?? ''->render() !!}  
+		@if(is_object($payments) && !empty($payments) && $payments->count()) 
+		 {!! $payments->render() !!}  
 		 @endif	

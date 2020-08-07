@@ -18,7 +18,7 @@ return [
 	'per_page'=>10,
     'SUCCESS'=>'success',
     'ERROR'=>'error',
-    'TREE_LEVEL' => 3,
+    'TREE_LEVEL' => 5,
     'FRONT_DATE_FORMAT' => 'd F, Y',
 ];
 ?>

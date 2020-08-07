@@ -51,13 +51,18 @@ class UserReferralObserver
                         if(isset(${"ref_user_id$i"}) && !empty(${"ref_user_id$i"})){
                             $distribute_amount = $this->calculatePercentageAmount($level_user_commission,$individual_user_commission);
                             //insert entry in income history table
-                            IncomeHistory::create([
+                            $dataRef = [];
+                            $dataRef['user_id'] = ${"ref_user_id$i"};
+                            $dataRef['referral_id'] = $userReferral['user_id'];
+                            $dataRef['amount'] = $distribute_amount;
+                            $this->saveIncomeHistory($dataRef);
+                            /*IncomeHistory::create([
                                 'user_id' => ${"ref_user_id$i"},
                                 'referral_id' => $userReferral['user_id'],
                                 'mode' => 1,
                                 'amount' => $distribute_amount,
                                 'comment' => 'Referral new user',
-                            ]);
+                            ]);*/
                             //update referral count on user table
                             User::find(${"ref_user_id$i"})->increment('referral_count');
                             //Modify level commission for next level
@@ -91,13 +96,19 @@ class UserReferralObserver
                                 //send commission
                                 $indiaHeadComm = $this->calculatePercentageAmount($head_distribute_commission,$india_head);
 
-                                IncomeHistory::create([
+                                $dataRef = [];
+                                $dataRef['user_id'] = $indiaHeadUserId;
+                                $dataRef['referral_id'] = $userReferral['user_id'];
+                                $dataRef['amount'] = $indiaHeadComm;
+                                $this->saveIncomeHistory($dataRef);
+
+                                /*IncomeHistory::create([
                                     'user_id' => $indiaHeadUserId,
                                     'referral_id' => $userReferral['user_id'],
                                     'mode' => 1,
                                     'amount' => $indiaHeadComm,
                                     'comment' => 'Referral new user',
-                                ]);
+                                ]);*/
                             }
                         }
                     }
@@ -110,13 +121,19 @@ class UserReferralObserver
                             //send commission
                             $stateComm = $this->calculatePercentageAmount($head_distribute_commission,$state_head);
 
-                            IncomeHistory::create([
+                            $dataRef = [];
+                            $dataRef['user_id'] = $stateUser->user_id;
+                            $dataRef['referral_id'] = $userReferral['user_id'];
+                            $dataRef['amount'] = $stateComm;
+                            $this->saveIncomeHistory($dataRef);
+                            
+                            /*IncomeHistory::create([
                                 'user_id' => $stateUser->user_id,
                                 'referral_id' => $userReferral['user_id'],
                                 'mode' => 1,
                                 'amount' => $stateComm,
                                 'comment' => 'Referral new user',
-                            ]);
+                            ]);*/
                         }
                     }
 
@@ -128,13 +145,19 @@ class UserReferralObserver
                             //send commission
                             $distictComm = $this->calculatePercentageAmount($head_distribute_commission,$district_head);
 
-                            IncomeHistory::create([
+                            $dataRef = [];
+                            $dataRef['user_id'] = $districtUser->user_id;
+                            $dataRef['referral_id'] = $userReferral['user_id'];
+                            $dataRef['amount'] = $distictComm;
+                            $this->saveIncomeHistory($dataRef);
+                            
+                            /*IncomeHistory::create([
                                 'user_id' => $districtUser->user_id,
                                 'referral_id' => $userReferral['user_id'],
                                 'mode' => 1,
                                 'amount' => $distictComm,
                                 'comment' => 'Referral new user',
-                            ]);
+                            ]);*/
                         }
                     }
                 }
@@ -201,7 +224,8 @@ class UserReferralObserver
             IncomeHistory::create([
                 'user_id' => $data['user_id'],
                 'referral_id' => $data['referral_id'],
-                'mode' => $data['mode'],
+                'mode' => 1,
+                'status' => 1,
                 'amount' => $data['amount'],
                 'comment' => 'Referral new user',
             ]);
