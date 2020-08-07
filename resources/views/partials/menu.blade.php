@@ -112,7 +112,7 @@
 					<li class="{{$withdrawlactive}}">
 						<a href="{{url('/withdrawls')}}">
 							<i class="iconsminds-dollar"></i>
-							<span>Withdrawl Requests</span>
+							<span>Withdrawal Requests</span>
 						</a>
 					</li>
 					@endif

@@ -9,7 +9,7 @@
 			<th scope="col">Date</th>
 			<th scope="col">Narration</th>
 			<th scope="col">Deposit</th>
-			<th scope="col">Withdrawl</th>
+			<th scope="col">Withdrawal</th>
 			<th scope="col">Status</th>
 		</tr>
 	</thead>

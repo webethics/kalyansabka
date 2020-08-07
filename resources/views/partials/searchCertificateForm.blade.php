@@ -110,7 +110,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="form-group">
+					<div class="form-group col-lg-6">
 						<button type="submit" class="btn btn-primary default  btn-lg mb-2 mb-lg-0 col-12 col-lg-auto">{{trans('global.submit')}}</button>
 						<button type="button" id="export_certificate_left" class="btn btn-primary default  btn-lg mb-2 mb-lg-0 col-12 col-lg-auto">Export</button>
 						<div class="spinner-border text-primary search_spinloder" style="display:none"></div>
