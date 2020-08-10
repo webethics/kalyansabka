@@ -104,6 +104,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('customers',array('uses'=>'CustomersController@customers'));
 	Route::post('update-customer/{request_id}', 'CustomersController@update_customer'); //Edit User
 	Route::post('customer/edit/{request_id}', 'CustomersController@customer_edit'); //Edit User
+	
 	Route::get('customer/create/',array('uses'=>'CustomersController@customer_create')); //Edit User
 	Route::post('create-new-customer', 'CustomersController@customer_create_new'); //Edit User
 	Route::post('customer/delete_customer/{request_id}',array('uses'=>'CustomersController@customer_delete')); //Edit User
@@ -129,7 +130,12 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 
 	//referrals
 	Route::get('referrals',array('uses'=>'ReferralController@index'));
-	
+	Route::get('companies',array('uses'=>'CompaniesController@companies'));
+	Route::get('companies/create/',array('uses'=>'CompaniesController@company_create')); //Edit User
+	Route::post('create-new-company', 'CompaniesController@compnay_create_new'); //Edit User
+	Route::post('update-company/{request_id}', 'CompaniesController@update_company'); //Edit User
+	Route::post('companies/delete_company/{request_id}',array('uses'=>'CompaniesController@company_delete')); //Edit User
+	Route::post('companies/edit/{request_id}', 'CompaniesController@company_edit'); //Edit User
 	
 	//Requests
 	Route::get('edit-requests',array('uses'=>'RequestsController@edit_request'));

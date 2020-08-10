@@ -6,7 +6,7 @@
 		 @php    
 			$roleArray = Config::get('constant.role_id');
 			$dashboardactive='';  $custactive='';	 $payactive='';	$withdrawlactive=''; $certactive=''; $ccertactive=''; $editactive=''; $configactive=''; $custpayactive=''; $roleactive='';
-			$emailactive=''; 
+			$emailactive=''; $companyactive=''; 
 			$referralactive=''; 
 			
 			$sactive ='';$emactive ='';$site_sactive ='';$accactive  ='';
@@ -57,6 +57,12 @@
 		  @if(collect(request()->segments())->last()=='certificates')
 		 @php
 	      $certactive ='active'
+	     @endphp
+		 @endif
+		 
+		 @if(collect(request()->segments())->last()=='companies')
+		 @php
+	      $companyactive ='active'
 	     @endphp
 		 @endif
 		 
@@ -153,6 +159,15 @@
 						<a href="{{url('/roles')}}">
 							<i class="simple-icon-organization"></i>
 							<span>Roles</span>
+						</a>
+					</li>
+					@endif
+					
+					@if(check_role_access('companies_listing'))
+					<li class="{{$companyactive}}">
+						<a href="{{url('/companies')}}">
+							<i class="simple-icon-chart"></i>
+							<span>Companies</span>
 						</a>
 					</li>
 					@endif
