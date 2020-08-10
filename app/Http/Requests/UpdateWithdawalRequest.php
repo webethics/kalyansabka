@@ -15,8 +15,15 @@ class UpdateWithdawalRequest extends FormRequest
     public function rules()
     {
         return [
-            'tds_dedcution'     => [
+		
+            'deduction_type'     => [
                 'required',
+            ],
+			'tds_deduction_amount'     => [
+                'required_if:deduction_type,==,amount',
+            ],
+			'tds_deduction_percentage'     => [
+                'required_if:deduction_type,==,percentage',
             ],
 			 'admin_charges'     => [
                 'required',

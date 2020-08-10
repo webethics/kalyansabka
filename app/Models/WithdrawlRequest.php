@@ -19,7 +19,8 @@ class WithdrawlRequest extends Model
         'amount_requested',
 		'status',
 		'description',
-    	'income_history_id'
+    	'income_history_id',
+		'transaction_id',
     ];
 
     protected $appends = ['full_name'];

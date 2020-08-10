@@ -58,19 +58,40 @@
 			</div>	
 					
 		</div>	
-	
+		
 		<div class="form-group form-row-parent">
+			<label class="col-form-label">TDS Deduction Type<em>*</em></label>
+			<div class="d-flex control-group">
+				
+				<select name="deduction_type"  id="deduction_type" class="form-control select2">
+					<option value="">Select Deduction Type</option>
+					<option value="amount" @if($request->deduction_type == "amount"){{'selected="selected"'}}@endif>In Amount</option>
+					<option value="percentage" @if($request->deduction_type == "percentage"){{'selected="selected"'}}@endif>In Percentage</option>
+				</select>
+			</div>	
+			<div class="dedeuction_type_error errors"></div>		
+		</div>	
+		
+		<div class="form-group form-row-parent" id="amount_dropdown" style="display:none">
+			<label class="col-form-label">TDS Deduction(In amount)</label>
+			<div class="d-flex control-group">
+				<input type="text" name="tds_deduction_amount" value="{{$request->request_changes->tds_deduction_amount ?? ""}}" class="form-control" placeholder="TDS Deduction in amount">								
+			</div>	
+			<div class="tds_deduction_amount_error errors"></div>				
+		</div>	
+		
+		<div class="form-group form-row-parent" id="percentage_dropdown" style="display:none">
 			<label class="col-form-label">TDS Deduction(In %)</label>
 			<div class="d-flex control-group">
-				<input type="text" name="tds_dedcution" value="{{$request->request_changes->tds_percent ?? 0}}" class="form-control" placeholder="TDS Deduction">								
+				<input type="text" name="tds_deduction_percentage" value="{{$request->request_changes->tds_deduction_percentage ?? ""}}" class="form-control" placeholder="TDS Deduction in Percentage">								
 			</div>	
-			<div class="tds_dedcution_error errors"></div>				
+			<div class="tds_deduction_percentage_error errors"></div>				
 		</div>	
 		
 		<div class="form-group form-row-parent">
 			<label class="col-form-label">Admin Charges(In %)</label>
 			<div class="d-flex control-group">
-				<input type="text" name="admin_charges" value="{{$request->request_changes->admin_percent ?? 0}}" class="form-control" placeholder="Admin Charges">								
+				<input type="text" name="admin_charges" value="{{$request->request_changes->admin_percent ?? ""}}" class="form-control" placeholder="Admin Charges">								
 			</div>	
 			<div class="admin_charges_error errors"></div>		
 		</div>	
@@ -95,6 +116,7 @@
 		<div class="col-md-12">
 		<input id ="request_id" name ="request_id" class="form-check-input" type="hidden" value="{{$request->id}}">
 		<input id ="income_history_id" name ="income_history_id" class="form-check-input" type="hidden" value="{{$request->income_history_id}}">
+		<input id ="transaction_id" name ="transaction_id" class="form-check-input" type="hidden" value="{{$request->transaction_id}}">
 		<input id ="user_id" name ="user_id" class="form-check-input" type="hidden" value="{{$request->user_id}}">
 		@if($request->status == 0)
 		<button type="submit" class="btn btn-primary default btn-lg mb-2 mb-sm-0 mr-2 col-12 col-sm-auto">{{ trans('global.submit') }}</button>
