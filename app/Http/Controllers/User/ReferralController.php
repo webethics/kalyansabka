@@ -123,10 +123,10 @@ class ReferralController extends Controller
 	    }
 
     	if($request->ajax()){
-    		$response['memberInfo'] = $memberInfo;
+    		$response['success'] = true;
+    		$response['view'] = view("referrals.structureTree",compact('userInfo','memberInfo','level','tree_level'))->render();
     		$response['userInfo'] = $userInfo;
-    		$response['level'] = $level;
-
+    		$response['memberInfo'] = $memberInfo;
     		return $response;
     	}else{
     		//return view('referrals.index',compact('userInfo','memberInfo','level'));
