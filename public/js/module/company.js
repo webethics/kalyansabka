@@ -68,10 +68,10 @@ $(document).on('submit','#updateCompany', function(e) {
 			// If data inserted into DB
 			 if(data.success){
 				 
-				notification('Success','User Updated Successfully','top-right','success',2000);
+				notification('Success','Company Updated Successfully','top-right','success',2000);
 				$('#name_'+user_id).text(data.name);
 				
-				setTimeout(function(){ $('.customerEditModal').modal('hide'); }, 2000);
+				setTimeout(function(){ $('.companyEditModal').modal('hide'); }, 2000);
 				if(data.state_head == 'updated'){
 					setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
 				}
@@ -123,7 +123,7 @@ $(document).on('submit','#createNewCompany', function(e) {
 			 if(data.success){
 				 
 				notification('Success','Company Created Successfully','top-right','success',2000);
-				setTimeout(function(){ $('.userCreateModal').modal('hide'); }, 2000);
+				setTimeout(function(){ $('.companyCreateModal').modal('hide'); }, 2000);
 				setTimeout(function(){window.location.href = base_url+'/companies'; }, 2500);
 			}	 
         },
