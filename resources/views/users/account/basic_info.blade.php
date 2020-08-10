@@ -1,14 +1,18 @@
 <div class="" id="first_account_info">
 	<div class="col-xl-1 fl_right"><a class="fl_right edit_link action" title="Edit" id="basic_info" href="javascript:void(0)"><i class="simple-icon-note"></i></a></div>
 	
-	<div id="user_response_update" style="display:none"></div>
+	<div id="user_response_update" class="green" style="display:none"></div>
+	
 	@if($temp_details && $temp_details->status == 0) 
-		<div id="user_response_update_db" class="green">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
+		<div id="user_response_update_db" class="green">{{"Your request has been sent to admin. After checking your documents admin will approve your request."}}</div>
 	@elseif($temp_details && $temp_details->status == 2) 
 		<div  class="user_response_update_db_1 red" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>
+	@elseif($temp_details && $temp_details->status == 1) 
+		<div  class="user_response_update_db_1 darkgreen" id="user_response_update_db_1" >Your request for change of details has been approved by the Admin. <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>
 	@else
 		<div class="clearfix"></div>
 	@endif
+	<div class="clearfix"></div>
 	<div class="form-group row">
 		<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}</label>
 		<label class="col-lg-9 col-xl-10 col-form-label" id="show_first_name">{{$user->first_name}}</label>
@@ -57,13 +61,17 @@
 	
 	<div id="user_response_update_1"  style="display:none"></div>
 	@if($temp_details && $temp_details->status == 0) 
-		<div id="user_response_update_db" class="green">{{"Your request has been sent to admin. After checking your document admin will approve your request."}}</div>
+		<div id="user_response_update_db" class="green">{{"Your request has been sent to admin. After checking your documents admin will approve your request."}}</div>
 	@elseif($temp_details && $temp_details->status == 2) 
 		
 		<div class="user_response_update_db_1 red" id="user_response_update_db_1" ><b>Decline Reason: </b>{{$temp_details->description}} <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>
+	@elseif($temp_details && $temp_details->status == 1) 
+		<div  class="user_response_update_db_1 darkgreen" id="user_response_update_db_1" >Your request for change of details has been approved by the Admin. <a href="javascript:void(0)" data-id="{{$temp_details->user_id}}" class="remove_temp_request action"><i class="simple-icon-close"></i></a></div>	
 	@else
 		<div class="clearfix"></div>
 	@endif
+	
+	<div class="clearfix"></div>
 	
 	{{ csrf_field() }}
 	<div class="form-group row">

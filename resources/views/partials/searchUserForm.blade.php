@@ -68,7 +68,7 @@
 						</div>
 					</div>
 				</div>
-			<div class="col-md-12">
+			<div class="col-md-12 ">
 			<button type="submit" class="btn btn-primary default  btn-lg mb-2 mb-lg-0 col-12 col-lg-auto">{{trans('global.submit')}}</button>
 			
 			<div class="spinner-border text-primary search_spinloder" style="display:none"></div>

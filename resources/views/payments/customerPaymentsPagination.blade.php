@@ -9,12 +9,12 @@
 			<th scope="col">Date</th>
 			<th scope="col">Narration</th>
 			<th scope="col">Deposit</th>
-			<th scope="col">Withdrawl</th>
+			<th scope="col">Withdrawal</th>
 			<th scope="col">Status</th>
 		</tr>
 	</thead>
 	<tbody>
-	 @if(is_object($payments ?? '') && !empty($payments ?? '') && $payments ?? ''->count())
+	 @if(is_object($payments) && !empty($payments) && $payments->count())
 		  @php $sno = 1;  @endphp
 	  @foreach($payments ?? '' as $key => $payment)
 		<tr data-payment-id="{{ $payment->id }}" class="user_row_{{$payment->id}}" >
@@ -41,6 +41,6 @@
 	</tbody>
 </table> 
 	<!------------ Pagination -------------->
-		@if(is_object($payments ?? '') && !empty($payments ?? '') && $payments ?? ''->count()) 
-		 {!! $payments ?? ''->render() !!}  
+		@if(is_object($payments) && !empty($payments) && $payments->count()) 
+		 {!! $payments->render() !!}  
 		 @endif	

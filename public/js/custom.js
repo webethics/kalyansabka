@@ -87,7 +87,7 @@ showDuration - 4000
 ==================================*/
 function notification(title,message,positionClass,theme,showDuration){
 	window.createNotification({
-			closeOnClick: 1,
+			closeOnClick: true,
 			displayCloseButton: 1,
 			positionClass: 'nfc-'+positionClass,
 			showDuration: showDuration,
