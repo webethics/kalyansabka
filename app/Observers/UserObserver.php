@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Models\UserReferral;
+use App\Http\Controllers\CommanController;
 
 class UserObserver
 {
@@ -15,9 +16,9 @@ class UserObserver
      */
     public function created(User $user)
     {
+        $new_user_id = $user->id;
         /*After new user registration, check who refer him, and save that entry in user referral table*/
         if(!empty($user) && !empty($user->refered_by)){
-            $new_user_id = $user->id;
             /*find which refer him*/
             $referUser = User::where('mobile_number',$user->refered_by)->orWhere('aadhar_number',$user->refered_by)->where('id','!=',$new_user_id)->first();
             if(!is_null($referUser)){
@@ -45,6 +46,9 @@ class UserObserver
                     'ref_user_id5' => $ref_user_id5
                 ]);
             }
+        }else{
+            //Direct user register then send commission distribute to heads
+            CommanController::distributeHeadCommissions($new_user_id);
         }
     }
 
