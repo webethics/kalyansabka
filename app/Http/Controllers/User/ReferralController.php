@@ -44,6 +44,7 @@ class ReferralController extends Controller
 	    	$userInfo['email'] = $userData->email;
 	    	$userInfo['name'] = ucfirst("{$userData->first_name} {$userData->last_name}");
 	    	$userInfo['counter'] = $userData->referral_count;
+	    	$userInfo['gender'] = $userData->gender;
 	    	$userInfo['level'] = 0;
 
 	    	$memberInfo[$member_counter]['memberId'] = $user_id;
@@ -74,6 +75,7 @@ class ReferralController extends Controller
 		    			$level1[$level_counter1]['name'] = ucfirst("{$ref->user['first_name']} {$ref->user['last_name']}");
 		    			$level1[$level_counter1]['parentId'] = $ref['ref_user_id1'];
 		    			$level1[$level_counter1]['counter'] = $ref->user['referral_count'];
+		    			$level1[$level_counter1]['gender'] = $ref->user['gender'];
 		    			$level1[$level_counter1]['level'] = $level;
 
 		    			$level_counter1++;
@@ -93,6 +95,7 @@ class ReferralController extends Controller
 			    			${"level$j"}[$ref["ref_user_id1"]][${"level_counter$j"}]['name'] = ucfirst("{$ref->user['first_name']} {$ref->user['last_name']}");
 			    			${"level$j"}[$ref["ref_user_id1"]][${"level_counter$j"}]['parentId'] = $ref['ref_user_id1'];
 			    			${"level$j"}[$ref["ref_user_id1"]][${"level_counter$j"}]['counter'] = $ref->user['referral_count'];
+			    			${"level$j"}[$ref["ref_user_id1"]][${"level_counter$j"}]['gender'] = $ref->user['gender'];
 			    			${"level$j"}[$ref["ref_user_id1"]][${"level_counter$j"}]['level'] = $level;
 			    			break;
 			    		}

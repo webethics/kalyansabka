@@ -55,6 +55,7 @@ class UserReferralObserver
                             $dataRef['user_id'] = ${"ref_user_id$i"};
                             $dataRef['referral_id'] = $userReferral['user_id'];
                             $dataRef['amount'] = $distribute_amount;
+                            $dataRef['comment'] = 'Referral new user';
                             $this->saveIncomeHistory($dataRef);
                             /*IncomeHistory::create([
                                 'user_id' => ${"ref_user_id$i"},
@@ -75,16 +76,8 @@ class UserReferralObserver
 
                     /*Send commission to all head*/
 
-                    //find Indian head
-                    /*$roles = Role::get();
-
-                    if(!is_null($roles) && ($roles->count()) >0){
-                        foreach ($roles as $key => $role) {
-                            $name = $role['slug'];
-                            $name = strtolower(str_replace("-","_",$name)); 
-                            ${"role_$name"} = $role['id'];
-                        }*/
                     $indiaHeadRole = Role::where('slug','india-head')->first();
+                    $indiaHeadUserId = NULL;
 
                     if(!is_null($indiaHeadRole) && ($indiaHeadRole->count())>0){
                         $role_india_head = $indiaHeadRole->id;
@@ -100,6 +93,7 @@ class UserReferralObserver
                                 $dataRef['user_id'] = $indiaHeadUserId;
                                 $dataRef['referral_id'] = $userReferral['user_id'];
                                 $dataRef['amount'] = $indiaHeadComm;
+                                $dataRef['comment'] = 'New user Register';
                                 $this->saveIncomeHistory($dataRef);
 
                                 /*IncomeHistory::create([
@@ -117,14 +111,16 @@ class UserReferralObserver
                     if(isset($state_id) && !empty($state_id)){
                         $stateUser = StateHeads::where('state_id',$state_id)->orderBy('id','desc')->first();
 
+                        //calculate state commission
+                        $stateComm = $this->calculatePercentageAmount($head_distribute_commission,$state_head);
+
                         if(!is_null($stateUser)){
                             //send commission
-                            $stateComm = $this->calculatePercentageAmount($head_distribute_commission,$state_head);
-
                             $dataRef = [];
                             $dataRef['user_id'] = $stateUser->user_id;
                             $dataRef['referral_id'] = $userReferral['user_id'];
                             $dataRef['amount'] = $stateComm;
+                            $dataRef['comment'] = 'New user Register';
                             $this->saveIncomeHistory($dataRef);
                             
                             /*IncomeHistory::create([
@@ -134,6 +130,18 @@ class UserReferralObserver
                                 'amount' => $stateComm,
                                 'comment' => 'Referral new user',
                             ]);*/
+                        }else{
+                            //send commission to Indian head, if state head not there
+                            if(!is_null($indiaHeadUserId) && !empty($indiaHeadUserId)){
+
+                                $dataRef = [];
+                                $dataRef['user_id'] = $indiaHeadUserId;
+                                $dataRef['referral_id'] = $userReferral['user_id'];
+                                $dataRef['amount'] = $stateComm;
+                                $dataRef['comment'] = 'New user Register';
+                                $this->saveIncomeHistory($dataRef);
+                            }
+                            
                         }
                     }
 
@@ -141,14 +149,16 @@ class UserReferralObserver
                     if(isset($district_id) && !empty($district_id)){
                         $districtUser = DistrictHeads::where('district_id',$district_id)->orderBy('id','desc')->first();
 
+                        //calculate district comm
+                        $distictComm = $this->calculatePercentageAmount($head_distribute_commission,$district_head);
+
                         if(!is_null($districtUser)){
                             //send commission
-                            $distictComm = $this->calculatePercentageAmount($head_distribute_commission,$district_head);
-
                             $dataRef = [];
                             $dataRef['user_id'] = $districtUser->user_id;
                             $dataRef['referral_id'] = $userReferral['user_id'];
                             $dataRef['amount'] = $distictComm;
+                            $dataRef['comment'] = 'New user Register';
                             $this->saveIncomeHistory($dataRef);
                             
                             /*IncomeHistory::create([
@@ -158,6 +168,18 @@ class UserReferralObserver
                                 'amount' => $distictComm,
                                 'comment' => 'Referral new user',
                             ]);*/
+                        }else{
+                            //send commission to Indian head, if district head not there
+                            if(!is_null($indiaHeadUserId) && !empty($indiaHeadUserId)){
+
+                                $dataRef = [];
+                                $dataRef['user_id'] = $indiaHeadUserId;
+                                $dataRef['referral_id'] = $userReferral['user_id'];
+                                $dataRef['amount'] = $distictComm;
+                                $dataRef['comment'] = 'New user Register';
+                                $this->saveIncomeHistory($dataRef);
+                            }
+
                         }
                     }
                 }
@@ -227,7 +249,7 @@ class UserReferralObserver
                 'mode' => 1,
                 'status' => 1,
                 'amount' => $data['amount'],
-                'comment' => 'Referral new user',
+                'comment' => $data['comment'],
             ]);
         }
         return 1;
