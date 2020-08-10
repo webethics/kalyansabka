@@ -34,8 +34,8 @@ class UpdateWithdawalRequest extends FormRequest
     {
 		return [
           /* 'password.regex' => 'Your password must contain 1 lower case character 1 upper case character one number and One special character.', */
-		  'mobile_number.regex' => 'Your Mobile Number should be minimum 9 digits.',
-          'mobile_number.min' => 'fhfgs.',
+		  'tds_deduction_amount.required_if' => 'TDS Deduction amount is required',
+          'tds_deduction_percentage.required_if' => 'TDS Deduction percentage is required',
 		  'login_password.regex' => 'Your password must contain 1 lower case character 1 upper case character one number and One special character.',
         ];
 			 
