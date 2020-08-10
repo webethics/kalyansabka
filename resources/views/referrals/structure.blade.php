@@ -132,6 +132,8 @@ right connector from last child*/
         <div class="structure_tree">
             @include('referrals.structureTree')
         </div>
+    </div>
+    <div class="row">
         <div class="card previous-level">
             <div class="card-body">
                 <div class="row">

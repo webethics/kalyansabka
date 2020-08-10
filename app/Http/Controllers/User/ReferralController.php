@@ -23,6 +23,7 @@ class ReferralController extends Controller
     	}else{
     		$user_id = user_id();
     		$userData = user_data();
+    		$loginId = $user_id;
     	}
     	
     	$memberInfo = [];$member_counter = 0; $userInfo = [];
@@ -129,7 +130,7 @@ class ReferralController extends Controller
     		return $response;
     	}else{
     		//return view('referrals.index',compact('userInfo','memberInfo','level'));
-    		return view('referrals.structure',compact('userInfo','memberInfo','level','tree_level'));
+    		return view('referrals.structure',compact('userInfo','memberInfo','level','tree_level','loginId'));
     	}
     	
     }
