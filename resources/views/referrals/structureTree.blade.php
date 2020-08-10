@@ -3,7 +3,7 @@
     <ul>
         <li>
             {{--Root User --}}
-            <a href="#" data-id="{{$userInfo['user_id']}}">
+            <a href="#" data-id="{{$userInfo['user_id']}}" class='member_tree'>
                 <div class="member">
                     <div class="person">
                         @if($userInfo['gender'] == 'male')
@@ -27,7 +27,7 @@
                     @foreach($level['level1'] as $key => $lev1)
                         @php $level_user_id1 = $lev1['user_id']; @endphp
                     <li>
-                        <a href="#" data-id="{{$lev1['user_id']}}">
+                        <a href="#" data-id="{{$lev1['user_id']}}" class='member_tree'>
                             <div class="member">
                                 <div class="person">
                                     @if($lev1['gender'] == 'male')
@@ -54,7 +54,7 @@
                                         @foreach($level["level$i"][${"level_user_id$k"}] as $key => ${"lev$i"})
                                             @php ${"level_user_id$i"} = ${"lev$i"}['user_id']; @endphp
                                             <li>
-                                                <a href="#" data-id="{{${"lev$i"}['user_id']}}">
+                                                <a href="#" data-id="{{${"lev$i"}['user_id']}}" class='member_tree'>
                                                     <div class="member">
                                                         <div class="person">
                                                             @if(${"lev$i"}['gender'] == 'male')
@@ -81,7 +81,7 @@
                                                                 @foreach($level["level$i3"][${"level_user_id$k3"}] as $key => ${"lev$i3"})
                                                                     @php ${"level_user_id$i3"} = ${"lev$i3"}['user_id'];  @endphp
                                                                     <li>
-                                                                        <a href="#" data-id="{{${"lev$i3"}['user_id']}}">
+                                                                        <a href="#" data-id="{{${"lev$i3"}['user_id']}}" class='member_tree'>
                                                                             <div class="member">
                                                                                 <div class="person">
                                                                                     @if(${"lev$i3"}['gender'] == 'male')
@@ -108,7 +108,7 @@
                                                                                         @foreach($level["level$i4"][${"level_user_id$k4"}] as $key => ${"lev$i4"})
                                                                                             @php ${"level_user_id$i4"} = ${"lev$i4"}['user_id']; @endphp
                                                                                             <li>
-                                                                                                <a href="#" data-id="{{${"lev$i4"}['user_id']}}">
+                                                                                                <a href="#" data-id="{{${"lev$i4"}['user_id']}}" class='member_tree'>
                                                                                                     <div class="member">
                                                                                                         <div class="person">
                                                                                                             @if(${"lev$i4"}['gender'] == 'male')
@@ -135,7 +135,7 @@
                                                                                                                 @foreach($level["level$i5"][${"level_user_id$k5"}] as $key => ${"lev$i5"})
                                                                                                                     @php ${"level_user_id$i5"} = ${"lev$i5"}['user_id']; @endphp
                                                                                                                     <li>
-                                                                                                                        <a href="#" data-id="{{${"lev$i5"}['user_id']}}">
+                                                                                                                        <a href="#" data-id="{{${"lev$i5"}['user_id']}}" class='member_tree'>
                                                                                                                             <div class="member">
                                                                                                                                 <div class="person">
                                                                                                                                     @if(${"lev$i5"}['gender'] == 'male')

@@ -139,7 +139,7 @@ right connector from last child*/
                 <div class="row">
                     <div class="col-12">
                         <a href="javascript:void(0);" class="btn btn-warning default btn-xl mb-2 previous">Back</a>
-                        <a href="javascript:void(0);" class="btn btn-warning default btn-xl mb-2 reset-root">Reset</a>
+                        <a href="javascript:void(0);" class="btn btn-warning default btn-xl mb-2 reset-root" data-loginid="{{$loginId}}">Reset</a>
                     </div>
                 </div>                      
             </div>
@@ -160,7 +160,7 @@ var prevParentId = userInfo.user_id;
 
 /*when someone click on any member of tree then execute ajax request and recreate tree again*/
 $(document).on("click",'.member_tree',function(){
-    var parentId = $(this).data('rel');
+    var parentId = $(this).data('id');
     ajaxRequestCreateTree(parentId);
 });
 
@@ -175,11 +175,66 @@ $(document).on("click",'.previous-level .previous',function(){
 /*Rest to Root*/
 $(document).on("click",'.previous-level .reset-root',function(){
     //check if pqrent Id exist
-    if(typeof (userInfo) != "undefined" && userInfo != ""){
-        prevParentId = userInfo.user_id;
+    var loginId = $(this).data('loginid');
+    if(typeof (loginId) != "undefined" && loginId != ""){
+        prevParentId = loginId;
         ajaxRequestCreateTree(prevParentId);
     }
 });
+
+/*function that send ajax return and create member tree*/
+function ajaxRequestCreateTree(parentId){
+    /*Check if parent id not empty*/
+    if(parentId != ""){
+        /*Empty parent div*/
+        $('#mainContainer').empty();
+
+        /*show loader on content div*/
+        $("body").addClass("show-spinner");
+        let ajax_url = 'referrals';
+        //send ajax call
+        $.ajax({
+          type: "GET",
+          url: ajax_url,
+          data:{member_id:parentId},
+          success: function (response) {
+            $("body").removeClass("show-spinner");
+            if(response.status == 'success'){
+                if(typeof response.memberInfo != 'undefined' && response.memberInfo != null && response.memberInfo.length > 0){
+                    /*fetch previous parent id*/
+                    if(typeof response.userInfo != 'undefined' && response.userInfo != null){
+                        prevParentId = setPreviousParentId(userInfo);
+                        userInfo = response.userInfo;
+                    }
+                    $('.structure_tree').html(response.view);
+                    
+                }
+            }else{
+                if(typeof response.msg != 'undefined' && response.msg != ''){
+                    notification('Error',response.msg,'top-right','error',3000);
+                }else{
+                    notification('Error','Something went wrong.','top-right','error',3000);
+                }
+            }
+          },
+          error:function(response){
+            $("body").removeClass("show-spinner");
+            notification('Error','Something went wrong.','top-right','error',3000);
+          }
+        });
+
+    }else{
+        alert('Something went wrong');
+    }
+
+}
+
+/*functiob that returb parent id from members array*/
+function setPreviousParentId(user){
+    prevParentId = user.user_id;
+    return prevParentId;
+}
+
 
 </script>
 @stop
