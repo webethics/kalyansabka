@@ -641,10 +641,12 @@ class PaymentsController extends Controller
 	public function withdrawl_request(Request $request,$user_id){
 		
 		$withdrawldata = array();
+		$generated_trasaction_id = getToken(9);
 		$withdrawldata['user_id']  = $user_id;
 		$withdrawldata['mode']  = 2;
 		$withdrawldata['status']  = 0;
 		$withdrawldata['amount']  = $request->amount;
+		$withdrawldata['transaction_id']  = $generated_trasaction_id;
 		$withdrawldata['comment']  = 'Withdrawal Requested for Amount INR '.$request->amount;	
 		$history_id = IncomeHistory::create($withdrawldata);
 		
@@ -652,6 +654,7 @@ class PaymentsController extends Controller
 			$data['user_id'] =  $user_id;
 			$data['amount_requested'] =  $request->amount;
 			$data['status'] =  0;
+			$data['transaction_id'] = $generated_trasaction_id;
 			$data['income_history_id'] = $history_id->id;
 			$return = WithdrawlRequest::create($data);
 		}
@@ -701,20 +704,39 @@ class PaymentsController extends Controller
 				
 				$incomehistory_data = IncomeHistory::where('id',$request->income_history_id)->first();
 				$withdarawl_amount = $request->withdrawal_amount;
+				$calculated_tds = 0;
+				if($request->deduction_type == 'amount'){
+					$tds_deduction_1 = $request->tds_deduction_amount;
+					$calculated_tds =  $tds_deduction_1;
+					$income1_data['user_id']  = $request->user_id;
+					$income1_data['mode']  = 2;
+					$income1_data['status']  = 1;
+					$income1_data['amount']  = $calculated_tds;
+					$income1_data['transaction_id'] = 	$request->transaction_id;
+					$income1_data['comment']  = 'TDS Deduction on Withdrawal amount INR '.$withdarawl_amount;	
+					IncomeHistory::create($income1_data);
+				}
 				
-				$tds_deduction = $request->tds_dedcution;
-				$calculated_tds =  ($withdarawl_amount * $tds_deduction )/100;
-				$income1_data['user_id']  = $request->user_id;
-				$income1_data['mode']  = 2;
-				$income1_data['status']  = 1;
-				$income1_data['amount']  = $calculated_tds;
-				$income1_data['comment']  = 'TDS Deduction on Withdrawal amount INR '.$withdarawl_amount;	
-				IncomeHistory::create($income1_data);
+				if($request->deduction_type == 'percentage'){
+					$tds_deduction_2 = $request->tds_deduction_percentage;
+					$calculated_tds =  ($withdarawl_amount * $tds_deduction_2 )/100;
+					$income1_data['user_id']  = $request->user_id;
+					$income1_data['mode']  = 2;
+					$income1_data['status']  = 1;
+					$income1_data['amount']  = $calculated_tds;
+					$income1_data['transaction_id'] = 	$request->transaction_id;
+					$income1_data['comment']  = 'TDS Deduction on Withdrawal amount INR '.$withdarawl_amount;	
+					IncomeHistory::create($income1_data);
+				}
+				
+				
+				
 				$admin_charges = $request->admin_charges;
 				$calculated_admin_charges =  ($withdarawl_amount * $admin_charges )/100;
 				$income2_data['user_id']  = $request->user_id;
 				$income2_data['mode']  = 2;
 				$income2_data['status']  = 1;
+				$income2_data['transaction_id'] = 	$request->transaction_id;
 				$income2_data['amount']  = $calculated_admin_charges;
 				$income2_data['comment']  = 'Admin Charges on Withdrawal amount INR '.$withdarawl_amount;	
 				IncomeHistory::create($income2_data);
@@ -728,20 +750,24 @@ class PaymentsController extends Controller
 				$incomehistory_data->save();
 				
 				
-				/* $tds_deduction = $request->tds_dedcution;
+				$tds_deduction = $request->tds_dedcution;
 				$withdarawl_amount = $request->withdrawal_amount;
 				$admin_charges = $request->admin_charges;
-				$calculated_tds =  ($withdarawl_amount * $tds_deduction )/100;
-				$calculated_admin_charges =  ($withdarawl_amount * $admin_charges )/100; */
+				/* $calculated_tds =  ($withdarawl_amount * $tds_deduction )/100; */
+				$calculated_admin_charges =  ($withdarawl_amount * $admin_charges )/100; 
 				$deposit_to_bank = $withdarawl_amount - $calculated_tds - $calculated_admin_charges;
 				$request_data['tds_deduction'] = $calculated_tds;
 				$request_data['admin_charges'] = $calculated_admin_charges;
 				$request_data['deposit_to_bank'] = $deposit_to_bank;
 				$request_data['request_id'] = 	$request->income_history_id;
 				$request_data['withdrawal_amount'] = 	$request->withdrawal_amount;
-				$request_data['tds_percent'] = 	$request->tds_dedcution;
+				$request_data['deduction_type'] = 	$request->deduction_type;
+				$request_data['tds_deduction_amount'] = 	$request->tds_deduction_amount?$request->tds_deduction_amount:'';
+				$request_data['tds_deduction_percentage'] = 	$request->tds_deduction_percentage?$request->tds_deduction_percentage:'';
 				$request_data['admin_percent'] = 	$request->admin_charges;
 				$request_data['user_id'] = 	$request->user_id;
+				$request_data['transaction_id'] = 	$request->transaction_id;
+				
 				$update = $requestData->update($data);
 				if($update){
 					WithdrawalRequestCharges::create($request_data);

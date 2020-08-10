@@ -5,7 +5,7 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Validator;
 
-class UpdateWithdawalRequest extends FormRequest
+class UpdateCompanyRequest extends FormRequest
 {
    /*  public function authorize()
     {
@@ -15,27 +15,18 @@ class UpdateWithdawalRequest extends FormRequest
     public function rules()
     {
         return [
-		
-            'deduction_type'     => [
+            'name'     => [
                 'required',
-            ],
-			'tds_deduction_amount'     => [
-                'required_if:deduction_type,==,amount',
-            ],
-			'tds_deduction_percentage'     => [
-                'required_if:deduction_type,==,percentage',
-            ],
-			 'admin_charges'     => [
-                'required',
-            ]
-		];
+            ], 
+			
+        ];
     }
 	public function messages()
     {
 		return [
           /* 'password.regex' => 'Your password must contain 1 lower case character 1 upper case character one number and One special character.', */
-		  'tds_deduction_amount.required_if' => 'TDS Deduction amount is required',
-          'tds_deduction_percentage.required_if' => 'TDS Deduction percentage is required',
+		  'mobile_number.regex' => 'Your Mobile Number should be minimum 9 digits.',
+          'mobile_number.min' => 'fhfgs.',
 		  'login_password.regex' => 'Your password must contain 1 lower case character 1 upper case character one number and One special character.',
         ];
 			 

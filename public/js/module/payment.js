@@ -430,3 +430,16 @@ $(document).on('click','#export_payment_data', function(e) {
     });
 });
 
+$(document).on('change','#deduction_type', function(e) {
+	
+	var deduction_type = $(this).val();
+	if(deduction_type == 'amount'){
+		$('#amount_dropdown').show('slow');
+		$('#percentage_dropdown').hide('slow');
+	}
+	if(deduction_type == 'percentage'){
+		$('#amount_dropdown').hide('slow');
+		$('#percentage_dropdown').show('slow');
+	}
+});
+

@@ -8,7 +8,7 @@
 		<th scope="col">Mobile</th>
 		<th scope="col">Aadhaar</th>
 		<th scope="col">Status</th>
-		<th scope="col">Action {{$page_number}}</th>
+		<th scope="col">Action</th>
 		</tr>
 	</thead>
 	<tbody>
