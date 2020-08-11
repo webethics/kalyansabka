@@ -5,7 +5,7 @@
 		
 		 @php    
 			$roleArray = Config::get('constant.role_id');
-			$dashboardactive='';  $custactive='';	 $payactive='';	$withdrawlactive=''; $certactive=''; $ccertactive=''; $editactive=''; $configactive=''; $custpayactive=''; $roleactive='';
+			$dashboardactive='';  $custactive='';	 $payactive='';	$withdrawlactive=''; $certactive=''; $ccertactive=''; $editactive=''; $configactive=''; $custpayactive=''; $roleactive=''; $complaintsactive='';$listcomplaintsactive='';$policyactive='';
 			$emailactive=''; $companyactive=''; 
 			$referralactive=''; 
 			
@@ -85,6 +85,21 @@
 		 @if(collect(request()->segments())->last()=='roles')
 		 @php
 	      $roleactive ='active'
+	     @endphp
+		 @endif
+		 @if(collect(request()->segments())->last()=='complaints')
+		 @php
+	      $complaintsactive ='active'
+	     @endphp
+		 @endif
+		 @if(collect(request()->segments())->last()=='list-complaints')
+		 @php
+	      $listcomplaintsactive ='active'
+	     @endphp
+		 @endif
+		 @if(collect(request()->segments())->last()=='policies-requests')
+		 @php
+	      $policyactive ='active'
 	     @endphp
 		 @endif
 		 
@@ -171,9 +186,34 @@
 						</a>
 					</li>
 					@endif
+					@if(check_role_access('companies_listing'))
+					<li class="{{$listcomplaintsactive}}">
+						<a href="{{url('/list-complaints')}}">
+							<i class="simple-icon-support"></i>
+							<span>Complaints</span>
+						</a>
+					</li>
+					@endif
+					@if(check_role_access('companies_listing'))
+					<li class="{{$policyactive}}">
+						<a href="{{url('/policies-requests')}}">
+							<i class="simple-icon-doc"></i>
+							<span>Policy Cancellation Requests</span>
+						</a>
+					</li>
+					@endif
+					@if(check_role_access('companies_listing'))
+					<li class="{{$policyactive}}">
+						<a href="{{url('/claim-intimations')}}">
+							<i class="simple-icon-exclamation"></i>
+							<span>Claim Intimations</span>
+						</a>
+					</li>
+					@endif
 				
 				 
-					@if(current_user_role_id() != 1 && current_user_role_id() != 2)					
+				@if(current_user_role_id() != 1 && current_user_role_id() != 2)
+					
 					
 					<li class="{{$accactive}}">
 						<a href="{{url('/account')}}">
@@ -200,6 +240,12 @@
 						<a href="{{url('/referrals')}}">
 							<i class="iconsminds-affiliate"></i>
 							<span>Referrals</span>
+						</a>
+					</li>
+					<li class="{{$complaintsactive}}">
+						<a href="{{url('/complaints')}}">
+							<i class="iconsminds-support"></i>
+							<span>Complaints</span>
 						</a>
 					</li>
 

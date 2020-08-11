@@ -553,8 +553,8 @@ class PaymentsController extends Controller
 		}
 		
 		//print_r($result);
-		//echo $result->orderBy('created_at', 'desc')->toSql();
-		
+		$data =  $result->orderBy('created_at', 'desc')->get();
+		//echo '<pre>';print_r($data->toArray());die;
 		if($pagination == true){
 			$payments = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
 		}else{
@@ -598,6 +598,7 @@ class PaymentsController extends Controller
 		
 		access_denied_user('payment_edit');
         $request = WithdrawlRequest::where('id',$payment_id)->with('user','request_changes')->first();
+		
 		$user_id = $request->user_id;
 		
 		// total withdarawl amount till now
@@ -722,6 +723,8 @@ class PaymentsController extends Controller
 				$incomehistory_data = IncomeHistory::where('id',$request->income_history_id)->first();
 				$withdarawl_amount = $request->withdrawal_amount;
 				$calculated_tds = 0;
+				
+				
 				if($request->deduction_type == 'amount'){
 					$tds_deduction_1 = $request->tds_deduction_amount;
 					$calculated_tds =  $tds_deduction_1;
@@ -745,6 +748,7 @@ class PaymentsController extends Controller
 					$income1_data['comment']  = 'TDS Deduction on Withdrawal amount INR '.$withdarawl_amount;	
 					
 				}
+				
 				
 				
 				
@@ -819,7 +823,7 @@ class PaymentsController extends Controller
 					  'success'=>false,
 					  'message'=>"Payment Status Must be Paid."
 					), 200);
-			}
+			} 
 		}else{
 			return Response::json(array(
 					  'success'=>false,

@@ -2,31 +2,20 @@
 /*==============================================
 	SHOW EDIT REQUEST FORM 
 ============================================*/
-$(document).on('click', '.editPayment' , function() {
+$(document).on('click', '.editPolicyRequest' , function() {
 	var payment_id = $(this).data('payment_id');
 	var csrf_token = $('meta[name="csrf-token"]').attr('content');
 	 $.ajax({
         type: "POST",
 		dataType: 'json',
-        url: base_url+'/payment/edit/'+payment_id,
+        url: base_url+'/cancel-policy-request/edit/'+payment_id,
         data: {_token:csrf_token,payment_id:payment_id},
         success: function(data) {
 			if(data.success){
 				
 				
-				$('.paymentEditModal').html(data.data);
-				$('.paymentEditModal').modal('show');
-				
-				var deduction_type = $('#deduction_type').val();
-				if(deduction_type == 'amount'){
-					$('#amount_dropdown').show('slow');
-					$('#percentage_dropdown').hide('slow');
-				}
-				if(deduction_type == 'percentage'){
-					$('#amount_dropdown').hide('slow');
-					$('#percentage_dropdown').show('slow');
-				}
-				
+				$('.policyRequestEditModal').html(data.data);
+				$('.policyRequestEditModal').modal('show');
 				
 				$('.errors').html('');
 			}else{

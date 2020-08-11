@@ -154,6 +154,22 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('/create-role-permissions/',array('uses'=>'RolesController@role_permission_create')); //Edit User
 	Route::post('/update-role-permissions/',array('uses'=>'RolesController@role_permission_update')); //Edit User
 	
+	
+	Route::get('complaints',array('uses'=>'ComplaintsController@complaints'));
+	Route::get('list-complaints',array('uses'=>'ComplaintsController@list_complaints'));
+	Route::get('complaint/create/',array('uses'=>'ComplaintsController@complaint_create')); //Edit User
+	Route::post('create-new-complaint', 'ComplaintsController@complaint_create_new'); //Edit User
+	Route::post('update-complaint/{request_id}', 'ComplaintsController@update_complaint'); //Edit User
+	Route::post('complaints/delete_company/{request_id}',array('uses'=>'ComplaintsController@complaint_delete')); //Edit User
+	Route::post('complaint/edit/{request_id}', 'ComplaintsController@complaint_edit'); //Edit User
+	Route::post('list-complaint/edit/{request_id}', 'ComplaintsController@list_complaint_edit'); //Edit User
+	
+	Route::get('policies-requests',array('uses'=>'PolicyCancellationController@policyCancellations'));
+	Route::get('claim-intimations',array('uses'=>'ClaimIntimationController@intimations'));
+	Route::post('cancel-policy-request/edit/{request_id}', 'PolicyCancellationController@request_edit'); //Edit User
+	
+	
+	
 });
 
 Route::post('user/cityDropdown', 'User\UsersController@cityDropdown');
