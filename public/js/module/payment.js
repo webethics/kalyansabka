@@ -14,9 +14,15 @@ $(document).on('click', '.editPayment' , function() {
 			if(data.success){
 				$('.paymentEditModal').html(data.data);
 				$('.paymentEditModal').modal('show');
-				var selectedVal = $('#selectedVal').val();
-				if(selectedVal){
-					$("#selected_code option[value="+selectedVal+"]").attr("selected","selected");
+				
+				var deduction_type = $('#deduction_type').val();
+				if(deduction_type == 'amount'){
+					$('#amount_dropdown').show('slow');
+					$('#percentage_dropdown').hide('slow');
+				}
+				if(deduction_type == 'percentage'){
+					$('#amount_dropdown').hide('slow');
+					$('#percentage_dropdown').show('slow');
 				}
 				$('.errors').html('');
 			}else{
@@ -115,6 +121,8 @@ $(document).on('click', '.withdrawl_user' , function() {
 			if(data.success){
 				notification('Success','Your withdrawl request has been submitted successfully.','top-right','success',2000);
 				setTimeout(function(){window.location.href = base_url+'/customer-payments'; }, 2500);
+			}else if(data.message){
+				notification('Error',data.message,'top-right','error',3000);
 			}else{
 				notification('Error','Something went wrong.','top-right','error',3000);
 			}	

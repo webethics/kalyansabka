@@ -22,8 +22,8 @@
 			<td id="business_url_{{$payment->id}}">INR {{$payment->amount_requested}}</td>
 			<td id="email_{{$payment->id}}">
 				@if($payment->status ==0) {{"Pending"}} 
-				@elseif($payment->status == 1) {{"Approve"}} 
-				@elseif($payment->status == 2) {{"Decline"}} @endif </td>
+				@elseif($payment->status == 1) {{"Approved"}} 
+				@elseif($payment->status == 2) {{"Declined"}} @endif </td>
 			<td id="email_{{$payment->id}}">
 				@if(check_role_access('withdrawl_edit'))
 					<a class="action editPayment" href="javascript:void(0)" data-payment_id="{{ $payment->id }}" title="Edit Withdrawl Request"><i class="simple-icon-note"></i> </a>

@@ -640,37 +640,27 @@ class PaymentsController extends Controller
     }
 	public function withdrawl_request(Request $request,$user_id){
 		
-		$get_current_request = WithdrawlRequest::where('user_id',$user_id)->where('status',0)->first();
+		$withdrawldata = array();
+		$generated_trasaction_id = getToken(9);
+		$withdrawldata['user_id']  = $user_id;
+		$withdrawldata['mode']  = 2;
+		$withdrawldata['status']  = 0;
+		$withdrawldata['amount']  = $request->amount;
+		$withdrawldata['transaction_id']  = $generated_trasaction_id;
+		$withdrawldata['comment']  = 'Withdrawal Requested for Amount INR '.$request->amount;	
+		$history_id = IncomeHistory::create($withdrawldata);
 		
-		if(!$get_current_request){
-			$withdrawldata = array();
-			$generated_trasaction_id = getToken(9);
-			$withdrawldata['user_id']  = $user_id;
-			$withdrawldata['mode']  = 2;
-			$withdrawldata['status']  = 0;
-			$withdrawldata['amount']  = $request->amount;
-			$withdrawldata['transaction_id']  = $generated_trasaction_id;
-			$withdrawldata['comment']  = 'Withdrawal Requested for Amount INR '.$request->amount;	
-			$history_id = IncomeHistory::create($withdrawldata);
-			
-			if($history_id->id){
-				$data['user_id'] =  $user_id;
-				$data['amount_requested'] =  $request->amount;
-				$data['status'] =  0;
-				$data['transaction_id'] = $generated_trasaction_id;
-				$data['income_history_id'] = $history_id->id;
-				$return = WithdrawlRequest::create($data);
-			}
-			return Response::json(array(
-			  'success'=>true,
-			), 200);
-		}else{
-			return Response::json(array(
-			  'success'=>false,
-			  'message'=>'Your already submit a request for withdrawal.'
-			), 200);
+		if($history_id->id){
+			$data['user_id'] =  $user_id;
+			$data['amount_requested'] =  $request->amount;
+			$data['status'] =  0;
+			$data['transaction_id'] = $generated_trasaction_id;
+			$data['income_history_id'] = $history_id->id;
+			$return = WithdrawlRequest::create($data);
 		}
-		
+		return Response::json(array(
+		  'success'=>true,
+		), 200);
 	}
 	
 	public function confirmPaymentModal(Request $request)
@@ -710,13 +700,6 @@ class PaymentsController extends Controller
 			$requestData = WithdrawlRequest::where('id',$request_id);
 			$data['status'] = $request->status;
 			$data['id'] = $request->request_id;
-			if($request->tds_deduction_amount > $request->withdrawal_amount){
-				
-				return Response::json(array(
-						  'success'=>false,
-						  'message'=>"TDS Dedcution amount can not be greater than Withdrawal Amount"
-						), 200);
-			}
 			if($data['status'] == 1){
 				
 				$incomehistory_data = IncomeHistory::where('id',$request->income_history_id)->first();
@@ -731,7 +714,7 @@ class PaymentsController extends Controller
 					$income1_data['amount']  = $calculated_tds;
 					$income1_data['transaction_id'] = 	$request->transaction_id;
 					$income1_data['comment']  = 'TDS Deduction on Withdrawal amount INR '.$withdarawl_amount;	
-					//IncomeHistory::create($income1_data);
+					IncomeHistory::create($income1_data);
 				}
 				
 				if($request->deduction_type == 'percentage'){
@@ -743,7 +726,7 @@ class PaymentsController extends Controller
 					$income1_data['amount']  = $calculated_tds;
 					$income1_data['transaction_id'] = 	$request->transaction_id;
 					$income1_data['comment']  = 'TDS Deduction on Withdrawal amount INR '.$withdarawl_amount;	
-					
+					IncomeHistory::create($income1_data);
 				}
 				
 				
@@ -756,63 +739,48 @@ class PaymentsController extends Controller
 				$income2_data['transaction_id'] = 	$request->transaction_id;
 				$income2_data['amount']  = $calculated_admin_charges;
 				$income2_data['comment']  = 'Admin Charges on Withdrawal amount INR '.$withdarawl_amount;	
+				IncomeHistory::create($income2_data);
 				
-				if($calculated_admin_charges + $calculated_tds >  $withdarawl_amount){
+				
+				$incomehistory_data->user_id  = $request->user_id;
+				$incomehistory_data->mode  = 2;
+				$incomehistory_data->status  = 1;
+				$incomehistory_data->amount  = $withdarawl_amount - $calculated_tds - $calculated_admin_charges;
+				$incomehistory_data->comment  = 'Withdrawal Requested for Amount INR '.$withdarawl_amount;
+				$incomehistory_data->save();
+				
+				
+				$tds_deduction = $request->tds_dedcution;
+				$withdarawl_amount = $request->withdrawal_amount;
+				$admin_charges = $request->admin_charges;
+				/* $calculated_tds =  ($withdarawl_amount * $tds_deduction )/100; */
+				$calculated_admin_charges =  ($withdarawl_amount * $admin_charges )/100; 
+				$deposit_to_bank = $withdarawl_amount - $calculated_tds - $calculated_admin_charges;
+				$request_data['tds_deduction'] = $calculated_tds;
+				$request_data['admin_charges'] = $calculated_admin_charges;
+				$request_data['deposit_to_bank'] = $deposit_to_bank;
+				$request_data['request_id'] = 	$request->income_history_id;
+				$request_data['withdrawal_amount'] = 	$request->withdrawal_amount;
+				$request_data['deduction_type'] = 	$request->deduction_type;
+				$request_data['tds_deduction_amount'] = 	$request->tds_deduction_amount?$request->tds_deduction_amount:'';
+				$request_data['tds_deduction_percentage'] = 	$request->tds_deduction_percentage?$request->tds_deduction_percentage:'';
+				$request_data['admin_percent'] = 	$request->admin_charges;
+				$request_data['user_id'] = 	$request->user_id;
+				$request_data['transaction_id'] = 	$request->transaction_id;
+				
+				$update = $requestData->update($data);
+				if($update){
+					WithdrawalRequestCharges::create($request_data);
 					return Response::json(array(
-						  'success'=>false,
-						  'message'=>"TDS Dedcution amount can not be greater than Withdrawal Amount"
-						), 200);
+					  'success'=>true,
+					  'message'=>"Request Compleated Successfuly."
+					), 200);
 				}else{
-					if($request->deduction_type == 'percentage'){
-						IncomeHistory::create($income1_data);
-					}
-					if($request->deduction_type == 'amount'){
-						IncomeHistory::create($income1_data);
-					}
-					IncomeHistory::create($income2_data);
-					$incomehistory_data->user_id  = $request->user_id;
-					$incomehistory_data->mode  = 2;
-					$incomehistory_data->status  = 1;
-					$incomehistory_data->amount  = $withdarawl_amount - $calculated_tds - $calculated_admin_charges;
-					$incomehistory_data->comment  = 'Withdrawal Requested for Amount INR '.$withdarawl_amount;
-					$incomehistory_data->save();
-					
-					
-					$tds_deduction = $request->tds_dedcution;
-					$withdarawl_amount = $request->withdrawal_amount;
-					$admin_charges = $request->admin_charges;
-					
-					$calculated_admin_charges =  ($withdarawl_amount * $admin_charges )/100; 
-					$deposit_to_bank = $withdarawl_amount - $calculated_tds - $calculated_admin_charges;
-					$request_data['tds_deduction'] = $calculated_tds;
-					$request_data['admin_charges'] = $calculated_admin_charges;
-					$request_data['deposit_to_bank'] = $deposit_to_bank;
-					$request_data['request_id'] = 	$request->income_history_id;
-					$request_data['withdrawal_amount'] = 	$request->withdrawal_amount;
-					$request_data['deduction_type'] = 	$request->deduction_type;
-					$request_data['tds_deduction_amount'] = 	$request->tds_deduction_amount?$request->tds_deduction_amount:'';
-					$request_data['tds_deduction_percentage'] = 	$request->tds_deduction_percentage?$request->tds_deduction_percentage:'';
-					$request_data['admin_percent'] = 	$request->admin_charges;
-					$request_data['user_id'] = 	$request->user_id;
-					$request_data['transaction_id'] = 	$request->transaction_id;
-					
-					$update = $requestData->update($data);
-					if($update){
-						WithdrawalRequestCharges::create($request_data);
-						return Response::json(array(
-						  'success'=>true,
-						  'message'=>"Request Compleated Successfuly."
-						), 200);
-					}else{
-						return Response::json(array(
-						  'success'=>false,
-						  'message'=>"Some issue in compleating the request."
-						), 200);
-					}
+					return Response::json(array(
+					  'success'=>false,
+					  'message'=>"Some issue in compleating the request."
+					), 200);
 				}
-				
-				
-				
 				
 			}else{
 				return Response::json(array(

@@ -60,22 +60,22 @@
 		</div>	
 		
 		<div class="form-group form-row-parent">
-			<label class="col-form-label">TDS Deduction Type<em>*</em></label>
+			<label class="col-form-label">TDS Deduction<em>*</em></label>
 			<div class="d-flex control-group">
 				
 				<select name="deduction_type"  id="deduction_type" class="form-control select2">
-					<option value="">Select Deduction Type</option>
-					<option value="amount" @if($request->deduction_type == "amount"){{'selected="selected"'}}@endif>In Amount</option>
-					<option value="percentage" @if($request->deduction_type == "percentage"){{'selected="selected"'}}@endif>In Percentage</option>
+					<option value="">Select TDS Deduction</option>
+					<option value="amount" @if(isset($request->request_changes) && $request->request_changes->deduction_type == "amount"){{'selected="selected"'}}@endif>In Amount</option>
+					<option value="percentage" @if(isset($request->request_changes) && $request->request_changes->deduction_type == "percentage"){{'selected="selected"'}}@endif>In Percentage</option>
 				</select>
 			</div>	
 			<div class="dedeuction_type_error errors"></div>		
-		</div>	
+		</div>
 		
 		<div class="form-group form-row-parent" id="amount_dropdown" style="display:none">
 			<label class="col-form-label">TDS Deduction(In amount)</label>
 			<div class="d-flex control-group">
-				<input type="text" name="tds_deduction_amount" value="{{$request->request_changes->tds_deduction_amount ?? ""}}" class="form-control" placeholder="TDS Deduction in amount">								
+				<input type="text" name="tds_deduction_amount" value="{{$request->request_changes->tds_deduction ?? ""}}" class="form-control" placeholder="TDS Deduction in amount">								
 			</div>	
 			<div class="tds_deduction_amount_error errors"></div>				
 		</div>	
