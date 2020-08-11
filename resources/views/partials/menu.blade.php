@@ -173,8 +173,7 @@
 					@endif
 				
 				 
-				@if(current_user_role_id()==$roleArray['NORMAL_USER'])
-					
+					@if(current_user_role_id() != 1 && current_user_role_id() != 2)					
 					
 					<li class="{{$accactive}}">
 						<a href="{{url('/account')}}">
