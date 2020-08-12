@@ -93,7 +93,7 @@ $(document).on('submit','#updateComplaint', function(e) {
 				 
 				notification('Success','Complaint Updated Successfully','top-right','success',2000);
 				$('#subject_'+user_id).text(data.subject);
-				setTimeout(function(){ $('.complaintEditModal').modal('hide'); }, 2000);
+				setTimeout(function(){ $('.listComplaintEditModal').modal('hide'); }, 2000);
 				
 			}else{
 				$('.mark_as_head_error').show().append(data.message);
