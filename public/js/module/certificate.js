@@ -70,8 +70,9 @@ $(document).on('submit', '#updateCertificate' , function(event) {
 				}
 	        },
 	       error:function(response){
-	       	$this.find('.request_loader').hide();
-	       	console.log('error');
+				$this.find('.request_loader').hide();
+				console.log('error');
+				notification('Error','Something went wrong.','top-right','error',3000);
 	       }
 
 	    });

@@ -104,6 +104,7 @@
                                                                             @php $k4=$next_level4-1; @endphp
                                                                             @if(isset($level["level$i4"]) && !empty($level["level$i4"]) && count($level["level$i4"]) > 0)
                                                                                 @if(isset($level["level$i4"][${"level_user_id$k4"}]) && !empty($level["level$i4"][${"level_user_id$k4"}]) && count($level["level$i4"][${"level_user_id$k4"}]) > 0)
+                                                                                    @php echo 'count='.count($level["level$i4"][${"level_user_id$k4"}]); @endphp
                                                                                     <ul>
                                                                                         @foreach($level["level$i4"][${"level_user_id$k4"}] as $key => ${"lev$i4"})
                                                                                             @php ${"level_user_id$i4"} = ${"lev$i4"}['user_id']; @endphp

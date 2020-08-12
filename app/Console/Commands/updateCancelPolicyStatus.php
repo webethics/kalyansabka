@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Models\User;
+use Carbon\Carbon;
 
 class updateCancelPolicyStatus extends Command
 {
@@ -11,7 +13,7 @@ class updateCancelPolicyStatus extends Command
      *
      * @var string
      */
-    protected $signature = 'cancelpolicy:status';
+    protected $signature = 'Cancelpolicy:status';
 
     /**
      * The console command description.
@@ -37,6 +39,31 @@ class updateCancelPolicyStatus extends Command
      */
     public function handle()
     {
-        //
+        $users = User::where('show_cancellation_status',0)->get();
+        if(!is_null($users) && count($users)>0){
+            foreach ($users as $key=>$user){
+                $date = Carbon::parse($user['created_at']);
+                $now = Carbon::now();
+
+                $diff = $date->diffInDays($now);
+                if($diff > 15){
+                    //hide cancellation button from frontend
+                    $updateUserInfo = $this->updateUser($user);
+                }
+            }
+        }
+       
+    }
+
+
+    /*update User Table*/
+    public function updateUser($data){
+        $user = User::find($data['id']);
+
+        if ($user) {
+            $user->update([
+                'show_cancellation_status' => 1
+            ]);
+        }
     }
 }

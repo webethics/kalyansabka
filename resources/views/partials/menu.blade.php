@@ -5,7 +5,7 @@
 		
 		 @php    
 			$roleArray = Config::get('constant.role_id');
-			$dashboardactive='';  $custactive='';	 $payactive='';	$withdrawlactive=''; $certactive=''; $ccertactive=''; $editactive=''; $configactive=''; $custpayactive=''; $roleactive=''; $complaintsactive='';$listcomplaintsactive='';$policyactive='';
+			$dashboardactive='';  $custactive='';	 $payactive='';	$withdrawlactive=''; $certactive=''; $ccertactive=''; $editactive=''; $configactive=''; $custpayactive=''; $roleactive=''; $commissionactive=''; $complaintsactive='';$listcomplaintsactive='';$policyactive='';
 			$emailactive=''; $companyactive=''; 
 			$referralactive=''; 
 			
@@ -102,6 +102,12 @@
 	      $policyactive ='active'
 	     @endphp
 		 @endif
+
+		 @if(collect(request()->segments())->last()=='commission')
+		 @php
+	      $commissionactive ='active'
+	     @endphp
+		 @endif
 		 
 			<ul class="list-unstyled">
 				
@@ -150,6 +156,14 @@
 						<a href="{{url('/requests')}}">
 							<i class="iconsminds-digital-drawing"></i>
 							<span>Edit Requests</span>
+						</a>
+					</li>
+					@endif
+					@if(check_role_access('commission_listing'))
+					<li class="{{$commissionactive}}">
+						<a href="{{url('/commissions')}}">
+							<i class="iconsminds-coins"></i>
+							<span>Commission</span>
 						</a>
 					</li>
 					@endif

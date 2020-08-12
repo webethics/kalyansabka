@@ -21,6 +21,7 @@ return [
     'nominee_number'                        => 'Number of Nominee you want to add ?',
     'nominee_relation'                      => 'Nominee Relation',
     'nominee_percentage'                    => 'Nominee Percentage',
+    'percentage'                            => 'Percentage',
     'bank_name'                             => 'Bank Name',
     'account_number'                        => 'Account Number',
     'account_name'                          => 'Account name',
