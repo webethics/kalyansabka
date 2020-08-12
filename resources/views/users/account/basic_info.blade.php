@@ -42,11 +42,11 @@
 	</div>
 	<div class="form-group row">
 		<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.state')}}</label>
-		<label class="col-lg-9 col-xl-10 col-form-label" id="show_state_id">{{$user->state_id}}</label>
+		<label class="col-lg-9 col-xl-10 col-form-label" id="show_state_id">{{getStateNameByStateId($user->state_id)}}</label>
 	</div>
 	<div class="form-group row">
 		<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.district')}}</label>
-		<label class="col-lg-9 col-xl-10 col-form-label" id="show_district_id">{{$user->district_id}}</label>
+		<label class="col-lg-9 col-xl-10 col-form-label" id="show_district_id">{{getDistrictNameByDistrictId($user->district_id)}}</label>
 	</div>
 	@endif
 </div>	

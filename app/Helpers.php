@@ -12,6 +12,7 @@ use PHPMailer\PHPMailer\Exception;
 use App\Models\Notification;
 use App\Models\EmailTemplate;
 use App\Models\StateList;
+use App\Models\CityLists;
 use App\Models\Company;
 use App\Models\Plan;
 use Carbon\Carbon;
@@ -340,7 +341,14 @@ function birth_years(){
 	});
 	return $birth_years;
 }
-
+function getStateNameByStateId($state_id){
+	$getname = StateList::where('id',$state_id)->select('state_name')->first();
+	return $getname->state_name;
+}
+function getDistrictNameByDistrictId($district_id){
+	$getname = CityLists::where('id',$district_id)->select('city_name')->first();
+	return $getname->city_name;
+}
 function viewDateFormat($date){
 	return Carbon::parse($date)->format(config('constant.FRONT_DATE_FORMAT'));
 }
