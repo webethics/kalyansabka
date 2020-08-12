@@ -23,6 +23,12 @@
 	font-size: 14px;
     line-height: 26px;
 }
+.chat_links{
+    color: #fff;
+    background: #145388;
+    padding: 5px;
+	margin:0 8px
+}
 #showNomineeDetails hr{width:100%}
 
 #user_response_update_1,#user_response_update,#user_response_update_db,#user_response_update_db_1{
