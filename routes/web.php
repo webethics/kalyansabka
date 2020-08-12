@@ -154,7 +154,11 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('role/delete_role/{request_id}',array('uses'=>'RolesController@role_delete')); //Edit User
 	Route::post('/create-role-permissions/',array('uses'=>'RolesController@role_permission_create')); //Edit User
 	Route::post('/update-role-permissions/',array('uses'=>'RolesController@role_permission_update')); //Edit User
-	
+
+	//commission
+	Route::get('commissions',array('uses'=>'CommissionController@index'));
+	Route::post('commission/edit/{request_id}', 'CommissionController@commission_edit'); //Edit commission request
+	Route::post('update-commission/{request_id}', 'CommissionController@update_commission'); //Update commission
 	
 	Route::get('complaints',array('uses'=>'ComplaintsController@complaints'));
 	Route::get('list-complaints',array('uses'=>'ComplaintsController@list_complaints'));

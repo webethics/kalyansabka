@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\updateCancelPolicyStatus::class,
     ];
 
     /**
@@ -26,6 +26,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('Cancelpolicy:status')->dailyAt('7:00');
+        $schedule->command('UpgradePlanRequest:status')->dailyAt('6:00');
     }
 
     /**
