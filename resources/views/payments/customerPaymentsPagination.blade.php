@@ -28,7 +28,13 @@
 					{{$payment->comment}}
 				@endif
 				@if($payment->mode == 1 )
-					Credited - Referral Commission for <b>{{$payment->user->full_name }}</b>
+					@if(!empty($payment->user))
+						Credited - Referral Commission for <b>{{$payment->user->full_name }}</b>
+					@else
+						Credited - Referral Commission for <b>Direct User Register</b>
+					@endif
+					
+					
 				@endif
 			</td>
 			<td id="payment_mode1_{{$payment->id}}">@if($payment->mode == 1) INR {{$payment->amount}} @else {{'-'}} @endif</td>

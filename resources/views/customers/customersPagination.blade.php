@@ -51,10 +51,10 @@
 					<a title="Delete Customer"  data-id="{{ $customer->id }}" data-confirm_type="complete" data-confirm_message ="Are you sure you want to delete the Customer?"  data-left_button_name ="Yes" data-left_button_id ="delete_customer" data-left_button_cls="btn-primary" class="open_confirmBox action deleteCustomer"  href="javascript:void(0)" data-customer_id="{{ $customer->id }}"><i class="simple-icon-trash"></i></a>
 				@endif	
 				@if($customer->role_id == 4)
-					<a title="State Head" class="open_confirmBox action stateHead"  href="javascript:void(0)"><i class="simple-icon-user"></i></a>
+					<a title="State Head" class="action stateHead"  href="javascript:void(0)"><i class="simple-icon-user"></i></a>
 				@endif	
 				@if($customer->role_id == 5)
-					<a title="District Head" class="open_confirmBox action districtHead"  href="javascript:void(0)"><i class="simple-icon-user"></i></a>
+					<a title="District Head" class="action districtHead"  href="javascript:void(0)"><i class="simple-icon-user"></i></a>
 				@endif
 				
 			</td>	

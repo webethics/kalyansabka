@@ -693,7 +693,7 @@ function valdateReferral(value){
 			data: {_token:csrf_token,aadhar_number:value},
 			success: function(data) {
 				if(data.success == true){
-					$('#referral_name').html('Referrd By: '+data.name);
+					$('#referral_name').html('Referred By: '+data.name);
 					$('.refered_by_error').html('<h3 class="success">Referred ID is verified.');
 				}else{
 					$('#referral_name').html('');

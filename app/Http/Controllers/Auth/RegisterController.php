@@ -302,6 +302,10 @@ class RegisterController extends Controller
 		
 		if($dat){
 			//insert price in user payment
+			if($data['hard_copy_certificate']){
+				$data['actual_price'] = $data['actual_price'] + 100;
+			}
+			
 			$userPaymentData = [];
 			$userPaymentData['user_id'] = $dat->id;
 			$userPaymentData['plan_id'] = $data['plan'];
