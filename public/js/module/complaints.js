@@ -51,18 +51,18 @@ $(document).on('click', '.changeComplaint' , function() {
 	
 
 	
-$(document).on('click', '.delete_company' , function() {
-	var company_id = $(this).data('id');
+$(document).on('click', '.delete_complaint' , function() {
+	var complaint_id = $(this).data('id');
 	var csrf_token = $('meta[name="csrf-token"]').attr('content');
 	 $.ajax({
         type: "POST",
 		dataType: 'json',
-        url: base_url+'/companies/delete_company/'+company_id,
-        data: {_token:csrf_token,company_id:company_id},
+        url: base_url+'/complaints/delete_complaint/'+complaint_id,
+        data: {_token:csrf_token,complaint_id:complaint_id},
         success: function(data) {
 			if(data.success){
 				notification('Success','Company deleted Successfully','top-right','success',2000);
-				$('.user_row_'+company_id).hide();
+				$('.user_row_'+complaint_id).hide();
 			}else if(data.message){
 				notification('Error',data.message,'top-right','error',4000);
 			}else{	
@@ -75,14 +75,14 @@ $(document).on('click', '.delete_company' , function() {
 /*==============================================
 	UPDATE REQUEST FORM 
 ============================================*/
-$(document).on('submit','#updateCompany', function(e) {
+$(document).on('submit','#updateComplaint', function(e) {
     e.preventDefault(); 
 	var user_id = $('#user_id').val();
 	$('.request_loader').css('display','inline-block');
     $.ajax({
         type: "POST",
 		dataType: 'json',
-        url: base_url+'/update-company/'+user_id,
+        url: base_url+'/update-complaint/'+user_id,
         data: $(this).serialize(),
         success: function(data) {
 			//alert(data)
@@ -91,13 +91,63 @@ $(document).on('submit','#updateCompany', function(e) {
 			// If data inserted into DB
 			 if(data.success){
 				 
-				notification('Success','Company Updated Successfully','top-right','success',2000);
-				$('#name_'+user_id).text(data.name);
+				notification('Success','Complaint Updated Successfully','top-right','success',2000);
+				$('#subject_'+user_id).text(data.subject);
+				setTimeout(function(){ $('.listComplaintEditModal').modal('hide'); }, 2000);
 				
-				setTimeout(function(){ $('.companyEditModal').modal('hide'); }, 2000);
-				if(data.state_head == 'updated'){
-					setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
-				}
+			}else{
+				$('.mark_as_head_error').show().append(data.message);
+				//notification('Error',data.message,'top-right','error',3000);
+			}	 
+        },
+		error :function( data ) {
+         if( data.status === 422 ) {
+			$('.request_loader').css('display','none');
+			$('.errors').html('');
+			//notification('Error','Please fill all the fields.','top-right','error',4000);
+            var errors = $.parseJSON(data.responseText);
+            $.each(errors, function (key, value) {
+                // console.log(key+ " " +value);
+                if($.isPlainObject(value)) {
+                    $.each(value, function (key, value) {                       
+                        //console.log(key+ " " +value);	
+					  var key = key.replace('.','_');
+					  $('.'+key+'_error').show().append(value);
+                    });
+                }else{
+                // $('#response').show().append(value+"<br/>"); //this is my div with messages
+                }
+            }); 
+          }
+		}
+
+    });
+});
+
+
+/*==============================================
+	UPDATE REQUEST FORM 
+============================================*/
+$(document).on('submit','#updateAdminComplaint', function(e) {
+    e.preventDefault(); 
+	var complaint_id = $('#complaint_id').val();
+	$('.request_loader').css('display','inline-block');
+    $.ajax({
+        type: "POST",
+		dataType: 'json',
+        url: base_url+'/update-complaint-admin/'+complaint_id,
+        data: $(this).serialize(),
+        success: function(data) {
+			//alert(data)
+			$('.errors').html('');
+			$('.request_loader').css('display','none');
+			// If data inserted into DB
+			 if(data.success){
+				 
+				notification('Success','Complaint Updated Successfully','top-right','success',2000);
+				$('#subject_'+complaint_id).text(data.subject);
+				setTimeout(function(){ $('.complaintEditModal').modal('hide'); }, 2000);
+				
 			}else{
 				$('.mark_as_head_error').show().append(data.message);
 				//notification('Error',data.message,'top-right','error',3000);
@@ -146,8 +196,8 @@ $(document).on('submit','#createNewComplaint', function(e) {
 			 if(data.success){
 				 
 				notification('Success','Complaint submitted Successfully','top-right','success',2000);
-				setTimeout(function(){ $('.companyCreateModal').modal('hide'); }, 2000);
-				setTimeout(function(){window.location.href = base_url+'/companies'; }, 2500);
+				setTimeout(function(){ $('.complaintCreateModal').modal('hide'); }, 2000);
+				setTimeout(function(){window.location.href = base_url+'/complaints'; }, 2500);
 			}	 
         },
 		error :function( data ) {
@@ -196,3 +246,15 @@ $(document).on('click', '#create_complaint' , function() {
         },
     });
 })
+
+$(document).on('click','#view', function(e) {
+	$('#post_a_reply').hide('slow');
+	$('#replies').show('slow');
+	
+});
+
+$(document).on('click','#post', function(e) {
+	$('#post_a_reply').show('slow');
+	$('#replies').hide('slow');
+	
+});

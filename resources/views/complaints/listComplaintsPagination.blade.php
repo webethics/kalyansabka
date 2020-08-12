@@ -3,6 +3,8 @@
 		<tr>
 		<th scope="col">ID</th>
 		<th scope="col">Ticket Id</th>
+		<th scope="col">Name</th>
+		<th scope="col">Email</th>
 		<th scope="col">Subject</th>
 		<th scope="col">Status</th>
 		<th scope="col">Action</th>
@@ -16,9 +18,15 @@
 		<tr data-customer-id="{{ $complaint->id }}" class="user_row_{{$complaint->id}}" >
 			
 			<td id="sno_{{$complaint->id}}">{{(($page_number-1) * 10)+$sno}} <input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$complaint->id}}"/></td>
-			<td id="ticket_{{$complaint->id}}">RERDRT584</td>
-			<td id="name_{{$complaint->id}}">This is the test ticket</td>
-			<td id="name_{{$complaint->id}}">Completed</td>
+			<td id="ticket_{{$complaint->id}}">{{strtoupper($complaint->ticket_id)}}</td>
+			<td id="name_{{$complaint->id}}">{{$complaint->user->full_name}}</td>
+			<td id="name_{{$complaint->id}}">{{$complaint->user->email}}</td>
+			<td id="name_{{$complaint->id}}">{{$complaint->subject}}</td>
+			<td id="name_{{$complaint->id}}">
+					@if ($complaint->status == "0") {{ 'New' }} @endif
+					@if ($complaint->status == "1") {{ 'In Progress' }} @endif
+					@if ($complaint->status == "2") {{ 'Completed' }} @endif
+			</td>
 			
 			<td id="action_{{$complaint->id}}">
 				
