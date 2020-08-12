@@ -342,12 +342,18 @@ function birth_years(){
 	return $birth_years;
 }
 function getStateNameByStateId($state_id){
+	$state_name = '';
 	$getname = StateList::where('id',$state_id)->select('state_name')->first();
-	return $getname->state_name;
+	if(!is_null($getname) && ($getname->count())>0)
+		$state_name = $getname->state_name;
+	return $state_name;
 }
 function getDistrictNameByDistrictId($district_id){
+	$district_name = '';
 	$getname = CityLists::where('id',$district_id)->select('city_name')->first();
-	return $getname->city_name;
+	if(!is_null($getname) && ($getname->count())>0)
+		$district_name = $getname->city_name;
+	return $district_name;
 }
 function viewDateFormat($date){
 	return Carbon::parse($date)->format(config('constant.FRONT_DATE_FORMAT'));
