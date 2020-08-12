@@ -87,7 +87,8 @@ class ReferralController extends Controller
 			    			$level = $j;
 			    			//check if ref_user1 key exist
 			    			${"level_counter$j"} = 0;
-			    			$k = $j-1;
+			    			//$k = $j-1;
+			    			$k = 1;
 			    			if (array_key_exists($ref["ref_user_id$k"],${"level$j"})){
 			    				${"level_counter$j"} = count(${"level$j"}[$ref["ref_user_id$k"]]);
 			    			}
@@ -121,6 +122,8 @@ class ReferralController extends Controller
 	        $response['msg'] = trans('message.AJAX_SUCCESS');
 
 	    }
+
+	    //dd($level);
 
     	if($request->ajax()){
     		$response['success'] = true;
