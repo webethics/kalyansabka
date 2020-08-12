@@ -27,6 +27,7 @@ use App\Models\TempUpgradeRequest;
 use App\Models\Plan;
 use App\Models\CityLists;
 use App\Models\UserPayment;
+use App\Models\CancelPolicyRequest;
 use League\Csv\Writer;	
 use Auth;
 use Config;
@@ -555,13 +556,75 @@ class UsersController extends Controller
     			return Response::json($data, 200);
     		}
 
-
-	    	
-
 	    	$view = view('users.account.policy_amount', compact('policyAmount'))->render();
 	    	return response()->json(['html'=>$view]);
 	    }
-    } 
+    }
+
+    /*==================================================
+	  CANCEL POLICY REQUEST
+	==================================================*/ 
+
+	public function cancelPlanRequest(Request $request,$user_id)
+    {
+    	$data = [];
+    	$data['success'] = false;
+    	$data['message'] = 'Invalid Request';
+
+    	if($request->ajax()){
+    		$userData = User::where('id',$user_id)->first();
+    		if(!is_null($userData) && ($userData->count()) >0){
+    			$plan_id = $userData->plan_id;
+    			if(intval($plan_id) > 0){
+    				/*create cancel policy request*/
+    				$saveCancel = CancelPolicyRequest::create([
+		                'user_id' => $user_id,
+		                'plan_id' => $plan_id
+		            ]);
+
+		            $user = User::where('id',$user_id)->first();
+		            $tempUpgradePendingRequest = TempUpgradeRequest::where('user_id',$user_id)->where('status',0)->orderBy('id','desc')->first();
+				
+					$current_plan = $user->plan_id;
+					/*check current plan info*/
+					$currentPlanInfo = NULL;
+					$upgradeRequestPolicy = '';
+					$remainingAmount = 0;
+
+					if(!is_null($user) && ($user->count())>0 && !is_null($user->plan) && ($user->plan->count())>0){
+						$currentPlanInfo = $user->plan;
+					}
+
+					if(!is_null($tempUpgradePendingRequest) && ($tempUpgradePendingRequest->count())>0){
+						$upgradeRequestPolicy = Plan::where('id',$tempUpgradePendingRequest->plan_id)->first();
+						$remainingAmount = $tempUpgradePendingRequest->amount;
+					}
+					
+					$currentPlanCost = 0;
+					/*If data present*/
+					if(!is_null($currentPlanInfo) && ($currentPlanInfo->count())>0){
+						$currentPlanCost = $currentPlanInfo->cost;
+					}
+
+					/*fetch all upgrade plan*/
+					$upgradePlan = Plan::where('cost','>' ,$currentPlanCost)->get();
+					$upgradeAdditionalCost = UpgradeTax::get();
+
+    				$data['success'] = true;
+    				$data['message'] = 'Your request has been sent to admin, he will refund you ASAP.';
+    				$view = view('users.account.policy_plan', compact('user','currentPlanInfo','upgradePlan','current_plan','upgradeAdditionalCost','upgradeRequestPolicy','remainingAmount','tempUpgradePendingRequest'))->render();
+
+					$data['html'] = $view;
+
+    			}else{
+    				$data['message'] = 'Invalid Plan Id';
+    			}
+    		}
+    		return Response::json($data, 200);
+    	}
+    }
+
+
 
 
 /*==================================================

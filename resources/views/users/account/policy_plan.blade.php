@@ -7,6 +7,9 @@
 			<a class="action viewCustomer" href="{{ url('customer-certificate') }}" data-user_id="{{ $user->id }}" title="View and Download Certificate"><i class="simple-icon-eye"></i> </a>
 		</label>
 	</div>
+	<div class="row cancel_policy_scenerio">
+		@include('users.account.cancel_policy')
+	</div>
 	<hr>
 	@endif
 
@@ -72,7 +75,7 @@
 		</div>
 
 		@if(isset($upgradeAdditionalCost) && $upgradeAdditionalCost->count() > 0)
-		<h5 class="mb-4">Additional Cost</h5>
+		<h5 class="mb-4">Additional Charges for part payment</h5>
 
 		<div class="form-row additional-cost">
 			<div class="col-md-12">

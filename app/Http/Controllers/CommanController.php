@@ -158,12 +158,14 @@ class CommanController extends Controller
 
     /*save data to income History table*/
     public static function saveIncomeHistory($data){
+    	$generated_trasaction_id = getToken(9);
         if(!empty($data)){
             IncomeHistory::create([
                 'user_id' => $data['user_id'],
                 'referral_id' => $data['referral_id'],
                 'mode' => 1,
                 'status' => 1,
+                'transaction_id' => $generated_trasaction_id,
                 'amount' => $data['amount'],
                 'comment' => $data['comment'],
             ]);

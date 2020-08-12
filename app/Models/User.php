@@ -58,6 +58,7 @@ class User extends Authenticatable
 		'plan_id',
         'locking_period_start',
         'locking_period_end',
+        'show_cancellation_status',
 		'nominee_number',
     ];
 

@@ -22,6 +22,9 @@ class TempUpgradeRequestObserver
             /*Check if status paid i.e status 1, then change user plan id and locking period*/
             if($tempUpgradeRequest->status == 1){
                 $this->getUpgradePlanPayment($tempUpgradeRequest);
+            }else{
+                /*hide cancellation Policy button*/
+                $this->hidePolicyButton($tempUpgradeRequest);
             }
         }
     }
@@ -38,6 +41,9 @@ class TempUpgradeRequestObserver
             /*Check if status paid i.e status 1, then change user plan id and locking period*/
             if($tempUpgradeRequest->status == 1){
                 $this->getUpgradePlanPayment($tempUpgradeRequest);
+            }else{
+                /*hide cancellation Policy button*/
+                $this->hidePolicyButton($tempUpgradeRequest);
             }
         }
     }
@@ -119,7 +125,18 @@ class TempUpgradeRequestObserver
             $user->update([
                 'plan_id' => $data['plan_id'],
                 'locking_period_start'  => $data['lockingPeriodStart'],
-                'locking_period_end' => $data['lockingPeriodEnd']
+                'locking_period_end' => $data['lockingPeriodEnd'],
+                'show_cancellation_status' => 1
+            ]);
+        }
+    }
+
+    public function hidePolicyButton($data)
+    {
+       $user = User::find($data->user_id);
+       if ($user) {
+            $user->update([
+                'show_cancellation_status' => 1
             ]);
         }
     }
