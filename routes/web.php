@@ -40,6 +40,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('calculate-upgrade-amount/{user_id}','UsersController@calculateUpgradeAmount'); /*cal upgrade amount*/
 	Route::post('upgrade_plan_request/{user_id}','UsersController@upgradePlanRequest'); /*upgrade plan request */
 	Route::post('remove-temp-request/{user_id}','UsersController@removeTempRequest'); /*upgrade plan request */
+	Route::post('cancel-policy-request/{user_id}','UsersController@cancelPlanRequest'); /*Cancel Policy request*/
 	
 	Route::post('user/roleDropdown', 'UsersController@roleDropdown');
 	

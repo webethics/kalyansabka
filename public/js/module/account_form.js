@@ -334,6 +334,48 @@ function upgrade_request(ajax_url,method,status){
     });
 }
 
+/*cancel policy request*/
+$(document).on('click','#cancel_policy_form #cancel_policy',function(e){
+	e.preventDefault();
+	$this = $(this);
+	var ajax_url = $this.parents('#cancel_policy_form').attr('action');
+	var method = $this.parents('#cancel_policy_form').attr('method');
+	var formData = $('#cancel_policy_form').serialize();
+	/*disable button*/
+	$('#cancel_policy').attr("disabled", true).addClass('disabled');
+	$('.cancel_plan_spinloder').show();
+	$.ajax({
+        type: "POST",
+        url: ajax_url,
+        data: formData,
+        success: function(data) {
+        	$('.cancel_plan_spinloder').hide();
+        	$('#cancelPolicyModel').modal("hide");
+        	$('#cancel_policy').removeAttr("disabled").removeClass('disabled');
+        	if(data.success == true){
+
+        		setTimeout(function(){ $(".policy_plans").html(data.html); }, 500);
+        		// change div
+				if(typeof (data.message) != 'undefined' && data.message != null && data.message != "")
+        			notification('Success',data.message,'top-right','success',4000);
+        	}else{
+        		if(typeof (data.message) != 'undefined' && data.message != null && data.message != "")
+					notification('Error',response.message,'top-right','error',3000);
+				else
+					notification('Error','Something went wrong.','top-right','error',3000);
+        	}
+        },
+		error :function( data ){
+			$('.cancel_plan_spinloder').hide();
+			$('#cancelPolicyModel').modal("hide");
+			$('#cancel_policy').removeAttr("disabled").removeClass('disabled');
+			notification('Error','Something went wrong.','top-right','error',3000);
+		}
+    });
+
+
+});
+
 
 
 

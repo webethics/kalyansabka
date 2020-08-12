@@ -26,6 +26,8 @@ use DateTime;
 use App\Models\Plan;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\UserPayment;
+use Carbon\Carbon;
+
 class RegisterController extends Controller
 {
     /*
@@ -272,6 +274,11 @@ class RegisterController extends Controller
     {
 		$data['aadhar_number'] = str_replace('-','',$data['aadhar_number']);
 		$data['habits'] = implode(',',$data['habits']);
+		/*Calculate locking period start and end*/
+        $lockingPeriod = $this->fetchPlanLockingPeriod($data['plan']);
+
+        $lockingPeriodStart = Carbon::now()->format('Y-m-d');
+        $lockingPeriodEnd = Carbon::now()->addMonths($lockingPeriod)->format('Y-m-d');
 		//echo '<pre>';print_r($data);die;
 		$dat =  User::create([
             'first_name' => $data['first_name'],
@@ -286,6 +293,8 @@ class RegisterController extends Controller
 			/*'price' => $data['actual_price'],*/
 			'state_id' => $data['state'],
 			'plan_id' => $data['plan'],
+			'locking_period_start'  => $lockingPeriodStart,
+            'locking_period_end' => $lockingPeriodEnd,
 			'district_id' => $data['district'],
 			'hard_copy_certificate' => $data['hard_copy_certificate'],
 			'refered_by' => $data['refered_by'],
@@ -324,5 +333,16 @@ class RegisterController extends Controller
 			return $dat;
 		} 
 		return redirect()->route('account'); 
+    }
+
+    /*fetch plan related info*/
+    public function fetchPlanLockingPeriod($plan_id){
+        $selectedPlanInfo = Plan::where('id',$plan_id)->first();
+        $lockingPeriod = 0;
+        if(!is_null($selectedPlanInfo) && ($selectedPlanInfo->count())>0){
+            $lockingPeriod = $selectedPlanInfo->locking_period;
+        }
+        return $lockingPeriod;
+
     }
 }
