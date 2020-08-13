@@ -93,8 +93,8 @@ $(document).on('submit','#updateComplaint', function(e) {
 				 
 				notification('Success','Complaint Updated Successfully','top-right','success',2000);
 				$('#subject_'+user_id).text(data.subject);
-				setTimeout(function(){ $('.listComplaintEditModal').modal('hide'); }, 2000);
-				
+				setTimeout(function(){ $('.complaintEditModal').modal('hide'); }, 2000);
+				$('input[name="reply"]').val('');
 			}else{
 				$('.mark_as_head_error').show().append(data.message);
 				//notification('Error',data.message,'top-right','error',3000);
@@ -146,8 +146,9 @@ $(document).on('submit','#updateAdminComplaint', function(e) {
 				 
 				notification('Success','Complaint Updated Successfully','top-right','success',2000);
 				$('#subject_'+complaint_id).text(data.subject);
-				setTimeout(function(){ $('.complaintEditModal').modal('hide'); }, 2000);
-				
+				$('#status_'+complaint_id).text(data.status);
+				setTimeout(function(){ $('.listComplaintEditModal').modal('hide'); }, 2000);
+				$('input[name="reply"]').val('');
 			}else{
 				$('.mark_as_head_error').show().append(data.message);
 				//notification('Error',data.message,'top-right','error',3000);

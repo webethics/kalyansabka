@@ -25,7 +25,7 @@
 								<a class="nav-link active" id="first-tab" data-toggle="tab" href="#first" role="tab"
 									aria-controls="first" aria-selected="true">{{trans('global.basic')}}</a>
 							</li>
-							@if(current_user_role_id()==3 || current_user_role_id()==2)
+							@if(current_user_role_id()==3 || current_user_role_id()== 4 || current_user_role_id()== 5)
 							<li class="nav-item">
 								<a class="nav-link" id="second-tab" data-toggle="tab" href="#second" role="tab"
 									aria-controls="second" aria-selected="true">{{trans('global.nominee')}}</a>
