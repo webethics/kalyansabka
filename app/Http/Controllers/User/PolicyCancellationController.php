@@ -117,7 +117,8 @@ class PolicyCancellationController extends Controller
     	$data['message'] = 'Invalid Request';
 		
     	if(!empty($request_id) && isset($request->status) && !empty($request->status)){
-			$getpolicydata = CancelPolicyRequest::where('id',$request_id);
+			//$getpolicydata = CancelPolicyRequest::where('id',$request_id);
+			$getpolicydata = CancelPolicyRequest::find($request_id);
     		if($request->status == 'approve'){
 				$status = 1;
     			$request_data['request_status'] = 2;
