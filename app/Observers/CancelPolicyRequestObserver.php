@@ -84,10 +84,8 @@ class CancelPolicyRequestObserver
     /*update User Table*/
     public function updateUser($data){
         $user = User::find($data['user_id']);
-
         if ($user) {
             $user->update([
-                'show_cancellation_status' => 1,
                 'plan_id' => 0
             ]);
         }
