@@ -37,7 +37,7 @@
 }
 #showNomineeDetails hr{width:100%}
 
-#user_response_update_1,#user_response_update,#user_response_update_db,#user_response_update_db_1{
+#user_response_update_1,#user_response_update,#user_response_update_db,#user_response_update_db_1,#user_response_update_canceldb,#user_response_update_canceldb_1{
 	
     color: #fff;
 	display: inline-block;
@@ -54,7 +54,7 @@
 .darkgreen{
 	background: green;
 }
-#user_response_update_db_1 i {color:#fff}
+#user_response_update_db_1 i,#user_response_update_canceldb_1 i {color:#fff}
 
 .input-icon-right > i {
   right: 0;

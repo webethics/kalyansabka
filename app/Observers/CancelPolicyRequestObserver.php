@@ -17,7 +17,7 @@ class CancelPolicyRequestObserver
     {
         if(!empty($cancelPolicyRequest) && !empty($cancelPolicyRequest->user_id)){
 
-            $updateUserInfo = $this->updateUser($cancelPolicyRequest);
+            $updateUserInfo = $this->updateHideCancelButton($cancelPolicyRequest);
         }
     }
 
@@ -29,7 +29,12 @@ class CancelPolicyRequestObserver
      */
     public function updated(CancelPolicyRequest $cancelPolicyRequest)
     {
-        //
+        if(!empty($cancelPolicyRequest) && !empty($cancelPolicyRequest->user_id)){
+            //Approve cancel request
+            if ($cancelPolicyRequest->request_status == 2) {
+               $updateUserInfo = $this->updateUser($cancelPolicyRequest);
+            }
+        }
     }
 
     /**
@@ -63,6 +68,17 @@ class CancelPolicyRequestObserver
     public function forceDeleted(CancelPolicyRequest $cancelPolicyRequest)
     {
         //
+    }
+
+    /*update User Table*/
+    public function updateHideCancelButton($data){
+        $user = User::find($data['user_id']);
+
+        if ($user) {
+            $user->update([
+                'show_cancellation_status' => 1,
+            ]);
+        }
     }
 
     /*update User Table*/

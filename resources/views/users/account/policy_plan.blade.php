@@ -1,4 +1,17 @@
 <div id="showOnLoadOnly" class="policy_plans">
+
+	@if($cancel_request_policy && $cancel_request_policy->request_status == 0) 
+		<div id="user_response_update_canceldb" class="green">{{"Your cancel request has been sent to admin. After checking your documents admin will approve your request."}}</div>
+	@elseif($cancel_request_policy && $cancel_request_policy->request_status == 1) 
+		<div  class="user_response_update_canceldb_1 red" id="user_response_update_canceldb_1" ><b>Decline Reason: </b>{{$cancel_request_policy->description}} <a href="javascript:void(0)" data-id="{{$cancel_request_policy->user_id}}" class="remove_cancel_request action"><i class="simple-icon-close"></i></a></div>
+	@elseif($cancel_request_policy && $cancel_request_policy->request_status == 2) 
+		<div  class="user_response_update_canceldb_1 darkgreen" id="user_response_update_canceldb_1" >Your cancel policy request has been approved by the Admin. <a href="javascript:void(0)" data-id="{{$cancel_request_policy->user_id}}" class="remove_cancel_request action"><i class="simple-icon-close"></i></a></div>
+	@else
+		<div class="clearfix"></div>
+	@endif
+	<div class="clearfix"></div>
+
+
 	@if(isset($currentPlanInfo) && $currentPlanInfo['name'] != "")
 	<div class="form-group row">
 		<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.active_plan')}}</label>
@@ -12,6 +25,7 @@
 	</div>
 	<hr>
 	@endif
+
 
 	@if(isset($upgradeRequestPolicy) && isset($upgradeRequestPolicy['name']) && $upgradeRequestPolicy['name'] != "")
 	<div class="form-group row">
@@ -52,7 +66,7 @@
 
 
 
-	@if(isset($upgradePlan) && $upgradePlan->count() > 0 && empty($upgradeRequestPolicy))
+	@if(isset($upgradePlan) && $upgradePlan->count() > 0 && empty($upgradeRequestPolicy) && (is_null($cancel_request_policy) || (!is_null($cancel_request_policy) && ($cancel_request_policy->count())>0 && $cancel_request_policy->request_status != 0)))
 	<h5 class="mb-4">Upgrade your Plan</h5>
 
 	<form method="POST" action="{{ url('upgrade_plan_request') }}/{{$user->id}}" class="frm_class" id="upgrade_plan_form" data-id="{{$user->id}}">
