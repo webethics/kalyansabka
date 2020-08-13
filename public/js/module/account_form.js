@@ -379,8 +379,8 @@ $(document).on('click','#cancel_policy_form #cancel_policy',function(e){
 
         		setTimeout(function(){ $(".policy_plans").html(data.html); }, 500);
         		// change div
-				if(typeof (data.message) != 'undefined' && data.message != null && data.message != "")
-        			notification('Success',data.message,'top-right','success',4000);
+				/*if(typeof (data.message) != 'undefined' && data.message != null && data.message != "")
+        			notification('Success',data.message,'top-right','success',4000);*/
         	}else{
         		if(typeof (data.message) != 'undefined' && data.message != null && data.message != "")
 					notification('Error',response.message,'top-right','error',3000);
