@@ -133,18 +133,24 @@ right connector from last child*/
             @include('referrals.structureTree')
         </div>
     </div>
+    @if(isset($level) && !empty($level) && count($level) > 0 && isset($level['level1']) && !empty($level['level1']) && count($level['level1']) > 0)
     <div class="row">
         <div class="card previous-level">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <a href="javascript:void(0);" class="btn btn-warning default btn-xl mb-2 previous">Back</a>
-                        <a href="javascript:void(0);" class="btn btn-warning default btn-xl mb-2 reset-root" data-loginid="{{$loginId}}">Reset</a>
+                        @if(isset($level['level1']) && !empty($level['level1']) && count($level['level1']) > 0)
+                            <a href="javascript:void(0);" class="btn btn-warning default btn-xl mb-2 previous">Back</a>
+                        @endif
+                        @if(isset($level["level2"]) && !empty($level["level2"]) && count($level["level2"]) > 0)    
+                            <a href="javascript:void(0);" class="btn btn-warning default btn-xl mb-2 reset-root" data-loginid="{{$loginId}}">Reset</a>
+                        @endif
                     </div>
                 </div>                      
             </div>
         </div>
     </div>
+    @endif
 @endsection
 @section('userJs')
 <script>
