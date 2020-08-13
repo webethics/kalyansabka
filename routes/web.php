@@ -41,6 +41,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('upgrade_plan_request/{user_id}','UsersController@upgradePlanRequest'); /*upgrade plan request */
 	Route::post('remove-temp-request/{user_id}','UsersController@removeTempRequest'); /*upgrade plan request */
 	Route::post('cancel-policy-request/{user_id}','UsersController@cancelPlanRequest'); /*Cancel Policy request*/
+	Route::post('remove-cancel-request/{user_id}','UsersController@removeCancelRequest'); /*remove cancel request */
 	
 	Route::post('user/roleDropdown', 'UsersController@roleDropdown');
 	

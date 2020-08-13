@@ -17,6 +17,7 @@ class CancelPolicyRequest extends Model
     protected $fillable = [
         'user_id',
         'plan_id',
-		'refund_status'
+		'request_status',
+        'description'
     ];
 }

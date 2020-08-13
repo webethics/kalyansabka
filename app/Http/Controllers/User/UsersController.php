@@ -176,6 +176,7 @@ class UsersController extends Controller
 		$nominee_details = UserNominees::where('user_id',$user_id)->get();
 		$nominee_details =  $nominee_details->toArray();
 		$temp_details =  TempRequestUser::where('user_id',$user_id)->orderBy('id','desc')->first();
+		$cancel_request_policy = CancelPolicyRequest::where('user_id',$user_id)->orderBy('id','desc')->first();
 		$current_plan = $user->plan_id;
 		/*check current plan info*/
 		$currentPlanInfo = Plan::where('id',$current_plan)->first();
@@ -198,8 +199,9 @@ class UsersController extends Controller
 			$upgradeRequestPolicy = Plan::where('id',$tempUpgradePendingRequest->plan_id)->first();
 		}
 
+
 		//echo '<pre>';print_r($nominee_details->toArray());die;
-		return view('users.account.account', compact('user','bank_detais','document_details','nominee_details','temp_details','currentPlanInfo','upgradePlan','current_plan','upgradeAdditionalCost','remainingAmount','upgradeRequestPolicy','tempUpgradePendingRequest'));
+		return view('users.account.account', compact('user','bank_detais','document_details','nominee_details','temp_details','currentPlanInfo','upgradePlan','current_plan','upgradeAdditionalCost','remainingAmount','upgradeRequestPolicy','tempUpgradePendingRequest','cancel_request_policy'));
 		//return view('users.account.account');
     }
 	
@@ -269,6 +271,23 @@ class UsersController extends Controller
 			$result['success'] = true;
 			return Response::json($result, 200);
 		}
+		
+    }
+
+    public function removeCancelRequest(Request $request,$user_id)
+    {	
+		$data=array();
+		$result =array();
+		$result['success'] = false;
+		$requestData = CancelPolicyRequest::where('user_id',$user_id);
+
+		if($requestData){
+			$requestData->delete();
+			//UPDATE PROFILE EVENT LOG END  
+			$result['success'] = true;
+		}
+
+		return Response::json($result, 200);
 		
     }
 
@@ -543,11 +562,13 @@ class UsersController extends Controller
 				/*fetch all upgrade plan*/
 				$upgradePlan = Plan::where('cost','>' ,$currentPlanCost)->get();
 				$upgradeAdditionalCost = UpgradeTax::get();
+				$cancel_request_policy = CancelPolicyRequest::where('user_id',$user_id)->orderBy('id','desc')->first();
+
 
 				$data['success'] = true;
 				$data['message'] = 'Successfully sent upgrade request';
 
-				$view = view('users.account.policy_plan', compact('user','currentPlanInfo','upgradePlan','current_plan','upgradeAdditionalCost','upgradeRequestPolicy','remainingAmount','tempUpgradePendingRequest'))->render();
+				$view = view('users.account.policy_plan', compact('user','currentPlanInfo','upgradePlan','current_plan','upgradeAdditionalCost','upgradeRequestPolicy','remainingAmount','tempUpgradePendingRequest','cancel_request_policy'))->render();
 
 				$data['html'] = $view;
 	    		return Response::json($data, 200);
@@ -609,10 +630,11 @@ class UsersController extends Controller
 					/*fetch all upgrade plan*/
 					$upgradePlan = Plan::where('cost','>' ,$currentPlanCost)->get();
 					$upgradeAdditionalCost = UpgradeTax::get();
+					$cancel_request_policy = CancelPolicyRequest::where('user_id',$user_id)->orderBy('id','desc')->first();
 
     				$data['success'] = true;
     				$data['message'] = 'Your request has been sent to admin, he will refund you ASAP.';
-    				$view = view('users.account.policy_plan', compact('user','currentPlanInfo','upgradePlan','current_plan','upgradeAdditionalCost','upgradeRequestPolicy','remainingAmount','tempUpgradePendingRequest'))->render();
+    				$view = view('users.account.policy_plan', compact('user','currentPlanInfo','upgradePlan','current_plan','upgradeAdditionalCost','upgradeRequestPolicy','remainingAmount','tempUpgradePendingRequest','cancel_request_policy'))->render();
 
 					$data['html'] = $view;
 

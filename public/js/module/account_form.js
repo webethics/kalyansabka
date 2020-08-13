@@ -66,6 +66,29 @@ $(document).on('click','.remove_temp_request',function(e){
         }
     }); 
 });
+
+/*Remove temp request from user*/
+$(document).on('click','.remove_cancel_request',function(e){
+	var user_id = $(this).data('id');
+	
+	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+	$.ajax({
+        type: "POST",
+		url: base_url+'/remove-cancel-request/'+user_id,
+        data:{_token:csrf_token},
+        success: function(data) {
+        	if(data.success == true){
+				$('.user_response_update_canceldb_1').hide('slow');
+			}else{
+				notification('Error','Something went wrong.','top-right','error',3000);
+			}
+        },
+        error :function( data ){
+			$('.search_upgrade_spinloder').hide();
+			notification('Error','Something went wrong.','top-right','error',3000);
+		}
+    }); 
+});
 	
 	
 	
