@@ -36,19 +36,23 @@
 		</div>
 		
 		<div class="form-group form-row-parent">
-			<label class="col-form-label">Status</label>
-			<div class="d-flex control-group">
-				<select class="form-control select2" name="status" disabled="disabled" id="status">
-					<option value="">Select Status</option>
-					<option value="0" @if ($complaint->status == "0") {{ 'selected' }} @endif>New</option>
-					<option value="1" @if ($complaint->status == "1") {{ 'selected' }} @endif>In Progress</option>
-					<option value="2" @if ($complaint->status == "2") {{ 'selected' }} @endif>Completed</option>
-				</select>									
-			</div>	
-			<div class="subject_error errors"></div>	
+			<label class="col-form-label"><b>Status : 
+				
+				@if ($complaint->status == "0") {{ 'New' }} @endif
+				@if ($complaint->status == "1") {{ 'In Progress' }} @endif
+				@if ($complaint->status == "2") {{ 'Completed' }} @endif
+												
+			</b></label>
+			
 		</div>
+		@if(isset($getreplies) && !empty($getreplies))
+			<a href="javascript:void(0)" id="view" class="chat_links">View Replies</a>
+		@endif
+		@if($complaint->status != 2)
+			<a  class="chat_links" href="javascript:void(0)" id="post">Post A Reply</a>
+		@endif
 		
-		<a href="javascript:void(0)" id="view" class="chat_links">View Replies</a><a  class="chat_links" href="javascript:void(0)" id="post">Post A Reply</a>
+		
 		<br/>
 		<br/>
 		
@@ -64,6 +68,7 @@
 			@endforeach
 			<div class="message_error errors"></div>	
 		</div>
+		
 		@endif
 		
 		<div class="form-group form-row-parent"  id="post_a_reply"  style="display:none">

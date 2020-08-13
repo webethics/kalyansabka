@@ -25,9 +25,15 @@
 }
 .chat_links{
     color: #fff;
-    background: #145388;
+    background-color: #145388;
+	border-color: #145388;
     padding: 5px;
 	margin:0 8px
+}
+.chat_links:hover{
+	color:#fff;
+	background-color: #0f3d64;
+    border-color: #0f3d64;
 }
 #showNomineeDetails hr{width:100%}
 

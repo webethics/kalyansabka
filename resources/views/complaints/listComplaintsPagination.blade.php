@@ -21,8 +21,8 @@
 			<td id="ticket_{{$complaint->id}}">{{strtoupper($complaint->ticket_id)}}</td>
 			<td id="name_{{$complaint->id}}">{{$complaint->user->full_name}}</td>
 			<td id="name_{{$complaint->id}}">{{$complaint->user->email}}</td>
-			<td id="name_{{$complaint->id}}">{{$complaint->subject}}</td>
-			<td id="name_{{$complaint->id}}">
+			<td id="subject_{{$complaint->id}}">{{$complaint->subject}}</td>
+			<td id="status_{{$complaint->id}}">
 					@if ($complaint->status == "0") {{ 'New' }} @endif
 					@if ($complaint->status == "1") {{ 'In Progress' }} @endif
 					@if ($complaint->status == "2") {{ 'Completed' }} @endif

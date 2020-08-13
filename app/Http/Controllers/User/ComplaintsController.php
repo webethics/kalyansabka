@@ -159,6 +159,10 @@ class ComplaintsController extends Controller
 			$data['message'] 	= $request->message; 
 			$data['status'] 	= $request->status; 
 			
+			if ($request->status == "0") $status = 'New';
+			if ($request->status == "1")  $status =  'In Progress';
+			if ($request->status == "2")  $status = 'Completed';
+					
 			$requestData->update($data);
 			if($request->reply){
 				$reply_data['user_id'] = Auth::id();
@@ -171,6 +175,8 @@ class ComplaintsController extends Controller
 			//UPDATE PROFILE EVENT LOG END  
 			
 			$result['subject'] = $request->subject;
+			
+			$result['status'] = $status;
 			
 			return Response::json($result, 200);
 		}
