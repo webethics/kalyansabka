@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\WithdrawlRequest;
+use App\Models\CancelPolicyRequest;
 use App\Models\IncomeHistory;
 use App\Models\Income;
 use App\Models\EmailTemplate;
@@ -67,7 +68,7 @@ class PolicyCancellationController extends Controller
 		
 		$number_of_records =$this->per_page;
 		
-		$result = WithdrawlRequest::where(`1`, '=', `1`)->with('user');	
+		$result = CancelPolicyRequest::where(`1`, '=', `1`)->with('user');	
 		
 		if($pagination == true){
 			$cancelled_policies = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
@@ -83,17 +84,15 @@ class PolicyCancellationController extends Controller
 		
 	}
 	
-	public function request_edit($payment_id)
+	public function request_edit($request_id)
     {
 		
-		access_denied_user('payment_edit');
-        $request = WithdrawlRequest::where('id',$payment_id)->with('user','request_changes')->first();
-		
+		//access_denied_user('payment_edit');
+        $request = CancelPolicyRequest::where('id',$request_id)->with('user')->first();
+		//echo '<pre>';print_r($request);die;
 		$user_id = $request->user_id;
 		
-		
 		if($request){
-			
 			$view = view("modal.policyRequestEdit",compact('request'))->render();
 			$success = true;
 		}else{
@@ -107,5 +106,33 @@ class PolicyCancellationController extends Controller
 		  'success'=>$success,
 		  'data'=>$view
 		 ), 200);
+    }
+	
+	/*Update Request*/
+    public function request_update($request_id,Request $request){
+    	//access_denied_user('request_new_detail');
+		$data = [];
+    	$data['success'] = false;
+    	$data['message'] = 'Invalid Request';
+		
+    	if(!empty($request_id) && isset($request->status) && !empty($request->status)){
+			$getpolicydata = CancelPolicyRequest::where('id',$request_id);
+    		if($request->status == 'approve'){
+				$status = 1;
+    			$request_data['request_status'] = 2;
+    			$updateData =$getpolicydata->update($request_data);
+    		}
+			if($request->status == 'disapprove'){
+				$request_data['request_status'] = 1;
+				$request_data['description'] = trim($request->description);	
+				$updateData =$getpolicydata->update($request_data);
+			}
+			return Response::json(array(
+					  'success'=>true,
+					), 200);
+		}else{
+    		return 'error';
+    	}
+    	//return Response::json($data, 200);
     }
 }

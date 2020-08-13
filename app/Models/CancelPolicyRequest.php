@@ -19,4 +19,14 @@ class CancelPolicyRequest extends Model
         'plan_id',
 		'refund_status'
     ];
+	
+	public function user() {
+		return $this->belongsTo('App\Models\User','user_id');
+	}
+
+	public function getFullNameAttribute()
+    {
+        return ucfirst("{$this->first_name} {$this->last_name}");
+    }
+	
 }

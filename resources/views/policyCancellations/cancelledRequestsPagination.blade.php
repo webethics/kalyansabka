@@ -20,11 +20,15 @@
 			<td id="name_{{$cancelledRequest->id}}">{{viewDateFormat($cancelledRequest->created_at)}}</td>
 			<td id="mobile_number_{{$cancelledRequest->id}}">{{$cancelledRequest->user->first_name}} {{$cancelledRequest->user->last_name}}</td>
 			<td id="business_url_{{$cancelledRequest->id}}">{{$cancelledRequest->user->email}}</td>
-			<td id="business_url_{{$cancelledRequest->id}}">258369851254</td>
+			<td id="business_url_{{$cancelledRequest->id}}">{{$cancelledRequest->user->aadhar_number}}</td>
 			<td id="email_{{$cancelledRequest->id}}">
 				KALYANSABKA_25648</td>
 			<td id="email_{{$cancelledRequest->id}}">
-				KALYANSABKA_25648</td>
+				@if ($cancelledRequest->request_status == "0") {{ 'Pending' }} @endif
+				@if ($cancelledRequest->request_status == "1") {{ 'Declined' }} @endif
+				@if ($cancelledRequest->request_status == "2") {{ 'Approved' }} @endif
+				
+				</td>
 			<td id="email_{{$cancelledRequest->id}}">
 				@if(check_role_access('withdrawl_edit'))
 					<a class="action editPolicyRequest" href="javascript:void(0)" data-payment_id="{{ $cancelledRequest->id }}" title="Edit Policy Cancellation Request"><i class="simple-icon-note"></i> </a>
