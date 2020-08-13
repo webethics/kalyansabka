@@ -59,7 +59,7 @@ class ComplaintsController extends Controller
 		
 	}
 	public function list_complaints(Request $request){
-		
+		access_denied_user('complaints_listing');
        $complaints_data = $this->complaints_search($request,$pagination=true);
 		if($complaints_data['success']){
 			$complaints = $complaints_data['complaints'];
@@ -206,7 +206,7 @@ class ComplaintsController extends Controller
     }
 	public function list_complaint_edit($complaint_id)
     {
-		
+		access_denied_user('complaints_edit');
         $complaint = Complaints::where('id',$complaint_id)->get();
 		if(count($complaint)>0){
 			$complaint =$complaint[0];
@@ -244,7 +244,7 @@ class ComplaintsController extends Controller
 	}
 	public function complaint_delete($complaint_id)
     {
-		
+		access_denied_user('complaints_delete');
 		if($complaint_id){
 			$main_complaint = Complaints::where('id',$complaint_id)->first();
 			if($main_complaint){

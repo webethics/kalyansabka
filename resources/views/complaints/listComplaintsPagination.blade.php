@@ -30,10 +30,13 @@
 			
 			<td id="action_{{$complaint->id}}">
 				
-				
-					<a class="action changeComplaint" href="javascript:void(0)" data-complaint_id="{{ $complaint->id }}" title="Edit Complaint"><i class="simple-icon-note"></i> </a> 
-				
-					<a title="Delete Complaint"  data-id="{{ $complaint->id }}" data-confirm_type="complete" data-confirm_message ="Are you sure you want to delete the Complaint?"  data-left_button_name ="Yes" data-left_button_id ="delete_complaint" data-left_button_cls="btn-primary" class="open_confirmBox action deleteComplaint"  href="javascript:void(0)" data-complaint_id="{{ $complaint->id }}"><i class="simple-icon-trash"></i></a>
+					@if(check_role_access('complaints_edit'))
+						<a class="action changeComplaint" href="javascript:void(0)" data-complaint_id="{{ $complaint->id }}" title="Edit Complaint"><i class="simple-icon-note"></i> </a> 
+					@endif
+					
+					@if(check_role_access('complaints_edit'))
+						<a title="Delete Complaint"  data-id="{{ $complaint->id }}" data-confirm_type="complete" data-confirm_message ="Are you sure you want to delete the Complaint?"  data-left_button_name ="Yes" data-left_button_id ="delete_complaint" data-left_button_cls="btn-primary" class="open_confirmBox action deleteComplaint"  href="javascript:void(0)" data-complaint_id="{{ $complaint->id }}"><i class="simple-icon-trash"></i></a>
+					@endif
 				
 			</td>	
 		</tr>

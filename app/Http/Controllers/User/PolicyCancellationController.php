@@ -42,7 +42,8 @@ class PolicyCancellationController extends Controller
     }
 	public function policyCancellations(Request $request)
     {
-		//access_denied_user('withdrawl_listing');
+		
+		access_denied_user('policy_cancellation_listing');
 		$policyCancellations_data = $this->cancelled_policy_search($request,$pagination=true);
 		
 		if($policyCancellations_data['success']){
@@ -87,7 +88,7 @@ class PolicyCancellationController extends Controller
 	public function request_edit($request_id)
     {
 		
-		//access_denied_user('payment_edit');
+		access_denied_user('policy_cancellation_edit');
         $request = CancelPolicyRequest::where('id',$request_id)->with('user')->first();
 		//echo '<pre>';print_r($request);die;
 		$user_id = $request->user_id;
@@ -110,7 +111,7 @@ class PolicyCancellationController extends Controller
 	
 	/*Update Request*/
     public function request_update($request_id,Request $request){
-    	//access_denied_user('request_new_detail');
+    	access_denied_user('policy_cancellation_edit');
 		$data = [];
     	$data['success'] = false;
     	$data['message'] = 'Invalid Request';

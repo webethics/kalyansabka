@@ -200,7 +200,7 @@
 						</a>
 					</li>
 					@endif
-					@if(check_role_access('companies_listing'))
+					@if(check_role_access('complaints_listing'))
 					<li class="{{$listcomplaintsactive}}">
 						<a href="{{url('/list-complaints')}}">
 							<i class="simple-icon-support"></i>
@@ -208,7 +208,7 @@
 						</a>
 					</li>
 					@endif
-					@if(check_role_access('companies_listing'))
+					@if(check_role_access('policy_cancellation_listing'))
 					<li class="{{$policyactive}}">
 						<a href="{{url('/policies-requests')}}">
 							<i class="simple-icon-doc"></i>
@@ -216,7 +216,7 @@
 						</a>
 					</li>
 					@endif
-					@if(check_role_access('companies_listing'))
+					@if(check_role_access('claim_intimation_listing'))
 					<li class="{{$policyactive}}">
 						<a href="{{url('/claim-intimations')}}">
 							<i class="simple-icon-exclamation"></i>

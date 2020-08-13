@@ -30,7 +30,7 @@
 				
 				</td>
 			<td id="email_{{$cancelledRequest->id}}">
-				@if(check_role_access('withdrawl_edit'))
+				@if(check_role_access('policy_cancellation_edit'))
 					<a class="action editPolicyRequest" href="javascript:void(0)" data-payment_id="{{ $cancelledRequest->id }}" title="Edit Policy Cancellation Request"><i class="simple-icon-note"></i> </a>
 				@endif
 			</td>
