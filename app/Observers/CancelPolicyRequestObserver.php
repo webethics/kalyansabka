@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\CancelPolicyRequest;
 use App\Models\User;
+use Carbon\Carbon;
 
 class CancelPolicyRequestObserver
 {
@@ -16,8 +17,10 @@ class CancelPolicyRequestObserver
     public function created(CancelPolicyRequest $cancelPolicyRequest)
     {
         if(!empty($cancelPolicyRequest) && !empty($cancelPolicyRequest->user_id)){
-
-            $updateUserInfo = $this->updateHideCancelButton($cancelPolicyRequest);
+            $data = [];
+            $data['user_id'] = $cancelPolicyRequest->user_id;
+            $data['show_cancellation_status'] = 1;
+            $updateUserInfo = $this->updateHideCancelButton($data);
         }
     }
 
@@ -33,6 +36,9 @@ class CancelPolicyRequestObserver
             //Approve cancel request
             if ($cancelPolicyRequest->request_status == 2) {
                $updateUserInfo = $this->updateUser($cancelPolicyRequest);
+            }elseif($cancelPolicyRequest->request_status == 1) {
+                /*Decline Cancel request*/
+                $updateCancelInfo = $this->updateCancelPolicyStatus($cancelPolicyRequest);
             }
         }
     }
@@ -73,10 +79,9 @@ class CancelPolicyRequestObserver
     /*update User Table*/
     public function updateHideCancelButton($data){
         $user = User::find($data['user_id']);
-
         if ($user) {
             $user->update([
-                'show_cancellation_status' => 1,
+                'show_cancellation_status' => $data['show_cancellation_status'],
             ]);
         }
     }
@@ -89,5 +94,28 @@ class CancelPolicyRequestObserver
                 'plan_id' => 0
             ]);
         }
+    }
+
+    /*If admin decline request, then first check if user register is less than 15 days or not upgrade his request till now then show cancel policy button to user*/
+    public function updateCancelPolicyStatus($data){
+        $user = User::with('tempUpgradeRequest')->where('id',$data['user_id'])->first();
+        if ($user) {
+            $date = Carbon::parse($user->created_at);
+            $now = Carbon::now();
+
+            $diff = $date->diffInDays($now);
+            if($diff <= 15){
+                //check if user not upgrade plan request
+                $upgradeRequest = $user->tempUpgradeRequest;
+                //if there s no upgrade request
+                if($upgradeRequest->count() == 0){
+                    $dataInfo = [];
+                    $dataInfo['user_id'] = $data['user_id'];
+                    $dataInfo['show_cancellation_status'] = 0;
+                    $updateUserInfo = $this->updateHideCancelButton($dataInfo);
+                }
+            }
+        }
+
     }
 }
