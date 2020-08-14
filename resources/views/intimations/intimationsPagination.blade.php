@@ -2,6 +2,7 @@
 	<thead class="bg-primary">
 		<tr>
 		<th scope="col">ID</th>
+		<th scope="col">Claim ID</th>
 		<th scope="col">Date</th>
 		<th scope="col">Policy Number</th>
 		<th scope="col">Intimation Aadhaar Number</th>
@@ -16,6 +17,7 @@
 	  @foreach($intimations as $key => $intimation)
 		<tr data-intimation-id="{{ $intimation->id }}" class="user_row_{{$intimation->id}}" >
 			<td id="sno_{{$intimation->id}}">{{(($page_number-1) * 10)+$sno}} <input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$intimation->id}}"/></td>
+			<td id="name_{{$intimation->id}}">{{$intimation->claim_request_id}}</td>
 			<td id="name_{{$intimation->id}}">{{viewDateFormat($intimation->created_at)}}</td>
 			
 			<td id="business_url_{{$intimation->id}}">{{$intimation->policy_number}}</td>
