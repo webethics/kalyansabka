@@ -10,7 +10,7 @@
                 <div class="col-12 mb-4">
 				
 				   
-					@include('partials.searchPolicyCancellationForm');				
+					@include('partials.searchPolicyCancellationForm')				
 					<div class="card">
 						<div class="card-body">
 						<div class="table-responsive"  id="tag_container">
