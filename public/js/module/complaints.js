@@ -246,7 +246,34 @@ $(document).on('click', '#create_complaint' , function() {
 			}	
         },
     });
-})
+});
+
+/*==============================================
+	SEARCH FILTER FORM 
+============================================*/
+$(document).on('submit','#searchForm', function(e) {
+    e.preventDefault(); 
+	$('.search_spinloder').css('display','inline-block');
+    $.ajax({
+        type: "POST",
+		//dataType: 'json',
+        url: base_url+'/list-complaints',
+        data: $(this).serialize(),
+        success: function(data) {
+			 $('.search_spinloder').css('display','none');
+             //start date and end date error 
+			if(data=='date_error'){
+				notification('Error','Start date not greater than end date.','top-right','error',4000);	
+			}else if(data=='age_error'){
+				notification('Error','Start age not greater than end age.','top-right','error',4000);	
+			}else{
+             // Set search result
+			 $("#tag_container").empty().html(data); 
+			}	
+        },
+		error :function( data ) {}
+    });
+});
 
 $(document).on('click','#view', function(e) {
 	$('#post_a_reply').hide('slow');

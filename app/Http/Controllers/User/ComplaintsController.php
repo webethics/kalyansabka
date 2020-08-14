@@ -86,10 +86,64 @@ class ComplaintsController extends Controller
 		$number_of_records =$this->per_page;
 		$user_id = $request->user_id;
 		
+		$first_name = $request->first_name;
+		$last_name = $request->last_name;
+		$email = $request->email;
+		
+		$mobile = $request->mobile_number;
+		$aadhaar = $request->aadhar_number;
+		$status = $request->status;
+		
+		
+		
 		$result = Complaints::where(`1`, '=', `1`)->with('user');
+		
+		if($first_name!='' || $last_name!='' || $email!='' || $mobile!='' || $aadhaar!='' || $status !=''){
+			
+			$email_q = '%' . $request->email .'%';
+			// check email 
+			if(isset($email) && !empty($email)){
+			
+				$result->whereHas('user', function (Builder $query) use ($email_q) {
+					$query->where('email','LIKE',$email_q);
+				});
+			} 
+			
+			$first_name_s = '%' . $first_name . '%';
+			$last_name_s = '%' . $last_name . '%';
+			
+			// check name 
+			if(isset($first_name) && !empty($first_name)){
+				$result->whereHas('user', function (Builder $query) use ($first_name_s) {
+					$query->where('first_name','LIKE',$first_name_s);
+				});
+			}
+			if(isset($last_name) && !empty($last_name)){
+				$result->whereHas('user', function (Builder $query) use ($last_name_s) {
+					$query->where('last_name','LIKE',$last_name_s);
+				});
+			}
+		 	if(isset($mobile) && !empty($mobile)){
+				$result->whereHas('user', function (Builder $query) use ($mobile)  {
+					$query->where('mobile_number','=',$mobile);
+				});
+			}
+		 	if(isset($aadhaar) && !empty($aadhaar)){
+				$result->whereHas('user', function (Builder $query) use ($aadhaar) {
+					$query->where('aadhar_number','LIKE',$aadhaar);
+				});
+			}
+		 	if($status != ''){
+				$result->where('status',$status);
+			}
+		}
+		
+		
 		if($user_id && $user_id != ''){
 			$result->where('user_id',$user_id);
 		}
+		
+		
 		
 		
 		if($pagination == true){

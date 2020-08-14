@@ -5,9 +5,7 @@
 		
 		 @php    
 			$roleArray = Config::get('constant.role_id');
-			$dashboardactive='';  $custactive='';	 $payactive='';	$withdrawlactive=''; $certactive=''; $ccertactive=''; $editactive=''; $configactive=''; $custpayactive=''; $roleactive=''; $commissionactive=''; $complaintsactive='';$listcomplaintsactive='';$policyactive='';
-			$emailactive=''; $companyactive=''; 
-			$referralactive=''; 
+			$dashboardactive='';  $custactive='';	 $payactive='';	$withdrawlactive=''; $certactive=''; $ccertactive=''; $editactive=''; $configactive='';  	$custpayactive='';	$roleactive=''; $commissionactive=''; $complaintsactive=''; $listcomplaintsactive=''; $policyactive='';	   $intmationactive='';	$emailactive=''; $companyactive='';  $referralactive=''; 
 			
 			$sactive ='';$emactive ='';$site_sactive ='';$accactive  ='';
 		 @endphp
@@ -106,6 +104,11 @@
 		 @if(collect(request()->segments())->last()=='commission')
 		 @php
 	      $commissionactive ='active'
+	     @endphp
+		 @endif
+		 @if(collect(request()->segments())->last()=='claim-intimations')
+		 @php
+	      $intmationactive ='active'
 	     @endphp
 		 @endif
 		 
@@ -217,7 +220,7 @@
 					</li>
 					@endif
 					@if(check_role_access('claim_intimation_listing'))
-					<li class="{{$policyactive}}">
+					<li class="{{$intmationactive}}">
 						<a href="{{url('/claim-intimations')}}">
 							<i class="simple-icon-exclamation"></i>
 							<span>Claim Intimations</span>
