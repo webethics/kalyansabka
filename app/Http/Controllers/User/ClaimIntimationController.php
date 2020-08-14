@@ -12,12 +12,7 @@ use App\Http\Requests\UpdateWithdawalRequest;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\WithdrawlRequest;
-use App\Models\IncomeHistory;
-use App\Models\Income;
-use App\Models\EmailTemplate;
-use App\Models\UserBankDetails;
-use App\Models\WithdrawalRequestCharges;
+use App\Models\ClaimIntimation;
 use App\Models\UserPayment;
 use App\Models\CityLists;
 use League\Csv\Writer;	
@@ -41,7 +36,7 @@ class ClaimIntimationController extends Controller
     }
 	public function intimations(Request $request)
     {
-		//access_denied_user('withdrawl_listing');
+		access_denied_user('claim_intimation_listing');
 		$intimations_data = $this->intimations_data_search($request,$pagination=true);
 		
 		if($intimations_data['success']){
@@ -67,7 +62,7 @@ class ClaimIntimationController extends Controller
 		
 		$number_of_records =$this->per_page;
 		
-		$result = WithdrawlRequest::where(`1`, '=', `1`)->with('user');	
+		$result = ClaimIntimation::where(`1`, '=', `1`);	
 		
 		if($pagination == true){
 			$intimations = $result->orderBy('created_at', 'desc')->paginate($number_of_records);
@@ -83,18 +78,19 @@ class ClaimIntimationController extends Controller
 		
 	}
 	
-	public function request_edit($payment_id)
+	public function request_edit($request_id)
     {
 		
-		access_denied_user('payment_edit');
-        $request = WithdrawlRequest::where('id',$payment_id)->with('user','request_changes')->first();
+		//access_denied_user('payment_edit');
+        $request = ClaimIntimation::where('id',$request_id)->with('user')->first();
 		
+	//	echo '<pre>';print_r($request->toArray());die;
 		$user_id = $request->user_id;
 		
 		
 		if($request){
 			
-			$view = view("modal.policyRequestEdit",compact('request'))->render();
+			$view = view("modal.claimRequestEdit",compact('request'))->render();
 			$success = true;
 		}else{
 			$view = '';
@@ -107,5 +103,32 @@ class ClaimIntimationController extends Controller
 		  'success'=>$success,
 		  'data'=>$view
 		 ), 200);
+    }
+	public function request_update($request_id,Request $request){
+		access_denied_user('claim_intimation_edit');
+		$data = [];
+    	$data['success'] = false;
+    	$data['message'] = 'Invalid Request';
+		
+    	if(!empty($request_id) && isset($request->status) && !empty($request->status)){
+			//$getpolicydata = CancelPolicyRequest::where('id',$request_id);
+			$getclaimdata = ClaimIntimation::find($request_id);
+    		if($request->status == 'approve'){
+				$status = 1;
+    			$request_data['status'] = 2;
+    			$updateData =$getclaimdata->update($request_data);
+    		}
+			if($request->status == 'disapprove'){
+				$request_data['status'] = 1;
+				$request_data['description'] = trim($request->description);	
+				$updateData =$getclaimdata->update($request_data);
+			}
+			return Response::json(array(
+					  'success'=>true,
+					), 200);
+		}else{
+    		return 'error';
+    	}
+    	//return Response::json($data, 200);
     }
 }

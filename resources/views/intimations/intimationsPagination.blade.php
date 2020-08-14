@@ -3,10 +3,9 @@
 		<tr>
 		<th scope="col">ID</th>
 		<th scope="col">Date</th>
-		<th scope="col">Name</th>
-		<th scope="col">Email</th>
-		<th scope="col">Aadhaar Number</th>
 		<th scope="col">Policy Number</th>
+		<th scope="col">Intimation Aadhaar Number</th>
+		<th scope="col">Intimation Mobile Number</th>
 		<th scope="col">Status</th>
 		<th scope="col">Action</th>
 		</tr>
@@ -14,20 +13,24 @@
 	<tbody>
 	 @if(is_object($intimations) && !empty($intimations) && $intimations->count())
 		  @php $sno = 1;$sno_new = 0  @endphp
-	  @foreach($intimations as $key => $cancelledRequest)
-		<tr data-cancelledRequest-id="{{ $cancelledRequest->id }}" class="user_row_{{$cancelledRequest->id}}" >
-			<td id="sno_{{$cancelledRequest->id}}">{{(($page_number-1) * 10)+$sno}} <input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$cancelledRequest->id}}"/></td>
-			<td id="name_{{$cancelledRequest->id}}">{{viewDateFormat($cancelledRequest->created_at)}}</td>
-			<td id="mobile_number_{{$cancelledRequest->id}}">{{$cancelledRequest->user->first_name}} {{$cancelledRequest->user->last_name}}</td>
-			<td id="business_url_{{$cancelledRequest->id}}">{{$cancelledRequest->user->email}}</td>
-			<td id="business_url_{{$cancelledRequest->id}}">258369851254</td>
-			<td id="email_{{$cancelledRequest->id}}">
-				KALYANSABKA_25648</td>
-			<td id="email_{{$cancelledRequest->id}}">
-				KALYANSABKA_25648</td>
-			<td id="email_{{$cancelledRequest->id}}">
-				@if(check_role_access('withdrawl_edit'))
-					<a class="action editPolicyRequest" href="javascript:void(0)" data-payment_id="{{ $cancelledRequest->id }}" title="Edit Policy Cancellation Request"><i class="simple-icon-note"></i> </a>
+	  @foreach($intimations as $key => $intimation)
+		<tr data-intimation-id="{{ $intimation->id }}" class="user_row_{{$intimation->id}}" >
+			<td id="sno_{{$intimation->id}}">{{(($page_number-1) * 10)+$sno}} <input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$intimation->id}}"/></td>
+			<td id="name_{{$intimation->id}}">{{viewDateFormat($intimation->created_at)}}</td>
+			
+			<td id="business_url_{{$intimation->id}}">{{$intimation->policy_number}}</td>
+			<td id="business_url_{{$intimation->id}}">{{$intimation->initimation_aadhar_number}}</td>
+			<td id="business_url_{{$intimation->id}}">{{$intimation->initimation_mobile_number}}</td>
+			<td id="email_{{$intimation->id}}">
+				@if ($intimation->status == "0") {{ 'Pending' }} @endif
+				@if ($intimation->status == "1") {{ 'Disapproved' }} @endif
+				@if ($intimation->status == "2") {{ 'Approved' }} @endif
+				
+			</td>
+			
+			<td id="email_{{$intimation->id}}">
+				@if(check_role_access('claim_intimation_edit'))
+					<a class="action editClaimRequest" href="javascript:void(0)" data-claim_id="{{ $intimation->id }}" title="Edit Policy Cancellation Request"><i class="simple-icon-note"></i> </a>
 				@endif
 			</td>
 		</tr>

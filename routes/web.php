@@ -176,9 +176,15 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	//policy cancelaation admin
 	Route::get('policies-requests',array('uses'=>'PolicyCancellationController@policyCancellations'));
 	Route::post('policies-requests',array('uses'=>'PolicyCancellationController@policyCancellations'));
-	Route::get('claim-intimations',array('uses'=>'ClaimIntimationController@intimations'));
+	
 	Route::post('cancel-policy-request/edit/{request_id}', 'PolicyCancellationController@request_edit'); //Edit User
 	Route::post('update-policy-request/{request_id}','PolicyCancellationController@request_update');
+	
+	
+	
+	Route::get('claim-intimations',array('uses'=>'ClaimIntimationController@intimations'));
+	Route::post('claim-request/edit/{request_id}', 'ClaimIntimationController@request_edit'); //Edit User
+	Route::post('update-claim-request/{request_id}','ClaimIntimationController@request_update');
 	
 	
 });
