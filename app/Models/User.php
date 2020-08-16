@@ -29,6 +29,7 @@ class User extends Authenticatable
     ];
 
     protected $fillable = [
+        'policy_number',
 		'first_name',
 		'last_name',
 		'email',
@@ -97,6 +98,13 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\UserDocuments','user_id');
         //return $this->belongsTo(UserBankDetails::class, 'user_id');
     }
+
+    public function userNominee()
+    {
+        return $this->hasMany('App\Models\UserNominees','user_id');
+        //return $this->belongsTo(UserBankDetails::class, 'user_id');
+    }
+
 
 	public function role() {
         return $this->belongsTo(App\Models\Role, 'role_id');

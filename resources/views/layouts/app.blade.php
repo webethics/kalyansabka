@@ -13,8 +13,10 @@
 	<link rel="stylesheet" href="{{ asset('css/vendor/bootstrap-datepicker3.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('css/vendor/bootstrap-float-label.min.css') }}" />
 	<link rel="stylesheet" href="{{ asset('css/dore.light.blue.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/vendor/dropzone.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
+    @yield('additionalCss')
 	<link rel="shortcut icon" href="{{ asset('img/favicon.png')}}">
 	<script> 
 		base_url ="{{ url('/') }}";
@@ -34,8 +36,11 @@
     <script src="{{ asset('js/vendor/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ asset('js/vendor/bootstrap-datepicker.js')}}"></script>
     <script src="{{ asset('js/dore.script.js') }}"></script>
+    <script src="{{ asset('js/vendor/dropzone.min.js')}}"></script>
     <script src="{{ asset('js/scripts.single.theme.js') }}"></script>
 	@yield('strpieJs')
+    <!---Add additionalJs-->
+    @yield('additionalJs')
 </body>
 
 </html>
