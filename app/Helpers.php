@@ -364,5 +364,11 @@ function pr($data){
   print_r($data);
   echo "</pre>" ;die;
 }
-
+/*
+*Display policy number
+*/
+function generatePolicyNumber($userId){
+	$policyId = '#'.str_pad($userId, 8, '0', STR_PAD_LEFT);
+	return $policyId;
+}
 

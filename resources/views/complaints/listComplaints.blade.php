@@ -10,7 +10,7 @@
 	<div class="row mb-4">
 		<div class="col-12 mb-4">
 		
-			<?php /* @include('partials.searchCustomerForm') */ ?>
+			@include('partials.searchComplaintForm')
 							
 			<div class="card">
 				<div class="card-body">

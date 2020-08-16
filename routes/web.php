@@ -168,6 +168,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	//complaints
 	Route::get('complaints',array('uses'=>'ComplaintsController@complaints'));
 	Route::get('list-complaints',array('uses'=>'ComplaintsController@list_complaints'));
+	Route::post('list-complaints',array('uses'=>'ComplaintsController@list_complaints'));
 	Route::get('complaint/create/',array('uses'=>'ComplaintsController@complaint_create')); //Edit User
 	Route::post('create-new-complaint', 'ComplaintsController@complaint_create_new'); //Edit User
 	Route::post('update-complaint/{request_id}', 'ComplaintsController@update_complaint'); //Edit User
@@ -178,9 +179,16 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	
 	//policy cancelaation admin
 	Route::get('policies-requests',array('uses'=>'PolicyCancellationController@policyCancellations'));
-	Route::get('claim-intimations',array('uses'=>'ClaimIntimationController@intimations'));
+	Route::post('policies-requests',array('uses'=>'PolicyCancellationController@policyCancellations'));
+	
 	Route::post('cancel-policy-request/edit/{request_id}', 'PolicyCancellationController@request_edit'); //Edit User
 	Route::post('update-policy-request/{request_id}','PolicyCancellationController@request_update');
+	
+	
+	
+	Route::get('claim-intimations',array('uses'=>'ClaimIntimationController@intimations'));
+	Route::post('claim-request/edit/{request_id}', 'ClaimIntimationController@request_edit'); //Edit User
+	Route::post('update-claim-request/{request_id}','ClaimIntimationController@request_update');
 	
 	
 });

@@ -14,19 +14,24 @@ class ClaimIntimation extends Model
         'updated_at',
     ];
 
+	
     protected $fillable = [
-        'claim_request_id',
         'policy_number',
         'initimation_aadhar_number',
 		'initimation_mobile_number',
         'name',
         'aadhar_number',
         'mobile_number',
-        'status'
+        'status',
+        'description'
     ];
 
     public function claimMedia()
     {
         return $this->hasMany('App\Models\ClaimMedia','claim_intimation_id');
     }
+	
+	public function user() {
+        return $this->belongsTo('App\Models\User', 'policy_number');
+	}
 }

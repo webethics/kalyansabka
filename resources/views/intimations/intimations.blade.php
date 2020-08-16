@@ -21,10 +21,10 @@
 
                 </div>
             </div>
-<div class="modal fade modal-right policyRequestEditModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalRight" aria-hidden="true">
+<div class="modal fade modal-right claimRequestEditModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalRight" aria-hidden="true">
 			 </div>
 			 <div class="modal fade modal-top confirmBoxCompleteModal"  tabindex="-1" role="dialog"  aria-hidden="true"></div>
 @section('userJs')
-<script src="{{ asset('js/module/policy.js')}}"></script>	
+<script src="{{ asset('js/module/intimations.js')}}"></script>	
 @stop
 @endsection

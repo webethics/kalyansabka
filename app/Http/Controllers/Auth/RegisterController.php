@@ -279,7 +279,12 @@ class RegisterController extends Controller
 
         $lockingPeriodStart = Carbon::now()->format('Y-m-d');
         $lockingPeriodEnd = Carbon::now()->addMonths($lockingPeriod)->format('Y-m-d');
+		
 		//echo '<pre>';print_r($data);die;
+		if($data['hard_copy_certificate']){
+			$data['actual_price'] = $data['actual_price'] + 100;
+		}
+		
 		$dat =  User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -307,13 +312,15 @@ class RegisterController extends Controller
 			'habits' => $data['habits'],
 			'insurance_type' => $data['insurance_type'],
 			'nominee_number' => $data['nominee_number'],
+			
 		]);
 		
 		if($dat){
+			$user_data = User::where('id',$dat->id);
+			$policy_number['policy_number'] = generatePolicyNumber($data['nominee_number']);
+			$user_data->update($policy_number);
 			//insert price in user payment
-			if($data['hard_copy_certificate']){
-				$data['actual_price'] = $data['actual_price'] + 100;
-			}
+			
 			
 			$userPaymentData = [];
 			$userPaymentData['user_id'] = $dat->id;
