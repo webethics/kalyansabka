@@ -20,6 +20,6 @@ class UserNominees extends Model
         'relation',
     ];
 	public function users() {
-		return $this->HasOne(User::class);
+		return $this->belongsTo('App\Models\User', 'user_id');
 	}
 }

@@ -1,6 +1,10 @@
 <?php
 
 Route::get('/', 'User\UsersController@landing_page');
+Route::get('claim-intimation', 'User\ClaimIntimationController@frontClaimForm');
+Route::post('create-claim','User\ClaimIntimationController@createClaimForm');
+Route::post('claim-document','User\ClaimIntimationController@uploadClaimDocument');
+Route::post('delete/claim-document/{request_id}','User\ClaimIntimationController@deleteClaimDocument');
 
 
 /* Route::redirect('/login', '/login'); */
