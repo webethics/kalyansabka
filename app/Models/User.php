@@ -144,5 +144,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\userPayment');
     }
+
+    public function claimIntimation()
+    {
+        return $this->hasOne('App\Models\ClaimIntimation','policy_number');
+    }
    
 }

@@ -63,49 +63,58 @@ $(document).on('click','#updatePolicyRequest .request_disapprove',function(e){
 
 /*Send Edit request to user*/
 function edit_request_update(ajax_action,method,status){
-	$("#updatePolicyRequest .description_error").html();
-	var csrf_token = $('meta[name="csrf-token"]').attr('content');
-	/*show loader*/
-	$('#updatePolicyRequest').find('.request_loader').show();
+	$("#updatePolicyRequest .description_error").html('');
+	//var csrf_token = $('meta[name="csrf-token"]').attr('content');
 	var formData = $('#updatePolicyRequest').serializeArray();
+	var $policy_id = $('#updatePolicyRequest').find('#policy_id').val();
 
-	formData.push({ name: "status", value: status });
-	formData.push({ name: "_token", value: csrf_token });
+	if($policy_id != ''){
 
-	$.ajax({
-        type: method,
-        url: ajax_action,
-        data:formData,
-        success: function(data) {
-        	$('#updatePolicyRequest').find('.request_loader').hide();
-        	if(data=='date_error'){
-				notification('Error','Start date not greater than end date.','top-right','error',4000);	
-			}else if(data=='error'){
-				notification('Error','Something went wrong, please try later.','top-right','error',4000);
-			}else{
-             // Set search result
-			// $("#tag_container").empty().html(data); 
-				notification('Success','Successfully Update Cancellation Request.','top-right','success',4000);
-				setTimeout(function(){ $('.policyRequestEditModal').modal('hide'); }, 500);
-				setTimeout(function(){ window.location.href = base_url+'/policies-requests'; }, 1000);
-			}
-			/*if(response.success){
-				$("#tag_container").empty().html(data); 
-				setTimeout(function(){ $('.viewDetailModal').modal('hide'); }, 500);
-			}else{
-				if(typeof (response.message) != 'undefined' && response.message != null && response.message != "")
-					notification('Error',response.message,'top-right','error',3000);
-				else
-				notification('Error','Something went wrong.','top-right','error',3000);
-			}*/	
-        },
-        error:function(response){
-	       	$('#updatePolicyRequest').find('.request_loader').hide();
-	       	console.log('error');
-	    }
-    });
-	
+		var parentRow = $("#tag_container table").find('tr.user_row_'+$policy_id);
+		var page_number = parentRow.find('td#sno_'+$policy_id).find('#page_number_'+$policy_id).val();
+		var s_number = parentRow.find('td#sno_'+$policy_id).find('#s_number_'+$policy_id).val();
 
+		formData.push({ name: "status", value: status });
+		formData.push({ name: "page_number", value: page_number });
+		formData.push({ name: "sno", value: s_number });
+		//formData.push({ name: "_token", value: csrf_token });
+		/*show loader*/
+	$('#updatePolicyRequest').find('.request_loader').show();
+
+		$.ajax({
+	        type: method,
+	        url: ajax_action,
+	        data:formData,
+	        success: function(data) {
+	        	$('#updatePolicyRequest').find('.request_loader').hide();
+	        	if(data=='date_error'){
+					notification('Error','Start date not greater than end date.','top-right','error',4000);	
+				}else if(data=='error'){
+					notification('Error','Something went wrong, please try later.','top-right','error',4000);
+				}else if(data.success){
+	            	if(typeof (data.view) != 'undefined' && data.view != null && typeof (data.class) != 'undefined'  && data.class != null && data.view != '' && data.class != ''){ 
+						notification('Success','Successfully Update Cancellation Request.','top-right','success',4000);
+						setTimeout(function(){ 
+							$('.policyRequestEditModal').modal('hide');
+							$('.'+data.class).replaceWith(data.view);
+						}, 500);
+					}
+				}else{
+					if(typeof (data.message) != 'undefined' && data.message != null && data.message != "")
+						notification('Error',data.message,'top-right','error',3000);
+					else
+					notification('Error','Something went wrong.','top-right','error',3000);
+				}
+	        },
+	        error:function(response){
+		       	$('#updatePolicyRequest').find('.request_loader').hide();
+		       	console.log('error');
+		       	notification('Error','Something went wrong.','top-right','error',3000);
+		    }
+	    });
+	}else{
+		notification('Error','Something went wrong.','top-right','error',3000);
+	}
 }
 
 

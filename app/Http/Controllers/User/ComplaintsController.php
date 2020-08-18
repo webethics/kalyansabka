@@ -281,6 +281,9 @@ class ComplaintsController extends Controller
     }
 	
 	public function complaint_create_new(CreateComplaintRequest $request){
+		$data = [];
+    	$data['success'] = false;
+    	$data['message'] = 'Invalid Request';
 		if($request->ajax()){
 			$user_id = Auth::id();
 			$data =array();
@@ -291,27 +294,74 @@ class ComplaintsController extends Controller
 			$data['status']		= 0; 
 			//print_r($data);die;
 			$dat = Complaints::create($data);
-			return Response::json(array(
-			  'success'=>true,
-			 ), 200);
+
+			/*fetch all complaint*/
+			$user_id = Auth::id();
+			$request->user_id = $user_id;
+			$complaints_data = $this->complaints_search($request,$pagination=true);
+			$complaints = [];
+			$page_number = 1;
+			if($complaints_data['success']){
+				$complaints = $complaints_data['complaints'];
+				//echo '<pre>';print_r($complaints->toArray());die;
+				$page_number =  $complaints_data['current_page'];
+				if(empty($page_number))
+					$page_number = 1;
+			}
+
+			$data['success'] = true;
+			$data['message'] = 'New complaint successfully send to admin';
+			$data['view'] = view("complaints.complaintsPagination",compact('complaints','page_number'))->render();
 		}
+		return Response::json($data, 200);
 	}
-	public function complaint_delete($complaint_id)
+	public function complaint_delete(Request $request,$complaint_id)
     {
-		access_denied_user('complaints_delete');
+    	$data = [];
+    	$data['success'] = false;
+    	$data['message'] = 'Invalid Request';
+    	$user_id = Auth::id();
+    	$isAdminLogin = 1; /*flag that check is admin user login or not*/
+    	/*check complaint is done by same user who is login,then give him access to delete complaint*/
+    	$isComplaintUser = Complaints::where('user_id',$user_id)->where('id',$complaint_id)->exists();
+    	if($isComplaintUser){
+    		//go ahead
+    		$request->user_id = $user_id;
+    		$isAdminLogin = 0;
+    	}else{
+    		access_denied_user('complaints_delete');
+    		$isAdminLogin = 1;
+    	}
+		
 		if($complaint_id){
 			$main_complaint = Complaints::where('id',$complaint_id)->first();
 			if($main_complaint){
 				
 				Complaints::where('id',$complaint_id)->delete();
-				$result =array('success' => true);	
-				return Response::json($result, 200);
+
+				$complaints_data = $this->complaints_search($request,$pagination=true);
+				$complaints = [];
+				$page_number = 1;
+				if($complaints_data['success']){
+					$complaints = $complaints_data['complaints'];
+					//echo '<pre>';print_r($complaints->toArray());die;
+					$page_number =  $complaints_data['current_page'];
+					if(empty($page_number))
+						$page_number = 1;
+				}
+
+				$data['success'] = true;
+				$data['message'] = 'Successfully Delete complaint.';
+				if($isAdminLogin)
+					$data['view'] = view("complaints.listComplaintsPagination",compact('complaints','page_number'))->render();
+				else
+					$data['view'] = view("complaints.complaintsPagination",compact('complaints','page_number'))->render();
 			}else{
-				$result =array('success' => false,'message'=>'There is no complaint found .');	
-				return Response::json($result, 200);
+				$data['message'] = 'There is no complaint found.';
 			}
 			
 		}
+		return Response::json($data, 200);
 	}
 }
 ?>

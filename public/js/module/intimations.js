@@ -63,47 +63,58 @@ $(document).on('click','#updateClaimRequest .request_disapprove',function(e){
 
 /*Send Edit request to user*/
 function edit_request_update(ajax_action,method,status){
-	$("#updateClaimRequest .description_error").html();
+	$("#updateClaimRequest .description_error").html('');
 	var csrf_token = $('meta[name="csrf-token"]').attr('content');
 	/*show loader*/
-	$('#updateClaimRequest').find('.request_loader').show();
+	
 	var formData = $('#updateClaimRequest').serializeArray();
+	var $claim_id = $('#updateClaimRequest').find('#claim_id').val();
+	if($claim_id != ''){
 
-	formData.push({ name: "status", value: status });
-	formData.push({ name: "_token", value: csrf_token });
+		var parentRow = $("#tag_container table").find('tr.user_row_'+$claim_id);
+		var page_number = parentRow.find('td#sno_'+$claim_id).find('#page_number_'+$claim_id).val();
+		var s_number = parentRow.find('td#sno_'+$claim_id).find('#s_number_'+$claim_id).val();
 
-	$.ajax({
-        type: method,
-        url: ajax_action,
-        data:formData,
-        success: function(data) {
-        	$('#updateClaimRequest').find('.request_loader').hide();
-        	if(data=='date_error'){
-				notification('Error','Start date not greater than end date.','top-right','error',4000);	
-			}else if(data=='error'){
-				notification('Error','Something went wrong, please try later.','top-right','error',4000);
-			}else{
-             // Set search result
-			// $("#tag_container").empty().html(data); 
-				notification('Success','Successfully Update Cancellation Request.','top-right','success',4000);
-				setTimeout(function(){ $('.claimRequestEditModal').modal('hide'); }, 500);
-				setTimeout(function(){ window.location.href = base_url+'/claim-intimations'; }, 1000);
-			}
-			/*if(response.success){
-				$("#tag_container").empty().html(data); 
-				setTimeout(function(){ $('.viewDetailModal').modal('hide'); }, 500);
-			}else{
-				if(typeof (response.message) != 'undefined' && response.message != null && response.message != "")
-					notification('Error',response.message,'top-right','error',3000);
-				else
-				notification('Error','Something went wrong.','top-right','error',3000);
-			}*/	
-        },
-        error:function(response){
-	       	$('#updateClaimRequest').find('.request_loader').hide();
-	       	console.log('error');
-	    }
-    });
+		formData.push({ name: "status", value: status });
+		formData.push({ name: "page_number", value: page_number });
+		formData.push({ name: "sno", value: s_number });
+		$('#updateClaimRequest').find('.request_loader').show();
+
+		$.ajax({
+	        type: method,
+	        url: ajax_action,
+	        data:formData,
+	        success: function(data) {
+	        	$('#updateClaimRequest').find('.request_loader').hide();
+	        	if(data=='date_error'){
+					notification('Error','Start date not greater than end date.','top-right','error',4000);	
+				}else if(data=='error'){
+					notification('Error','Something went wrong, please try later.','top-right','error',4000);
+				}else if(data.success){
+					if(typeof (data.view) != 'undefined' && data.view != null && typeof (data.class) != 'undefined'  && data.class != null && data.view != '' && data.class != ''){
+						notification('Success','Successfully Update Claim Intemation Status.','top-right','success',4000);
+						setTimeout(function(){
+							$('.claimRequestEditModal').modal('hide');
+							$('.'+data.class).replaceWith(data.view);
+						}, 500);
+						
+					}
+				}else{
+					if(typeof (data.message) != 'undefined' && data.message != null && data.message != "")
+						notification('Error',data.message,'top-right','error',3000);
+					else
+					notification('Error','Something went wrong.','top-right','error',3000);
+				}
+	        },
+	        error:function(response){
+		       	$('#updateClaimRequest').find('.request_loader').hide();
+		       	console.log('error');
+		       	notification('Error','Something went wrong.','top-right','error',3000);
+		    }
+	    });
+	}else{
+		notification('Error','Something went wrong.','top-right','error',3000);
+	}
 	
 
 }

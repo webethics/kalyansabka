@@ -50,9 +50,15 @@ class UsersController extends Controller
 	
 	public function landing_page()
     {
+    	/*generate all user policy id*/
+    	/*$users = User::where('policy_number',NULL)->get();
+    	foreach ($users as $key => $user) {
+    		$user_id = $user['id'];
+    		$user_data = User::find($user_id);
+			$policy_number['policy_number'] = generatePolicyNumber($user_id);
+			$user_data->update($policy_number);
+    	}*/
        return view('users.users.landing');
-		
-		//return view('users.account.account');
     }
     public function ajaxPagination(Request $request)
     {

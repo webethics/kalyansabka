@@ -62,7 +62,7 @@
 								
 		<div class="form-row mt-4">
 		<div class="col-md-12">
-		<input id ="user_id" class="form-check-input" type="hidden" value="">
+		<input id ="policy_id" class="form-check-input" type="hidden" value="{{$request->id}}">
 		<button type="submit" class="btn btn-primary default btn-lg mb-2 mb-sm-0 mr-2 col-12 col-sm-auto request_approve">Approve</button>
 		<button type="submit" class="btn btn-danger default btn-lg mb-2 mb-sm-0 mr-2 col-12 col-sm-auto request_disapprove">Disapprove</button>
 		<div class="spinner-border text-primary request_loader" style="display:none"></div>

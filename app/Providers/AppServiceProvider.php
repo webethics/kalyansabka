@@ -13,6 +13,8 @@ use App\Models\TempUpgradeRequest;
 use App\Observers\TempUpgradeRequestObserver;
 use App\Models\CancelPolicyRequest;
 use App\Observers\CancelPolicyRequestObserver;
+use App\Models\Complaints;
+use App\Observers\ComplaintObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
         IncomeHistory::observe(IncomeHistoryObserver::class);
         TempUpgradeRequest::observe(TempUpgradeRequestObserver::class);
         CancelPolicyRequest::observe(CancelPolicyRequestObserver::class);
+        Complaints::observe(ComplaintObserver::class);
 
         /*$this->app->alias('bugsnag.logger', \Illuminate\Contracts\Logging\Log::class);
         $this->app->alias('bugsnag.logger', \Psr\Log\LoggerInterface::class);*/

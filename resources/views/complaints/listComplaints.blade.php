@@ -14,7 +14,7 @@
 							
 			<div class="card">
 				<div class="card-body">
-				<div class="table-responsive"  id="tag_container">
+				<div class="table-responsive complaints_full"  id="tag_container">
 					 @include('complaints.listComplaintsPagination')
 				</div>
 				</div>

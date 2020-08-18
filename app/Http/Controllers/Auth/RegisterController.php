@@ -317,7 +317,7 @@ class RegisterController extends Controller
 		
 		if($dat){
 			$user_data = User::where('id',$dat->id);
-			$policy_number['policy_number'] = generatePolicyNumber($data['nominee_number']);
+			$policy_number['policy_number'] = generatePolicyNumber($dat->id);
 			$user_data->update($policy_number);
 			//insert price in user payment
 			

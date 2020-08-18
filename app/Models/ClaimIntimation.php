@@ -16,6 +16,7 @@ class ClaimIntimation extends Model
 
 	
     protected $fillable = [
+        'claim_request_id',
         'policy_number',
         'initimation_aadhar_number',
 		'initimation_mobile_number',
@@ -32,6 +33,6 @@ class ClaimIntimation extends Model
     }
 	
 	public function user() {
-        return $this->belongsTo('App\Models\User', 'policy_number');
+        return $this->belongsTo('App\Models\User','policy_number');
 	}
 }

@@ -61,8 +61,12 @@ $(document).on('click', '.delete_complaint' , function() {
         data: {_token:csrf_token,complaint_id:complaint_id},
         success: function(data) {
 			if(data.success){
-				notification('Success','Company deleted Successfully','top-right','success',2000);
-				$('.user_row_'+complaint_id).hide();
+				notification('Success','Complaint deleted Successfully','top-right','success',2000);
+				if(typeof (data.view) != 'undefined' && data.view != null && data.view != ''){
+					$('.complaints_full').html(data.view);
+				}else{
+					$('.user_row_'+complaint_id).hide();
+				}
 			}else if(data.message){
 				notification('Error',data.message,'top-right','error',4000);
 			}else{	
@@ -198,7 +202,13 @@ $(document).on('submit','#createNewComplaint', function(e) {
 				 
 				notification('Success','Complaint submitted Successfully','top-right','success',2000);
 				setTimeout(function(){ $('.complaintCreateModal').modal('hide'); }, 2000);
-				setTimeout(function(){window.location.href = base_url+'/complaints'; }, 2500);
+				setTimeout(function(){
+					if(typeof (data.view) != 'undefined' && data.view != null && data.view != ''){
+						$('.complaints_full').html(data.view);
+					}else{
+						window.location.href = base_url+'/complaints';
+					}
+				}, 2500);
 			}	 
         },
 		error :function( data ) {
