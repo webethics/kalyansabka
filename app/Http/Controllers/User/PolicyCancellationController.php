@@ -178,12 +178,19 @@ class PolicyCancellationController extends Controller
 				$request_data['description'] = trim($request->description);	
 				$updateData =$getpolicydata->update($request_data);
 			}
-			return Response::json(array(
-					  'success'=>true,
-					), 200);
-		}else{
-    		return 'error';
-    	}
-    	//return Response::json($data, 200);
+
+			$sno = isset($request->sno) ? $request->sno : 1;
+    		$page_number = isset($request->page_number) ? $request->page_number : 1;
+    		if($updateData == true){
+    			$cancelledRequest = $getpolicydata;
+    			$data['success'] = true;
+    			$data['message'] = 'Successfully Update Policy cancellation Request';
+    			$data['view'] = view("policyCancellations.cancelledSingleRow",compact('cancelledRequest','sno','page_number'))->render();
+    			$data['class'] = 'user_row_'.$cancelledRequest->id;
+    		}else{
+    			$data['message'] = 'Something went wrong, please try later';
+    		}
+		}
+    	return Response::json($data, 200);
     }
 }

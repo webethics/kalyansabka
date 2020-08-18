@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\UserPayment;
 use App\Models\CityLists;
+use App\Models\Role;
 use League\Csv\Writer;	
 use Auth;
 use Config;
@@ -163,7 +164,7 @@ class ClaimIntimationController extends Controller
 
     	/*Check if valid policy id or valid initimate aadhar number*/
     	if(isset($request_data['policy_number']) && !empty($request_data['policy_number'])){
-    		$intemateUserPolicyNumber = trim($request_data['policy_number']);
+    		$intemateUserPolicyNumber = $request_data['policy_number'];
     	}
     	if(isset($request_data['initimation_aadhar_number']) && !empty($request_data['initimation_aadhar_number'])){
     		$intemateAadharNumber = trim($request_data['initimation_aadhar_number']);
@@ -180,59 +181,67 @@ class ClaimIntimationController extends Controller
     	$user = $user->where('mobile_number',$request_data['initimation_mobile_number'])->first();
 
     	if(!is_null($user) && ($user->count())>0){
-			/*Valid intemate user, now check valid nominee name*/
-			$nominee_number = intval($user->nominee_number);
-			if($nominee_number>0){
-				if(!is_null($user->userNominee) && ($user->userNominee->count())>0){
-					$userNominee = $user->userNominee;
-					$isNomineeFound = 0;
-					foreach ($userNominee as $key => $nominee) {
-						if(strtolower(trim($nominee['name'])) == strtolower(trim($request_data['name']))){
-							$isNomineeFound = 1;
-							break;
+    		$userPolicyNumber = $user->policy_number;
+    		/*Before insertion check, this user intemation request not come */
+    		$isRequestExist = ClaimIntimation::where('policy_number',$userPolicyNumber)->exists();
+    		if($isRequestExist == false){
+				/*Valid intemate user, now check valid nominee name*/
+				$nominee_number = intval($user->nominee_number);
+				if($nominee_number>0){
+					if(!is_null($user->userNominee) && ($user->userNominee->count())>0){
+						$userNominee = $user->userNominee;
+						$isNomineeFound = 0;
+						foreach ($userNominee as $key => $nominee) {
+							if(strtolower(trim($nominee['name'])) == strtolower(trim($request_data['name']))){
+								$isNomineeFound = 1;
+								break;
+							}
+						}
+						/*if nominee found with same name*/
+						if($isNomineeFound){
+							//save data in claim intermate
+							$generated_claim_id = getToken(9);
+
+				            $claimData = ClaimIntimation::create([
+				                'claim_request_id' => $generated_claim_id,
+				                'policy_number' => $userPolicyNumber,
+				                'initimation_aadhar_number' => $intemateAadharNumber,
+				                'initimation_mobile_number' => trim($request_data['initimation_mobile_number']),
+				                'name' => trim($request_data['name']),
+				                'aadhar_number' => str_replace("-","",(trim($request_data['aadhar_number']))),
+				                'mobile_number' => trim($request_data['mobile_number'])
+				            ]);
+
+				            /*if document not empty*/
+				            if(!empty($request_data['document'])){
+				            	$documentIds = explode(",",$request_data['document']);
+				            	/*check if not empty documents ids and not empty claim id then update docoments medias claim ids*/
+				            	if(count($documentIds) > 0 && intval($claimData->id) > 0){
+					            	foreach ($documentIds as $key => $doc) {
+					            		$claimMedia = ClaimMedia::find($doc);
+
+								        if ($claimMedia) {
+								            $claimMedia->update([
+								                'claim_intimation_id' => $claimData->id
+								            ]);
+								        }
+					            	}
+					            }
+				            }
+				            $view = view("users.users.claimRequestToken",compact('claimData'))->render();
+				            $data['success'] = true;
+	    					$data['message'] = 'Your claim request is successfully send to admin';
+	    					$data['view'] = $view;
+							
+						}else{
+							$data['message'] = 'Nominee name not match with our records';
 						}
 					}
-					/*if nominee found with same name*/
-					if($isNomineeFound){
-						//save data in claim intermate
-						$generated_claim_id = getToken(9);
-			            $claimData = ClaimIntimation::create([
-			                'claim_request_id' => $generated_claim_id,
-			                'policy_number' => trim($request_data['policy_number']),
-			                'initimation_aadhar_number' => $intemateAadharNumber,
-			                'initimation_mobile_number' => trim($request_data['initimation_mobile_number']),
-			                'name' => trim($request_data['name']),
-			                'aadhar_number' => str_replace("-","",(trim($request_data['aadhar_number']))),
-			                'mobile_number' => trim($request_data['mobile_number'])
-			            ]);
-
-			            /*if document not empty*/
-			            if(!empty($request_data['document'])){
-			            	$documentIds = explode(",",$request_data['document']);
-			            	/*check if not empty documents ids and not empty claim id then update docoments medias claim ids*/
-			            	if(count($documentIds) > 0 && intval($claimData->id) > 0){
-				            	foreach ($documentIds as $key => $doc) {
-				            		$claimMedia = ClaimMedia::find($doc);
-
-							        if ($claimMedia) {
-							            $claimMedia->update([
-							                'claim_intimation_id' => $claimData->id
-							            ]);
-							        }
-				            	}
-				            }
-			            }
-			            $view = view("users.users.claimRequestToken",compact('claimData'))->render();
-			            $data['success'] = true;
-    					$data['message'] = 'Your claim request is successfully send to admin';
-    					$data['view'] = $view;
-						
-					}else{
-						$data['message'] = 'Nominee name not match with our records';
-					}
+				}else{
+					$data['message'] = 'No nominee account exist with intemate '.$user->full_name;
 				}
 			}else{
-				$data['message'] = 'No nominee account exist with intemate '.$user->full_name;
+				$data['message'] = 'Your intemation request already send to us. Please track your request using track Id.';
 			}
 		}else{
 			$data['message'] = 'Invalid Intemate person Details';
@@ -292,14 +301,16 @@ class ClaimIntimationController extends Controller
 		
 		//access_denied_user('payment_edit');
         $request = ClaimIntimation::where('id',$request_id)->with('user')->first();
-		
-	//	echo '<pre>';print_r($request->toArray());die;
-		$user_id = $request->user_id;
-		
-		
+        if($request->user == null){
+        	$user = User::where('policy_number',$request->policy_number)->first();
+        }else{
+        	$user = $request->user;
+        }
+        
+
 		if($request){
 			
-			$view = view("modal.claimRequestEdit",compact('request'))->render();
+			$view = view("modal.claimRequestEdit",compact('request','user'))->render();
 			$success = true;
 		}else{
 			$view = '';
@@ -332,12 +343,19 @@ class ClaimIntimationController extends Controller
 				$request_data['description'] = trim($request->description);	
 				$updateData =$getclaimdata->update($request_data);
 			}
-			return Response::json(array(
-					  'success'=>true,
-					), 200);
-		}else{
-    		return 'error';
-    	}
-    	//return Response::json($data, 200);
+
+			$sno = isset($request->sno) ? $request->sno : 1;
+    		$page_number = isset($request->page_number) ? $request->page_number : 1;
+    		if($updateData == true){
+    			$intimation = $getclaimdata;
+    			$data['success'] = true;
+    			$data['message'] = 'Successfully Update Intimate Status';
+    			$data['view'] = view("intimations.intimationSingleRow",compact('intimation','sno','page_number'))->render();
+    			$data['class'] = 'user_row_'.$intimation->id;
+    		}else{
+    			$data['message'] = 'Something went wrong, please try later';
+    		}
+		}
+    	return Response::json($data, 200);
     }
 }
