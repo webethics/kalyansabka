@@ -151,6 +151,7 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	/*Update Edit Request*/
 	Route::post('request-update-profile/{request_id}','RequestsController@request_update');
 	Route::get('download-user-document/{user_id}',array('uses'=>'RequestsController@download_document'));
+	Route::get('check-exit-document/{user_id}',array('uses'=>'RequestsController@document_exist'));
 	
 	//roles
 	Route::get('roles',array('uses'=>'RolesController@roles'));

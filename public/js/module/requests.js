@@ -28,6 +28,30 @@ $(document).on('click', '.viewDetail' , function() {
     });
 });
 
+/*view document request*/
+$(document).on('click','.download_doc',function(e){
+	var user_id = $(this).data('user_id');
+	if(user_id != ''){
+		$.ajax({
+	        type: "GET",
+			dataType: 'json',
+	        url: base_url+'/check-exit-document/'+user_id,
+	        success: function(response) {
+				if(response.success){
+					window.location =  base_url+'/download-user-document/'+user_id;
+				}else{
+					if(typeof (response.message) != 'undefined' && response.message != null && response.message != "")
+						notification('Error',response.message,'top-right','error',3000);
+					else
+					notification('Error','Something went wrong.','top-right','error',3000);
+				}	
+	        },
+	    });
+	}else{
+		notification('Error','Something went wrong.','top-right','error',3000);
+	}
+});
+
 /*Approve request*/
 $(document).on('click','#updateRequestUser .request_approve',function(e){
 	event.preventDefault();
