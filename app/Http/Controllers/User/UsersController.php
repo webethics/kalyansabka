@@ -35,6 +35,7 @@ use Response;
 use Hash;
 use DB;
 use DateTime;
+use Session;
 use Carbon\Carbon;
 
 class UsersController extends Controller
@@ -175,6 +176,10 @@ class UsersController extends Controller
 ==================================================*/ 
 	public function account()
     {
+    	/*check if admin user login and manage user with another tab, then login user by Id*/
+    	if(!empty(Session::get('is_admin_login'))  && Session::get('is_admin_login') == 1 && !empty(Session::get('user_id'))){
+    		Auth::loginUsingId(Session::get('user_id'));
+    	}
         $user = user_data();
 		$user_id = $user->id;
 		$bank_detais = UserBankDetails::where('user_id',$user_id)->first();
@@ -950,8 +955,11 @@ class UsersController extends Controller
 		$user_id = user_id();
 		$users = User::where('id',$user_id)->first();
 		
-		 Auth::logout();
-		 return redirect('login');
+		Auth::logout();
+		Session::put('is_admin_login', '1');
+		Session::put('admin_user_id', '');
+		Session::put('user_id','');
+		return redirect('login');
 		
 		
     }

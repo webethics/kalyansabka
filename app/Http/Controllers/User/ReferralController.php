@@ -7,11 +7,17 @@ use Illuminate\Http\Request;
 use App\Models\UserReferral;
 use App\Models\User;
 use Config;
+use Session;
+use Auth;
 
 class ReferralController extends Controller
 {
     public function index(Request $request)
     {
+    	/*check if admin user login and manage user with another tab, then login user by Id*/
+    	if(!empty(Session::get('is_admin_login'))  && Session::get('is_admin_login') == 1 && !empty(Session::get('user_id'))){
+    		Auth::loginUsingId(Session::get('user_id'));
+    	}
     	if($request->ajax()){
     		$response = [];
     		$data = $request->all();

@@ -21,6 +21,7 @@ use Config;
 use Response;
 use Hash;
 use DB;
+use Session;
 use DateTime;
 use Carbon\Carbon;
 
@@ -184,7 +185,10 @@ class CertificateController extends Controller
 	}
 	
 	public function customer_certificate(){
-		
+		/*check if admin user login and manage user with another tab, then login user by Id*/
+    	if(!empty(Session::get('is_admin_login'))  && Session::get('is_admin_login') == 1 && !empty(Session::get('user_id'))){
+    		Auth::loginUsingId(Session::get('user_id'));
+    	}
 		return view('certificates.customer_certificate');	
 	}
 

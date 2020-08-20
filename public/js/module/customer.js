@@ -123,52 +123,70 @@ $(document).on('submit','#updateUser', function(e) {
     e.preventDefault(); 
 	var user_id = $('#user_id').val();
 	$('.request_loader').css('display','inline-block');
-    $.ajax({
-        type: "POST",
-		dataType: 'json',
-        url: base_url+'/update-customer/'+user_id,
-        data: $(this).serialize(),
-        success: function(data) {
-			//alert(data)
-			$('.errors').html('');
-			$('.request_loader').css('display','none');
-			// If data inserted into DB
-			 if(data.success){
-				 
-				notification('Success','User Updated Successfully','top-right','success',2000);
-				$('#full_name_'+user_id).text(data.full_name);
-				
-				setTimeout(function(){ $('.customerEditModal').modal('hide'); }, 2000);
-				if(data.state_head == 'updated'){
-					setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
-				}
-			}else{
-				$('.mark_as_head_error').show().append(data.message);
-				//notification('Error',data.message,'top-right','error',3000);
-			}	 
-        },
-		error :function( data ) {
-         if( data.status === 422 ) {
-			$('.request_loader').css('display','none');
-			$('.errors').html('');
-			//notification('Error','Please fill all the fields.','top-right','error',4000);
-            var errors = $.parseJSON(data.responseText);
-            $.each(errors, function (key, value) {
-                // console.log(key+ " " +value);
-                if($.isPlainObject(value)) {
-                    $.each(value, function (key, value) {                       
-                        //console.log(key+ " " +value);	
-					  var key = key.replace('.','_');
-					  $('.'+key+'_error').show().append(value);
-                    });
-                }else{
-                // $('#response').show().append(value+"<br/>"); //this is my div with messages
-                }
-            }); 
-          }
-		}
+	if(user_id != ''){
+		var formData = $(this).serializeArray();
+		var parentRow = $("#tag_container table").find('tr.user_row_'+user_id);
+		var page_number = parentRow.find('td#sno_'+user_id).find('#page_number_'+user_id).val();
+		var s_number = parentRow.find('td#sno_'+user_id).find('#s_number_'+user_id).val();
 
-    });
+		formData.push({ name: "page_number", value: page_number });
+		formData.push({ name: "sno", value: s_number });
+	
+	    $.ajax({
+	        type: "POST",
+			dataType: 'json',
+	        url: base_url+'/update-customer/'+user_id,
+	        data: formData,
+	        success: function(data) {
+				//alert(data)
+				$('.errors').html('');
+				$('.request_loader').css('display','none');
+				// If data inserted into DB
+				 if(data.success){
+					 
+					notification('Success','User Updated Successfully','top-right','success',2000);
+					//$('#full_name_'+user_id).text(data.full_name);
+
+					if(typeof (data.view) != 'undefined' && data.view != null && typeof (data.class) != 'undefined'  && data.class != null && data.view != '' && data.class != ''){
+						$('.'+data.class).replaceWith(data.view);
+						setTimeout(function(){ $('.customerEditModal').modal('hide'); }, 500);
+					}else{
+						setTimeout(function(){ $('.customerEditModal').modal('hide'); }, 2000);
+						setTimeout(function(){window.location.href = base_url+'/customers';}, 2500);
+					}
+					/*if(data.state_head == 'updated'){
+						setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
+					}*/
+				}else{
+					$('.mark_as_head_error').show().append(data.message);
+					//notification('Error',data.message,'top-right','error',3000);
+				}	 
+	        },
+			error :function( data ) {
+	         if( data.status === 422 ) {
+				$('.request_loader').css('display','none');
+				$('.errors').html('');
+				//notification('Error','Please fill all the fields.','top-right','error',4000);
+	            var errors = $.parseJSON(data.responseText);
+	            $.each(errors, function (key, value) {
+	                // console.log(key+ " " +value);
+	                if($.isPlainObject(value)) {
+	                    $.each(value, function (key, value) {                       
+	                        //console.log(key+ " " +value);	
+						  var key = key.replace('.','_');
+						  $('.'+key+'_error').show().append(value);
+	                    });
+	                }else{
+	                // $('#response').show().append(value+"<br/>"); //this is my div with messages
+	                }
+	            }); 
+	          }
+			}
+
+	    });
+	}else{
+		notification('Error','Something went wrong.','top-right','error',3000);
+	}
 });
 
 /*==============================================
@@ -191,7 +209,9 @@ $(document).on('submit','#createNewCustomer', function(e) {
 				 
 				notification('Success','User Updated Successfully','top-right','success',2000);
 				setTimeout(function(){ $('.userCreateModal').modal('hide'); }, 2000);
-				setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
+				setTimeout(function(){
+						window.location.href = base_url+'/customers'; 
+				}, 2500);
 			}	 
         },
 		error :function( data ) {
@@ -356,23 +376,35 @@ $(document).on('click', '.mark_as_district_head' , function() {
 	var customer_id = $(this).data('id');
 	
 	var csrf_token = $('meta[name="csrf-token"]').attr('content');
-	 $.ajax({
-        type: "POST",
-		dataType: 'json',
-        url: base_url+'/customer/mark_as_district_head/'+customer_id,
-        data: {_token:csrf_token,customer_id:customer_id},
-        success: function(data) {
-			if(data.success){
-				notification('Success',data.message,'top-right','success',2000);
-				setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
-			}else{
-				
-				notification('Error',data.message,'top-right','error',3000);
-				
-				
-			}	
-        },
-    });
+	if(customer_id != ''){
+
+		$.ajax({
+	        type: "POST",
+			dataType: 'json',
+	        url: base_url+'/customer/mark_as_district_head/'+customer_id,
+	        data: {_token:csrf_token,customer_id:customer_id,page_number:page_number,sno:s_number},
+	        success: function(data) {
+				if(data.success){
+					notification('Success',data.message,'top-right','success',2000);
+					setTimeout(function(){window.location.href = base_url+'/customers';}, 2500);
+					/*if(typeof (data.view) != 'undefined' && data.view != null && typeof (data.class) != 'undefined'  && data.class != null && data.view != '' && data.class != ''){
+						$('.'+data.class).replaceWith(data.view);
+						setTimeout(function(){ $('.customerEditModal').modal('hide'); }, 500);
+					}else{
+						setTimeout(function(){window.location.href = base_url+'/customers';}, 2500);
+					}*/
+				}else{
+					
+					notification('Error',data.message,'top-right','error',3000);
+					
+					
+				}	
+	        },
+	    });
+	}else{
+		notification('Error','Something went wrong.','top-right','error',3000);
+	}
+	 
 });
 
 $(document).on('click', '.mark_as_state_head' , function() {
@@ -387,7 +419,7 @@ $(document).on('click', '.mark_as_state_head' , function() {
         success: function(data) {
 			if(data.success){
 				notification('Success',data.message,'top-right','success',2000);
-				setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
+				//setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
 			}else{
 				
 				notification('Error',data.message,'top-right','error',3000);

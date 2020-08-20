@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\EmailTemplate;
 use Auth;
 use Session;
+use App\Models\Role;
 use App\Models\AuditLog;
 class LoginController extends Controller
 {
@@ -85,7 +86,30 @@ class LoginController extends Controller
 				if(Auth::check() && Auth::user()->status == 1){
 					$user = Auth::user();
 					$role_id =  $user->role_id;
-					$role_id = Config::get('constant.role_id');
+					//$role_id = Config::get('constant.role_id');
+					/*flag variables*/
+					$is_admin = 0;
+
+					if(!empty($role_id)){
+						$fetchUserRole = Role::where('id',$role_id)->first();
+						/*If data present*/
+						if(!is_null($fetchUserRole) && ($fetchUserRole->count())>0){
+							$user_role = $fetchUserRole->slug;
+							if($user_role == 'super-admin'){
+								// set session value
+								Session::put('is_admin_login', '1');
+								Session::put('admin_user_id', $user->id);
+								Session::put('user_id','');
+							}else{
+								Session::put('is_admin_login', '0');
+								Session::put('admin_user_id','');
+								Session::put('user_id',$user->id);
+							}
+						}
+		
+					}
+					
+					
 					/* Auth::login($user, true);
 					Session::put('user',$user); */
 					/* if($role_id['SUPER_ADMIN']== current_user_role_id()){
