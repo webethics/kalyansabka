@@ -28,7 +28,7 @@
 			dropzoneErrorClass:'',
 			dropzoneRequired:false,
 			dropzoneURL:'',
-			dropzoneFileaccept:'.pdf,.jpeg,.jpg,.png,.gif',
+			dropzoneFileaccept:'.pdf,.jpeg,.jpg,.png,.gif,.svg',
 			dropzoneExtMsg:'',
 			dropzoneErrorMsg:'',
 			logo: '.logo'
@@ -66,7 +66,7 @@
 					accept: function(file, done) {
 						var ext = (file.name).split('.')[1]; // get extension from file name						
 						ext = ext.toUpperCase();
-						if ( ext == "JPG" || ext == "JPEG" || ext == "PNG" ||  ext == "GIF" ){
+						if ( ext == "JPG" || ext == "JPEG" || ext == "PNG" ||  ext == "GIF" ||  ext == "SVG"){
 						  done();  
 						  $(settings.dropzoneErrorClass).text('');
 						}else { 
@@ -339,7 +339,7 @@ $('form#site_settings').newForm({
 	dropzoneSelector: '#drop_here',
 	dropzoneErrorClass: '.dropzoneError',
 	dropzoneURL: '/uploads/logo/',
-	dropzoneFileaccept: ".jpeg,.jpg,.png,.gif",
+	dropzoneFileaccept: ".jpeg,.jpg,.png,.gif,.svg",
 	dropzoneExtMsg: "Please select only supported files.",
 	dropzoneErrorMsg: "Upload logo field is required.",
 });

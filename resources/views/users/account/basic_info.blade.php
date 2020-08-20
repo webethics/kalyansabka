@@ -13,6 +13,12 @@
 		<div class="clearfix"></div>
 	@endif
 	<div class="clearfix"></div>
+
+	<div class="form-group row">
+		<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.policy_number')}}</label>
+		<label class="col-lg-9 col-xl-10 col-form-label font-weight-bold" id="show_policy_number">{{$user->policy_number}}</label>
+	</div>
+
 	<div class="form-group row">
 		<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.first_name')}}</label>
 		<label class="col-lg-9 col-xl-10 col-form-label" id="show_first_name">{{$user->first_name}}</label>

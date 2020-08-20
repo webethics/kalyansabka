@@ -197,7 +197,7 @@ $(document).on('submit','#claim-form',function(e){
 				}
 				else{
 					$('.claim-common-error').html('Something went wrong.').removeClass('d-none');
-					setTimeout(function(){ $('.claim-common-error').html('').addClass('d-none');}, 5000);
+					//setTimeout(function(){ $('.claim-common-error').html('').addClass('d-none');}, 5000);
 				}
 			}
         },
@@ -218,10 +218,10 @@ $(document).on('submit','#claim-form',function(e){
 	                }
 	            });
 
-	            setTimeout(function(){ $('.error').html('');}, 3000);
+	            //setTimeout(function(){ $('.error').html('');}, 3000);
 	        }else{
 	        	$('.claim-common-error').html('Something went wrong.').removeClass('d-none');
-				setTimeout(function(){ $('.claim-common-error').html('').addClass('d-none');}, 5000);
+				//setTimeout(function(){ $('.claim-common-error').html('').addClass('d-none');}, 5000);
 	        }
        }
 
