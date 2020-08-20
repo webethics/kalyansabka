@@ -16,50 +16,8 @@
 		 @php $sno = 1;$sno_new = 0  @endphp
 		
 	  @foreach($customers as $key => $customer)
-		<tr data-customer-id="{{ $customer->id }}" class="user_row_{{$customer->id}}" >
-			
-			<td id="sno_{{$customer->id}}">{{(($page_number-1) * 10)+$sno}} <input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$customer->id}}"/></td>
-			<td id="registation_{{$customer->id}}">{{viewDateFormat($customer->created_at)}}</td>
-			<td id="full_name_{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}}</td>
-			<td id="email_{{$customer->id}}">{{$customer->email}}</td>
-			<td id="email_{{$customer->id}}">{{$customer->mobile_number}}</td>
-			<td id="email_{{$customer->id}}">{{$customer->aadhar_number}}</td>
-			<td id="status_{{$customer->id}}">
-				@php  $selected=''; @endphp
-				@if($customer->status==1)
-				@php	$selected = 'checked=checked'@endphp
-				@endif	
-				<div class="custom-switch  custom-switch-primary custom-switch-small">
-					<input class="custom-switch-input switch_status" id="switch{{ $customer->id }}" type="checkbox" data-user_id="{{ $customer->id }}" {{$selected}}>
-					   <label class="custom-switch-btn" for="switch{{ $customer->id }}"></label>
-
-				  </div>
-			</td>
-			<td id="action_{{$customer->id}}">
-				
-				@if(check_role_access('customer_edit'))
-					<a class="action editCustomer" href="javascript:void(0)" data-user_id="{{ $customer->id }}" title="Edit Customer"><i class="simple-icon-note"></i> </a> 
-				@endif
-				@if(check_role_access('customer_manage') && ($customer->role_id == 3 || $customer->role_id == 2))
-					<a class="action" target = "_blank" href="{{url('manage-customer')}}/{{$customer->id}}"  data-user_id="{{ $customer->id }}" title="Manage Customer"><i class="simple-icon-login"></i> </a> 
-				@endif
-				@if(check_role_access('customer_certificate_download'))
-					<a class="action viewCustomer" href="javascript:void(0)" data-user_id="{{ $customer->id }}" title="View and Download Certificate"><i class="simple-icon-cloud-download"></i> </a> 
-				@endif	
-				
-				@if(check_role_access('customer_delete'))
-					<a title="Delete Customer"  data-id="{{ $customer->id }}" data-confirm_type="complete" data-confirm_message ="Are you sure you want to delete the Customer?"  data-left_button_name ="Yes" data-left_button_id ="delete_customer" data-left_button_cls="btn-primary" class="open_confirmBox action deleteCustomer"  href="javascript:void(0)" data-customer_id="{{ $customer->id }}"><i class="simple-icon-trash"></i></a>
-				@endif	
-				@if($customer->role_id == 4)
-					<a title="State Head" class="action stateHead"  href="javascript:void(0)"><i class="simple-icon-user"></i></a>
-				@endif	
-				@if($customer->role_id == 5)
-					<a title="District Head" class="action districtHead"  href="javascript:void(0)"><i class="simple-icon-user"></i></a>
-				@endif
-				
-			</td>	
-		</tr>
-			@php $sno++ @endphp
+		@include('customers.customerSingleRow')
+		@php $sno++ @endphp
 	 @endforeach
  @else
 <tr><td colspan="7" class="error" style="text-align:center">No Data Found.</td></tr>

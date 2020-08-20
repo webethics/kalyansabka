@@ -216,6 +216,9 @@ class CustomersController extends Controller
 		 ), 200);
     }
 	public function customer_create_new(CreateCustomerRequest $request){
+		$response = [];
+    	$response['success'] = false;
+    	$response['message'] = 'Invalid Request';
 		if($request->ajax()){
 			$data =array();
 			$data['first_name']	= $request->first_name;
@@ -231,15 +234,21 @@ class CustomersController extends Controller
 			$data['state_id'] = $request->state;
 			$data['district_id'] = $request->district;
 			$dat = User::create($data);
-			return Response::json(array(
-			  'success'=>true,
-			 ), 200);
+
+			$user_data = User::find($dat->id);
+			$policy_number['policy_number'] = generatePolicyNumber($dat->id);
+			$user_data->update($policy_number);
+
+			$response['success'] = true;
+			$response['message'] = 'New Customer created Successfully';
+			
 		}
+		return Response::json($response, 200);
 	}
 	public function update_customer(UpdateCustomerRequest $request,$customer_id){
 		$data=array();
 		$result =array();
-		$requestData = User::where('id',$customer_id);
+		$requestData = User::find($customer_id);
 		$stored_data = User::where('id',$customer_id)->first();
 		
 		if($request->ajax()){
@@ -337,6 +346,13 @@ class CustomersController extends Controller
 			//UPDATE PROFILE EVENT LOG END  
 			
 			$result['full_name'] = $request->first_name.' '.$request->last_name;
+			$sno = isset($request->sno) ? $request->sno : 1;
+    		$page_number = isset($request->page_number) ? $request->page_number : 1;
+
+    		$customer = $requestData;
+
+    		$result['view'] = view("customers.customerSingleRow",compact('customer','sno','page_number'))->render();
+    		$result['class'] = 'user_row_'.$customer->id;
 			
 			return Response::json($result, 200);
 		}
@@ -420,7 +436,7 @@ class CustomersController extends Controller
 	}
 	
 	public function mark_as_district_head($customer_id){
-		$requestData = User::where('id',$customer_id);
+		$requestData = User::find($customer_id);
 		$stored_data = User::where('id',$customer_id)->first();
 		
 		if($stored_data->district_id){
@@ -453,8 +469,13 @@ class CustomersController extends Controller
 				$updateRoledate = array();
 				$updateRoledate['role_id'] = 5;
 				$requestData->update($updateRoledate);
+
+				$customer = $requestData;
+
+				$sno = isset($request->sno) ? $request->sno : 1;
+    			$page_number = isset($request->page_number) ? $request->page_number : 0;
 				
-				$result =array('success' => true,'message'=>'District Head assigned successfully.');	
+				$result =array('success' => true,'message'=>'District Head assigned successfully.','view'=>view("customers.customerSingleRow",compact('customer','sno','page_number'))->render(),'class'=>'user_row_'.$customer->id);	
 				return Response::json($result, 200);
 			}
 		}else{
@@ -525,7 +546,8 @@ class CustomersController extends Controller
 		
 	    if (Auth::loginUsingId($id))
 		{
-			//Session::put('is_admin_login', '1');
+			Session::put('is_admin_login', '1');
+			Session::put('user_id',$id);
 			return redirect('account');
 		}
 		else

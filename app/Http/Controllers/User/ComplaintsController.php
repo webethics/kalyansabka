@@ -22,6 +22,7 @@ use Config;
 use Response;
 use Hash;
 use DB;
+use Session;
 use DateTime;
 use Carbon\Carbon;
 use ZipArchive;
@@ -36,7 +37,10 @@ class ComplaintsController extends Controller
     }
 	
 	public function complaints(Request $request){
-		
+		/*check if admin user login and manage user with another tab, then login user by Id*/
+    	if(!empty(Session::get('is_admin_login'))  && Session::get('is_admin_login') == 1 && !empty(Session::get('user_id'))){
+    		Auth::loginUsingId(Session::get('user_id'));
+    	}
 		$user_id = Auth::id();
 		$request->user_id = $user_id;
 		$complaints_data = $this->complaints_search($request,$pagination=true);

@@ -26,6 +26,7 @@ use Config;
 use Response;
 use Hash;
 use DB;
+use Session;
 use DateTime;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -474,6 +475,10 @@ class PaymentsController extends Controller
 	
 	public function customer_payments(Request $request)
     {
+    	/*check if admin user login and manage user with another tab, then login user by Id*/
+    	if(!empty(Session::get('is_admin_login'))  && Session::get('is_admin_login') == 1 && !empty(Session::get('user_id'))){
+    		Auth::loginUsingId(Session::get('user_id'));
+    	}
 		$user_id = Auth::id();
 		$total_amount = Income::where('user_id',$user_id)->first();
 		

@@ -125,7 +125,7 @@ function check_role_access($permission_slug){
 	}
 }
 
-function access_denied_user($permission_slug){
+function access_denied_user($permission_slug,$already_check = 0){
 	$user = \Auth::user();
 	$current_user_role_id = $user->role_id;
 	
@@ -142,7 +142,14 @@ function access_denied_user($permission_slug){
 	if(in_array($permission_slug,$permission_array)){
 		return true;
 	}else{
-		return abort_unless(\Gate::denies(current_user_role_name()), 403);
+		/*check if admin user login*/
+		//check session admin id
+		if(!empty(Session::get('is_admin_login'))  && Session::get('is_admin_login') == 1 && !empty(Session::get('admin_user_id')) && $already_check == 0){
+			Auth::loginUsingId(Session::get('admin_user_id'));
+			access_denied_user($permission_slug,1);
+		}else{
+			return abort_unless(\Gate::denies(current_user_role_name()), 403);
+		}
 	}
 }
 
