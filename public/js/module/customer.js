@@ -154,7 +154,7 @@ $(document).on('submit','#updateUser', function(e) {
 						setTimeout(function(){ $('.customerEditModal').modal('hide'); }, 2000);
 						setTimeout(function(){window.location.href = base_url+'/customers';}, 2500);
 					}
-					/*if(data.state_head == 'updated'){
+					/* if(data.state_head == 'updated'){
 						setTimeout(function(){window.location.href = base_url+'/customers'; }, 2500);
 					}*/
 				}else{

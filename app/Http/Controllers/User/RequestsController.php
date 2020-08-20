@@ -290,6 +290,37 @@ class RequestsController extends Controller
     	//return Response::json($data, 200);
     }
 
+    /*Check if user document exit*/
+    public function document_exist($user_id){
+    	$data = [];
+    	$data['success'] = false;
+    	$data['message'] = 'Invalid Request';
+
+ 		if(!empty($user_id)){
+ 			//Check Valid User
+    		$user = User::with('userDocument')->where('id',$user_id)->first();
+
+    		if(!is_null($user) && ($user->count())>0 && !is_null($user->userDocument) && ($user->userDocument->count())){
+    			$udocument = $user->userDocument;
+				$aadhaar_front = $udocument->aadhaar_front;
+				$aadhaar_back = $udocument->aadhaar_back;
+				$pan_card = $udocument->pan_card;
+
+				//check if document exist
+				if(!empty($aadhaar_front) || !empty($aadhaar_back) || !empty($pan_card)){
+					$data['success'] = true;
+    				$data['message'] = 'Document exist';
+				}else{
+					$data['message'] = 'No document Uploaded by User Yet.';
+				}
+    		}else{
+				$data['message'] = 'No document Uploaded by User Yet.';
+			}
+ 		}
+ 		
+    	return Response::json($data, 200);
+    }
+
     /*Download User document*/
     public function download_document($user_id){
     	$data = [];
@@ -351,6 +382,10 @@ class RequestsController extends Controller
 				        // Create Download Response
 				        if(file_exists($zipFullPathName)){
 				            return response()->download($zipFullPathName,$zipFileName,$headers)->deleteFileAfterSend(true);
+				            /*$data['fileurl'] = $zipFullPathName;
+				            $data['success'] = true;
+    						$data['message'] = 'Successfully downlad file';*/
+
 				        }
 				        $data['message'] = 'File does not exist';
         			}else{
@@ -365,6 +400,7 @@ class RequestsController extends Controller
 			}
 		}
     	return Response::json($data, 200);
+    	//return "NO FILES CREATED";
     }
 
     /*Update User Data*/

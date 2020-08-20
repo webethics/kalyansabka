@@ -4,7 +4,7 @@
                 <div class="col-12 col-md-8 col-lg-6 mx-auto my-auto">
                     <div class="card auth-card">
                         <div class="form-side">
-                            <span class="logo_image d-block mb-3"><img src="{{asset('img/logo.png')}}"></span>
+                            <span class="logo_image d-block mb-3"><img src="{{asset('img/Kalyansabka.svg')}}"></span>
 							<?php  //pr($errors);?>
                             <h6 class="mb-4">{{ trans('global.forgot_password')}}</h6>
 							@include('flash-message')

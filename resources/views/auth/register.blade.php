@@ -6,7 +6,7 @@
                     <div class="card auth-card">
                         <div class="form-side">
                             
-                            <span class="logo_image d-block mb-3"><a href="{{url('/')}}"><img src="{{asset('img/logo.png')}}"></a></span>
+                            <span class="logo_image d-block mb-3"><a href="{{url('/')}}"><img src="{{asset('img/Kalyansabka.svg')}}"></a></span>
                             
                              
 							@if(Session::has('message'))

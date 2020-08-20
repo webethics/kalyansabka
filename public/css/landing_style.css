@@ -468,6 +468,8 @@ input[type="submit"]:hover {
     font-weight: normal;
     font-family: open_sansregular;
 }
+.img-fluid{width: 180px;}
+
 
 
 @media(min-width:1200px) {

@@ -6,7 +6,7 @@
 
   <nav class="navbar navbar-expand-lg navbar-light py-2 fixed-top" id="mainNav" data-scroll-header>
          <div class="container">
-            <a class="navbar-brand " href="{{url('/')}}"><img class="img-fluid" src="{{asset('img/logo.png')}}"></a>
+            <a class="navbar-brand " href="{{url('/')}}"><img class="img-fluid" src="{{asset('img/Kalyansabka.svg')}}"></a>
 			   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 			</button>
