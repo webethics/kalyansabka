@@ -92,7 +92,7 @@ function edit_request_update(ajax_action,method,status){
 					notification('Error','Something went wrong, please try later.','top-right','error',4000);
 				}else if(data.success){
 					if(typeof (data.view) != 'undefined' && data.view != null && typeof (data.class) != 'undefined'  && data.class != null && data.view != '' && data.class != ''){
-						notification('Success','Successfully Updated Claim Intemation Status.','top-right','success',4000);
+						notification('Success','Successfully Updated Claim Intimation Status.','top-right','success',4000);
 						setTimeout(function(){
 							$('.claimRequestEditModal').modal('hide');
 							$('.'+data.class).replaceWith(data.view);
