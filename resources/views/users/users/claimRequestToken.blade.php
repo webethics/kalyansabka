@@ -7,7 +7,7 @@
 
               <div class="form-group row text-center">
                 <label class="col-lg-12 col-xl-12 col-form-label">
-                  Your claim request is successfully send to admin, it will take around 48-72 hours to response you.
+                  Your claim request is successfully sent to admin, it will take around 48-72 hours to respond you.
                 </label>
               </div>
               <div class="form-group row text-center">

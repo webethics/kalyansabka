@@ -109,16 +109,6 @@ class LoginController extends Controller
 		
 					}
 					
-					
-					/* Auth::login($user, true);
-					Session::put('user',$user); */
-					/* if($role_id['SUPER_ADMIN']== current_user_role_id()){
-					  return redirect('account');	 
-					} 
-					if($role_id['INDIA_HEAD']== current_user_role_id()){
-					  return redirect('account');	 
-					}  */
-					
 				}else{
 					
 					return redirect()->route('login');

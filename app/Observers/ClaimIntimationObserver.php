@@ -26,7 +26,7 @@ class ClaimIntimationObserver
      */
     public function updated(ClaimIntimation $claimIntimation)
     {
-        //
+        /*Check if request approved then change user status to 2 means close account*/
     }
 
     /**
